@@ -17,13 +17,22 @@ export function Navbar() {
       <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
-            <a href="#" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                <Shield className="w-5 h-5 fill-slate-950 text-emerald-400" />
+            <a href="#" className="flex items-center gap-2.5 group">
+              {/* Escudo SF Cyber */}
+              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-indigo-700 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform border border-cyan-300/40">
+                <Shield className="absolute inset-0 w-full h-full text-cyan-400/20 fill-cyan-500/10" />
+                <span className="relative z-10 text-white font-mono text-base font-extrabold tracking-tighter">
+                  SF
+                </span>
               </div>
-              <span className="text-xl font-bold tracking-tight text-white font-mono">
-                Hixec<span className="text-emerald-400">.</span>
-              </span>
+              <div className="flex flex-col">
+                <span className="text-lg font-bold tracking-tight text-white font-mono leading-none">
+                  SF <span className="text-cyan-400">CYBER</span>
+                </span>
+                <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
+                  Segurança & Redes
+                </span>
+              </div>
             </a>
           </div>
 
@@ -31,10 +40,10 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-6 text-sm">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors py-1.5 px-3 rounded-lg hover:bg-slate-900"
+              className="flex items-center gap-2 text-slate-300 hover:text-cyan-400 transition-colors py-1.5 px-3 rounded-lg hover:bg-slate-900"
             >
               <ShoppingCart className="w-4 h-4" />
-              <span>No hay productos en el carrito.</span>
+              <span>Não há produtos no carrinho.</span>
             </button>
 
             <div className="h-4 w-[1px] bg-slate-800" />
@@ -43,14 +52,14 @@ export function Navbar() {
               onClick={() => setAuthModalState({ isOpen: true, mode: "login" })}
               className="text-slate-300 hover:text-white font-medium transition-colors"
             >
-              Acceso
+              Acesso
             </button>
 
             <span className="text-slate-600">|</span>
 
             <Button
               onClick={() => setAuthModalState({ isOpen: true, mode: "register" })}
-              className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-500/40"
+              className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/20 transition-all hover:shadow-cyan-500/40"
             >
               Registro
             </Button>
@@ -76,7 +85,7 @@ export function Navbar() {
         {/* Mobile Menu Dropdown */}
         {mobileMenuOpen && (
           <div className="md:hidden border-b border-slate-800 bg-slate-950 px-4 py-5 space-y-4 animate-in slide-in-from-top-2 duration-200">
-            <div className="text-xs text-slate-400 italic">No hay productos en el carrito.</div>
+            <div className="text-xs text-slate-400 italic">Não há produtos no carrinho.</div>
             <div className="flex flex-col gap-2 pt-2">
               <Button
                 variant="outline"
@@ -86,10 +95,10 @@ export function Navbar() {
                   setAuthModalState({ isOpen: true, mode: "login" });
                 }}
               >
-                Acceso
+                Acesso
               </Button>
               <Button
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold justify-center"
+                className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setAuthModalState({ isOpen: true, mode: "register" });
