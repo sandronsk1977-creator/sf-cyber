@@ -96,7 +96,7 @@ export function CryptoAnimationHero() {
         {/* Badge tag */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-8 shadow-lg shadow-emerald-500/5">
           <ShieldCheck className="w-4 h-4" />
-          <span>Formação em Ciberseguridad Ofensiva y Defensiva</span>
+          <span>Formação em Cibersegurança Ofensiva e Defensiva</span>
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
