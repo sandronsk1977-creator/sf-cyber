@@ -4,43 +4,43 @@ import { Compass, FlaskConical, Target, Bot, Settings, Coins, Award, Users } fro
 const DIFFERENTIALS = [
   {
     icon: Compass,
-    title: "Rutas estructuradas",
-    description: "Caminos organizados por nivel y objetivo. Sabes exactamente qué estudiar hoy y qué viene después, sin improvisar.",
+    title: "Trilhas estruturadas",
+    description: "Caminhos organizados por nível e objetivo. Você sabe exatamente o que estudar hoje e o que vem depois, sem improvisar.",
   },
   {
     icon: FlaskConical,
-    title: "+150 laboratorios prácticos",
-    description: "Entornos reales donde ejecutas ataques, configuras defensas y aplicas lo aprendido, no solo ves cómo se hace.",
+    title: "+150 laboratórios práticos",
+    description: "Ambientes reais onde você executa ataques, configura defesas e aplica o aprendizado, indo muito além da teoria.",
   },
   {
     icon: Target,
-    title: "Simulaciones de examen",
-    description: "Preparación basada en experiencias reales de personas que ya aprobaron certificaciones. Llegas listo, no a probar suerte.",
+    title: "Simulados de exame",
+    description: "Preparação baseada em experiências reais de quem já foi aprovado nas principais certificações do mercado.",
   },
   {
     icon: Bot,
-    title: "Hixec AI",
-    description: "Asistente de inteligencia artificial especializado en ciberseguridad, integrado directo en la plataforma para resolver dudas en tiempo real.",
+    title: "SF Cyber AI",
+    description: "Assistente de inteligência artificial especializado em cibersegurança, integrado diretamente para tirar dúvidas em tempo real.",
   },
   {
     icon: Settings,
-    title: "Hixec Code",
-    description: "Herramientas propias para auditorías de seguridad reales. No busques en internet, las tienes dentro de la plataforma.",
+    title: "SF Cyber Code",
+    description: "Ferramentas próprias para auditorias de segurança reais prontas para uso dentro da plataforma.",
   },
   {
     icon: Coins,
-    title: "HIX: te pagamos por aprender",
-    description: "Cada avance genera HIX, nuestra moneda interna. Canjéalos por productos y beneficios exclusivos, aquí entrenar tiene recompensa real.",
+    title: "SF Tokens: ganhe para estudar",
+    description: "Cada avanço gera tokens internos. Troque por produtos, mentorias e benefícios exclusivos.",
   },
   {
     icon: Award,
-    title: "Certificados verificables",
-    description: "Cada curso completado genera un certificado oficial con QR de verificación. Evidencia real de tus habilidades para tu CV o LinkedIn.",
+    title: "Certificados verificáveis",
+    description: "Cada curso concluído gera um certificado oficial com QR code de validação para seu currículo e LinkedIn.",
   },
   {
     icon: Users,
-    title: "Comunidad activa",
-    description: "Conecta con profesionales y estudiantes del sector. Soporte real, networking genuino y ayuda de personas que ya pasaron donde estás tú.",
+    title: "Comunidade ativa",
+    description: "Conecte-se com profissionais e estudantes do setor. Networking genuíno e suporte de quem já passou pelo mesmo estágio.",
   },
 ];
 
@@ -51,14 +51,14 @@ export function DifferenceSection() {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-widest text-emerald-400 font-mono font-semibold">
-            Por qué hixec es diferente
+          <span className="text-xs uppercase tracking-widest text-cyan-400 font-mono font-semibold">
+            Por que a SF Cyber é diferente
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2 mb-4">
-            No somos otra más, aquí no hay humo.
+            Não somos mais um curso genérico. Aqui é prática real.
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Cada componente está diseñado para que avances, practiques y te certifiques de verdad con conocimiento proveniente de experiencia real.
+            Cada componente foi desenhado para que você avance, pratique e se certifique com conhecimento fundamentado na realidade do mercado.
           </p>
         </div>
 
@@ -69,10 +69,10 @@ export function DifferenceSection() {
             return (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-emerald-500/40 transition-all group flex flex-col justify-between"
+                className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-cyan-500/40 transition-all group flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-5 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-5 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold mb-2 text-white">{d.title}</h3>
