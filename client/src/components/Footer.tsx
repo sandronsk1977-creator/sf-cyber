@@ -23,7 +23,7 @@ export function Footer() {
           </div>
 
           <div className="text-xs text-slate-500 md:text-right">
-            São Paulo, SP – Brasil / Remoto Global
+            Goiânia, GO – Brasil | Remoto Global
           </div>
         </div>
 
@@ -31,10 +31,8 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-6">
             <a href="#" className="hover:text-cyan-400 transition-colors">YouTube</a>
             <a href="#" className="hover:text-cyan-400 transition-colors">Instagram</a>
-            <a href="#" className="hover:text-cyan-400 transition-colors">TikTok</a>
             <a href="#" className="hover:text-cyan-400 transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-cyan-400 transition-colors">Telegram</a>
-            <a href="#" className="hover:text-cyan-400 transition-colors">Discord</a>
+                    
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-center">
