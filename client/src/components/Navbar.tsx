@@ -30,7 +30,7 @@ export function Navbar() {
                   SF <span className="text-cyan-400">CYBER</span>
                 </span>
                 <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
-                  Segurança & Redes
+                  Segurança Digital & Redes
                 </span>
               </div>
             </a>
