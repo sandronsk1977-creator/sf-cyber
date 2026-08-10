@@ -8,40 +8,43 @@ export function Footer() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pb-12 border-b border-slate-900">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
-              <Shield className="w-5 h-5 fill-slate-950 text-emerald-400" />
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-indigo-700 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30 border border-cyan-300/40">
+              <Shield className="absolute inset-0 w-full h-full text-cyan-400/20 fill-cyan-500/10" />
+              <span className="relative z-10 text-white font-mono text-base font-extrabold tracking-tighter">
+                SF
+              </span>
             </div>
             <div>
               <h3 className="text-xl font-bold tracking-tight text-white font-mono">
-                Hixec<span className="text-emerald-400">.</span>
+                SF <span className="text-cyan-400">Cyber</span>
               </h3>
-              <p className="text-xs text-slate-500">Ciberseguridad simple, así de simple.</p>
+              <p className="text-xs text-slate-500">Cibersegurança e Redes com excelência técnica.</p>
             </div>
           </div>
 
           <div className="text-xs text-slate-500 md:text-right">
-            907 Encanto Circle, Deming, NM 88030 – United States.
+            São Paulo, SP – Brasil / Remoto Global
           </div>
         </div>
 
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
           <div className="flex flex-wrap items-center gap-6">
-            <a href="https://youtube.com/@hixec/" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Youtube</a>
-            <a href="https://www.instagram.com/hixec_com/" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Instagram</a>
-            <a href="https://www.tiktok.com/@hixec_com" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Tiktok</a>
-            <a href="https://es.linkedin.com/company/hixec/" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Linkedin</a>
-            <a href="https://t.me/hixec/" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Telegram</a>
-            <a href="https://discord.com/invite/bMWXR6Z" target="_blank" rel="noreferrer" className="hover:text-emerald-400 transition-colors">Discord</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">YouTube</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">Instagram</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">TikTok</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">LinkedIn</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">Telegram</a>
+            <a href="#" className="hover:text-cyan-400 transition-colors">Discord</a>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-center">
-            <span>Términos y condiciones</span>
+            <span>Termos e Condições</span>
             <span>·</span>
-            <span>Política de privacidad</span>
+            <span>Política de Privacidade</span>
             <span>·</span>
-            <span>Política de cookies</span>
+            <span>Política de Cookies</span>
             <span>·</span>
-            <span>Política de reembolso</span>
+            <span>Política de Reembolso</span>
           </div>
         </div>
 
