@@ -157,12 +157,12 @@ export function CryptoAnimationHero() {
 
         {/* Seen in / Social Proof Bar */}
         <div className="mt-20 w-full max-w-5xl pt-10 border-t border-slate-800/80">
-          <p className="text-xs uppercase tracking-widest text-slate-500 font-mono mb-6">VOCÊ NOS VIU EM</p>
+          <p className="text-xs uppercase tracking-widest text-slate-500 font-mono mb-6">VOCÊ ME VIU EM</p>
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all">
             <span className="text-lg font-bold font-mono tracking-wider text-slate-300">CYBERSEC LATAM</span>
-            <span className="text-lg font-bold font-mono tracking-wider text-slate-300">HACKER_NEWS</span>
+            <span className="text-lg font-bold font-mono tracking-wider text-slate-300">STARTPAGE_NEWS</span>
             <span className="text-lg font-bold font-mono tracking-wider text-slate-300">TECH_BRASIL</span>
-            <span className="text-lg font-bold font-mono tracking-wider text-slate-300">PENTEST_MAG</span>
+            <span className="text-lg font-bold font-mono tracking-wider text-slate-300">PENTEST_BR</span>
           </div>
         </div>
 
