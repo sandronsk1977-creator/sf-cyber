@@ -16,7 +16,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="text-xl font-bold tracking-tight text-white font-mono">
-                SF <span className="text-cyan-400">Cyber</span>
+              <span className="text-cyan-400">Academia Cyber</span>
               </h3>
               <p className="text-xs text-slate-500">Cibersegurança e Redes com excelência técnica.</p>
             </div>
