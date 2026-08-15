@@ -27,7 +27,7 @@ export function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-bold tracking-tight text-white font-mono leading-none">
-                  SF <span className="text-cyan-400">CYBER</span>
+                  SF <span className="text-cyan-400">Academia CYBER</span>
                 </span>
                 <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
                   Segurança Digital & Redes
