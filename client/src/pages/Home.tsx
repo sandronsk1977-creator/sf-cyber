@@ -3,6 +3,7 @@ import { Navbar } from "@/components/Navbar";
 import { CryptoAnimationHero } from "@/components/CryptoAnimationHero";
 import { AudienceSection } from "@/components/AudienceSection";
 import { PricingSection } from "@/components/PricingSection";
+import { SponsorSection } from "@/components/SponsorSection";
 import { PortalCardsSection } from "@/components/PortalCardsSection";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         <CryptoAnimationHero />
         <PortalCardsSection />
         <AudienceSection />
+        <SponsorSection />
         <PricingSection />
       </main>
     </div>
