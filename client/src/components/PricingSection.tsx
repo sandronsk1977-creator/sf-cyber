@@ -20,7 +20,6 @@ export function PricingSection() {
       simulator: true,
       features: [
         "Simulador de VLANs Switch Cisco (8 níveis)",
-        "Curso introdutório de Cibersegurança e Redes 101",
         "Teste de conectividade e prova final",
         "Certificado de conclusão",
         "Progresso salvo automaticamente",
