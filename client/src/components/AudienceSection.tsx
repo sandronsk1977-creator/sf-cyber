@@ -12,10 +12,6 @@ export function AudienceSection() {
       desc: "Cansou de cursos maçantes onde o instrutor só quer aparecer. Você precisa de um método estruturado, não de excesso de teoria.",
     },
     {
-      title: "Quer certificações reconhecidas globalmente",
-      desc: "eJPT, CompTIA, CEH ou OSCP no seu horizonte. Nossos laboratórios preparam você para passar de verdade.",
-    },
-    {
       title: "Quer entrar no mercado de trabalho em cibersegurança",
       desc: "Busca sua primeira oportunidade ou transição de carreira. Nossos certificados e habilidades práticas abrem portas.",
     },
