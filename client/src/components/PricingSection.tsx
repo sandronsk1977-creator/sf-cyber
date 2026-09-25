@@ -31,7 +31,7 @@ export function PricingSection() {
       name: "MEMBROS",
       icon: "👑",
       subtitle: "Acesso total a tudo. Um único investimento.",
-      price: "R$ 89,90",
+      price: "R$ 39,90",
       period: "/mês",
       badge: null,
       highlight: false,
