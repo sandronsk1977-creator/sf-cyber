@@ -42,7 +42,7 @@ export function SponsorSection() {
             Leve a SF Cyber para seus alunos, clientes e equipe
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Empresas, consultores comerciais, faculdades e IES: invista no futuro da Cibersegurança e ajude o projeto a avançar.
+            Empresas, consultores comerciais, Escolas Técnicas e IES... Investir no futuro começa agora.
           </p>
         </div>
 
