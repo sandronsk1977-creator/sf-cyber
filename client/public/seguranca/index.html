@@ -1487,6 +1487,7 @@ function checkLevel() {
 }
 
 function nextLevel() {
+    closeModal('successModal');
     const lvl = levels[state.currentLevel];
     if (lvl && !state.levelDone[lvl.id]) {
         addOutput('Você ainda não completou este nível. Use as dicas!', 'warning');
@@ -1495,6 +1496,7 @@ function nextLevel() {
     if (state.currentLevel < levels.length - 1) {
         state.currentLevel++;
         renderLevel();
+        addOutput('--- Nível ' + (state.currentLevel + 1) + ' - ' + levels[state.currentLevel].title.replace(/^Nível \d+: /, '') + ' ---', 'system');
     } else {
         closeModal('successModal');
         openGameComplete();
