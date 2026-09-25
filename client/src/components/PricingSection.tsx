@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useLocation } from "wouter";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PreLaunchModal } from "./PreLaunchModal";
+import { SimulatorChoiceModal } from "./SimulatorChoiceModal";
 
 export function PricingSection() {
   const [preLaunchOpen, setPreLaunchOpen] = useState(false);
-  const [, navigate] = useLocation();
+  const [choiceOpen, setChoiceOpen] = useState(false);
 
   const plans = [
     {
@@ -127,7 +127,7 @@ export function PricingSection() {
                 </div>
 
                 <Button
-                  onClick={() => (p.simulator ? navigate("/simulador-vlan") : setPreLaunchOpen(true))}
+                  onClick={() => (p.simulator ? setChoiceOpen(true) : setPreLaunchOpen(true))}
                   className={`w-full font-bold py-6 rounded-xl transition-all shadow-lg ${
                     p.highlight
                       ? "bg-cyan-500 hover:bg-cyan-600 text-slate-950 shadow-cyan-900/30"
@@ -148,6 +148,7 @@ export function PricingSection() {
       </section>
 
       <PreLaunchModal isOpen={preLaunchOpen} onClose={() => setPreLaunchOpen(false)} />
+      <SimulatorChoiceModal isOpen={choiceOpen} onClose={() => setChoiceOpen(false)} />
     </>
   );
 }
