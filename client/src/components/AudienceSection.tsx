@@ -5,7 +5,7 @@ export function AudienceSection() {
   const pros = [
     {
       title: "Você está começando do zero",
-      desc: "Não é preciso experiência prévia. As trilhas levam você do zero à sua primeira certificação passo a passo.",
+      desc: "Não é preciso experiência prévia. As trilhas levam você a um aprendizado passo a passo.",
     },
     {
       title: "Já tentou estudar antes e ficou perdido",
