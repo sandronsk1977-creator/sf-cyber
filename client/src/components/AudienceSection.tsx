@@ -12,10 +12,6 @@ export function AudienceSection() {
       desc: "Cansou de cursos maçantes onde o instrutor só quer aparecer. Você precisa de um método estruturado, não de excesso de teoria.",
     },
     {
-      title: "Quer entrar no mercado de trabalho em cibersegurança",
-      desc: "Busca sua primeira oportunidade ou transição de carreira. Nossos certificados e habilidades práticas abrem portas.",
-    },
-    {
       title: "Tem tempo limitado e precisa de eficiência",
       desc: "As trilhas diretas ao ponto maximizam cada minuto dedicado aos estudos.",
     },
