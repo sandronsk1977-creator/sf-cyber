@@ -39,6 +39,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Add CNAME for custom domain
+        run: cp CNAME ./dist/CNAME
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
