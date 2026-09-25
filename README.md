@@ -19,7 +19,7 @@ Abra http://localhost:3000
 
 | Comando         | Descrição                               |
 | --------------- | --------------------------------------- |
-| `pnpm dev`      | Servidor de desenvolvimento (Vite)       |
+| `pnpm dev`      | Servidor de desenvolvimento (Vite).      |
 | `pnpm build`    | Build de produção (saída em `dist/`)     |
 | `pnpm check`    | Typecheck com `tsc --noEmit`             |
 | `pnpm preview`  | Pré-visualização do build                |
