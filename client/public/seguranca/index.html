@@ -365,6 +365,152 @@
         .quiz-option:disabled { cursor:default; }
         .quiz-feedback { margin-top:12px; font-size:0.9em; color:#4a4a4a; min-height:20px; }
 
+        /* ===== Assistente Robô (SF Bot) ===== */
+        .robot {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .robot-bubble {
+            position: relative;
+            max-width: 310px;
+            background: #ffffff;
+            color: #16213e;
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 10px 34px rgba(0,0,0,0.18), 0 0 0 2px #0078d4;
+            font-size: 0.95em;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .robot-bubble.visible { display: block; animation: robotPop 0.35s ease; }
+
+        .robot-bubble::after {
+            content: '';
+            position: absolute;
+            right: 24px;
+            left: auto;
+            bottom: -10px;
+            border: 7px solid transparent;
+            border-top: 11px solid #0078d4;
+        }
+
+        .rb-title {
+            display: block;
+            font-weight: 700;
+            color: #106ebe;
+            margin-bottom: 4px;
+        }
+
+        .rb-text b { color: #0078d4; }
+
+        @keyframes robotPop {
+            from { transform: scale(0.65) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .robot-figure {
+            width: 92px;
+            height: 92px;
+            animation: floaty 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+        }
+
+        .rb-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            line-height: 1;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.08);
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .rb-close:hover { background: rgba(204,0,0,0.15); color: #c00; }
+
+        .robot.hidden { display: none !important; }
+
+        .robot-reopen {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            width: 92px;
+            height: 92px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#1f2b3e,#28364d);
+            box-shadow: 0 10px 34px rgba(0,0,0,0.3), 0 0 0 2px #0078d4;
+            font-size: 40px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: floaty 2.6s ease-in-out infinite;
+        }
+
+        .robot-reopen.show { display: flex; }
+        .robot-reopen:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 0 0 2px #ffd700; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .antena-led { animation: ledBlink 1.3s steps(2, start) infinite; }
+
+        @keyframes ledBlink {
+            0% { opacity: 1; }
+            50% { opacity: 0.15; }
+        }
+
+        .eye {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: blinky 4.5s infinite;
+        }
+
+        @keyframes blinky {
+            0%, 90%, 100% { transform: scaleY(1); }
+            94% { transform: scaleY(0.12); }
+        }
+
+        .robot-arm {
+            transform-box: view-box;
+            transform-origin: 80px 101px;
+            animation: pointArm 1.9s ease-in-out infinite;
+        }
+
+        @keyframes pointArm {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-48deg); }
+        }
+
+        @media (max-width: 760px) {
+            .robot { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen.show { display: flex; transform: scale(0.8); }
+        }
+
         @media (max-width: 900px) {
             .main-container { flex-direction: column; }
             .topology-panel, .terminal-panel { min-width: 100%; }
@@ -510,6 +656,36 @@
         </div>
     </div>
 </div>
+
+<!-- Robot Assistant -->
+<div class="robot" id="robot">
+    <div class="robot-bubble" id="robotBubble">
+        <button class="rb-close" id="robotCloseBtn" onclick="closeRobot()" aria-label="Fechar SF Bot">✕</button>
+        <span class="rb-title" id="robotTitle">SF Bot 🤖</span>
+        <span class="rb-text" id="robotText"></span>
+        <button class="rb-next" id="robotContinueBtn" style="display:none;" onclick="robotContinue()">▶ Iniciar Etapa</button>
+    </div>
+    <svg class="robot-figure" id="robotFigure" viewBox="0 0 130 130" aria-hidden="true">
+        <line x1="60" y1="34" x2="46" y2="10" stroke="#00d4ff" stroke-width="4" stroke-linecap="round"/>
+        <circle class="antena-led" cx="46" cy="10" r="5" fill="#ffd700"/>
+        <rect x="8" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="98" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="20" y="32" width="80" height="58" rx="18" fill="#232a33" stroke="#00d4ff" stroke-width="3"/>
+        <circle class="eye" cx="47" cy="58" r="7" fill="#00d4ff"/>
+        <circle class="eye" cx="73" cy="58" r="7" fill="#00d4ff"/>
+        <path d="M48 74 Q60 82 72 74" stroke="#00d4ff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <rect x="36" y="94" width="48" height="24" rx="9" fill="#232a33" stroke="#00d4ff" stroke-width="2"/>
+        <circle cx="60" cy="106" r="5" fill="#ff2d55"/>
+        <g class="robot-arm">
+            <rect x="76" y="96" width="28" height="10" rx="5" fill="#00d4ff"/>
+            <path d="M102 92 L122 80 L124 122 L104 108 Z" fill="#ffd700" stroke="#7b2ff7" stroke-width="1.5"/>
+        </g>
+    </svg>
+</div>
+
+<button class="robot-reopen" id="robotReopenBtn" onclick="openRobot()" title="Reabrir SF Bot" aria-label="Reabrir SF Bot">
+    🤖
+</button>
 
 <!-- Theory Modal -->
 <div class="modal-overlay" id="theoryModal" role="dialog" aria-modal="true" aria-labelledby="theoryTitle">
@@ -880,6 +1056,121 @@ const quizQuestions = [
     },
 ];
 
+// ===================== ROBO ASSISTENTE (SF Bot) =====================
+const ROBOT_NAME = 'SF Bot';
+const robotBubble = document.getElementById('robotBubble');
+const robotTitleEl = document.getElementById('robotTitle');
+const robotTextEl = document.getElementById('robotText');
+let robotStepKey = '';
+let robotTimer = null;
+
+function setRobotBubble(title, text) {
+    robotTitleEl.textContent = title;
+    robotTextEl.innerHTML = text;
+    robotBubble.classList.add('visible');
+    robotBubble.style.animation = 'none';
+    void robotBubble.offsetWidth;
+    robotBubble.style.animation = '';
+}
+
+function getRobotStep(lvl) {
+    const s = state.sec;
+    switch (lvl) {
+        case 0:
+            if (!s.pingOK) return [ROBOT_NAME + ' 📡', 'Comece verificando o servidor: <b>ping 192.168.10.20</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Servidor ativo! Toque em <b>Próximo Nível</b> para continuar.'];
+        case 1:
+            if (!s.nmapV) return [ROBOT_NAME + ' 🔍', 'Inventarie os serviços abertos: <b>nmap -sV 192.168.10.20</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Serviços mapeados! Toque em <b>Próximo Nível</b>.'];
+        case 2:
+            if (!s.nmapVuln) return [ROBOT_NAME + ' 🐛', 'Procure as falhas: <b>nmap --script vuln 192.168.10.20</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Vulnerabilidades encontradas! Toque em <b>Próximo Nível</b>.'];
+        case 3:
+            if (!s.ufwDenyIn) return [ROBOT_NAME + ' 🧱', 'Negue o tráfego de entrada por padrão: <b>ufw default deny incoming</b>'];
+            if (!s.ufwAllowedSSH) return [ROBOT_NAME + ' 🔓', 'Libere o SSH: <b>ufw allow OpenSSH</b>'];
+            if (!s.ufwAllowedHTTP) return [ROBOT_NAME + ' 🌐', 'Libere o site: <b>ufw allow \'Apache Full\'</b>'];
+            if (!s.ufwEnabled) return [ROBOT_NAME + ' ⚡', 'Ative o firewall: <b>ufw enable</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Firewall ativo! Toque em <b>Próximo Nível</b>.'];
+        case 4:
+            if (!s.svcStopped) return [ROBOT_NAME + ' 🛑', 'Pare o FTP anônimo: <b>systemctl stop vsftpd</b>'];
+            if (!s.svcDisabled) return [ROBOT_NAME + ' 🚫', 'Desabilite no boot: <b>systemctl disable vsftpd</b>'];
+            return [ROBOT_NAME + ' 🎉', 'vsftpd removido! Toque em <b>Próximo Nível</b>.'];
+        case 5:
+            if (!s.logChecked) return [ROBOT_NAME + ' 📜', 'Analise o log de autenticação: <b>tail -30 /var/log/auth.log</b>'];
+            return [ROBOT_NAME + ' 🚨', 'Força bruta detectada! Toque em <b>Próximo Nível</b>.'];
+        case 6:
+            if (!s.ipBlocked) return [ROBOT_NAME + ' ⛔', 'Bloqueie o atacante: <b>ufw deny from 203.0.113.66</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Atacante bloqueado! Toque em <b>Próximo Nível</b>.'];
+        case 7:
+            if (!s.rootNo) return [ROBOT_NAME + ' 🔑', 'Proíba o login de root: <b>sshd_config PermitRootLogin no</b>'];
+            if (!s.passNo) return [ROBOT_NAME + ' 🔐', 'Desligue a senha: <b>sshd_config PasswordAuthentication no</b>'];
+            if (!s.sshReloaded) return [ROBOT_NAME + ' 🔄', 'Aplique a mudança: <b>service ssh reload</b>'];
+            return [ROBOT_NAME + ' 🏆', 'SSH endurecido! Toque em <b>Próximo Nível</b>.'];
+    }
+    return [ROBOT_NAME + ' 🤖', 'Boa sorte nesta etapa!'];
+}
+
+function updateRobot() {
+    if (!robotBubble) return;
+    const lvl = state.currentLevel;
+    const complete = levels[lvl].check();
+    let title, text;
+    if (complete) {
+        if (lvl >= levels.length - 1) {
+            title = '🏆 ' + ROBOT_NAME;
+            text = 'Missão cumprida! O servidor está protegido. Toque em <b>Próximo Nível</b> para a prova final!';
+        } else {
+            title = '🎉 ' + ROBOT_NAME + ' Nível ' + (lvl + 1) + ' completo!';
+            text = 'Próxima etapa: toque em <b>Próximo Nível</b> →';
+        }
+    } else {
+        const g = getRobotStep(lvl);
+        title = g[0];
+        text = g[1];
+    }
+    const key = lvl + '|' + complete + '|' + title + text;
+    if (key !== robotStepKey) {
+        robotStepKey = key;
+        setRobotBubble(title, text);
+    }
+}
+
+function scheduleUpdateRobot() {
+    clearTimeout(robotTimer);
+    robotTimer = setTimeout(updateRobot, 80);
+}
+
+function closeRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.add('hidden');
+    if (reopen) reopen.classList.add('show');
+}
+
+function openRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.remove('hidden');
+    if (reopen) reopen.classList.remove('show');
+    setTimeout(updateRobot, 50);
+}
+
+function robotIntro(greeting) {
+    robotStepKey = '';
+    setRobotBubble(
+        ROBOT_NAME + (greeting ? ' ' + greeting : ' 🤖 Olá!'),
+        greeting === 'De volta!'
+            ? 'Você parou no <b>' + (state.currentLevel + 1) + '° nível</b>. Continue por onde parou!'
+            : 'Vou te acompanhar até concluir o hardening do servidor. Sempre que terminar uma etapa, eu te mostro a <b>próxima</b>. Pode digitar <b>help</b> a qualquer momento!'
+    );
+    document.getElementById('robotContinueBtn').style.display = 'block';
+}
+
+function robotContinue() {
+    document.getElementById('robotContinueBtn').style.display = 'none';
+    updateRobot();
+}
+
 // ===================== TERMINAL =====================
 const term = document.getElementById('terminalBody');
 const input = document.getElementById('terminalInput');
@@ -914,6 +1205,7 @@ function submitCmd() {
     } else {
         echo('');
     }
+    scheduleUpdateRobot();
     input.value = '';
     hideAutocomplete();
     save();
@@ -1189,6 +1481,7 @@ function checkLevel() {
         document.getElementById('btnSuccessPrimary').textContent =
             state.currentLevel < levels.length - 1 ? 'Próximo Nível →' : '🏆 Concluir Missão';
         openModal('successModal');
+        updateRobot();
         save();
     }
 }
@@ -1236,6 +1529,7 @@ function renderLevel() {
     document.getElementById('progressFill').style.width = pct + '%';
     drawScene();
     renderSvcTable();
+    updateRobot();
     save();
 }
 
@@ -1486,6 +1780,7 @@ function resetGame() {
     addOutput('Jogo reiniciado. Boa sorte!', 'system');
     renderLevel();
     updateStats();
+    updateRobot();
     save();
 }
 
@@ -1529,6 +1824,7 @@ function closeWelcome() {
     closeModal('welcomeModal');
     input.focus();
     startIfNew();
+    robotIntro();
     save();
 }
 
@@ -1543,6 +1839,7 @@ function resumeGame() {
     input.focus();
     renderLevel();
     updateStats();
+    robotIntro('De volta!');
 }
 
 function save() {
@@ -1596,6 +1893,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('studentNameInput').focus();
     } else {
         closeModal('welcomeModal');
+        robotIntro('De volta!');
     }
     renderLevel();
     updateStats();
