@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useLocation } from "wouter";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PreLaunchModal } from "./PreLaunchModal";
 
 export function PricingSection() {
   const [preLaunchOpen, setPreLaunchOpen] = useState(false);
+  const [, navigate] = useLocation();
 
   const plans = [
     {
@@ -15,6 +17,7 @@ export function PricingSection() {
       period: "",
       badge: null,
       highlight: false,
+      simulator: true,
       features: [
         "Simulador de VLANs Switch Cisco (8 níveis)",
         "Curso introdutório de Cibersegurança e Redes 101",
@@ -23,6 +26,7 @@ export function PricingSection() {
         "Progresso salvo automaticamente",
       ],
       cta: "Começar Grátis",
+      to: "/simulador-vlan",
     },
     {
       name: "MEMBROS",
@@ -124,7 +128,7 @@ export function PricingSection() {
                 </div>
 
                 <Button
-                  onClick={() => setPreLaunchOpen(true)}
+                  onClick={() => (p.simulator ? navigate("/simulador-vlan") : setPreLaunchOpen(true))}
                   className={`w-full font-bold py-6 rounded-xl transition-all shadow-lg ${
                     p.highlight
                       ? "bg-cyan-500 hover:bg-cyan-600 text-slate-950 shadow-cyan-900/30"
