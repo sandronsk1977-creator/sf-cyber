@@ -1,5 +1,5 @@
 import React from "react";
-import { Linkedin, Github } from "lucide-react";
+import { Linkedin, Globe } from "lucide-react";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -16,9 +16,9 @@ const CONTACTS = [
     icon: Linkedin,
   },
   {
-    label: "GitHub",
-    href: "https://github.com/sandronsk1977-creator/",
-    icon: Github,
+    label: "Projetos Disruptivos",
+    href: "https://projetosdisruptivos.com.br/",
+    icon: Globe,
   },
   {
     label: "WhatsApp",
