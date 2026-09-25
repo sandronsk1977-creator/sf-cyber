@@ -133,7 +133,7 @@ export function PricingSection() {
                     p.highlight
                       ? "bg-cyan-500 hover:bg-cyan-600 text-slate-950 shadow-cyan-900/30"
                       : "bg-slate-800 hover:bg-slate-700 text-white"
-                  }`}
+                  } ${p.simulator ? "animate-seal-pulse" : ""}`}
                 >
                   {p.cta}
                 </Button>
