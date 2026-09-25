@@ -82,7 +82,7 @@ export function PricingSection() {
               Plano FREE... comece agora
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
-              Acesso imediato. Treinamento em cibersegurança e redes.
+              Acesso imediato. Simulador de Criação de VLan
             </p>
           </div>
 
