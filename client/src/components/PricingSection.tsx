@@ -60,7 +60,6 @@ export function PricingSection() {
         "Todos os simuladores e laboratórios",
         "Simulados de exames de certificação",
         "Certificados verificáveis por curso",
-        "SF Cyber AI incluída no vitalício",
         "Novos cursos e simuladores inclusos",
         "Suporte prioritário vitalício",
       ],
