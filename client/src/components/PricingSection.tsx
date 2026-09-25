@@ -79,7 +79,7 @@ export function PricingSection() {
               Planos e Assinaturas
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2 mb-4">
-              Escolha o plano FREE e comece hoje
+              Plano FREE, comece agora
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
               Acesso imediato. Treinamento em cibersegurança e redes.
