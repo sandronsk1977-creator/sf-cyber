@@ -712,12 +712,13 @@
 
 <!-- Quiz Modal -->
 <div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
-    <div class="modal">
+    <div class="modal" style="position:relative;">
+        <button class="rb-close" onclick="closeModal('quizModal')" aria-label="Fechar prova final" title="Fechar">✕</button>
         <h2 id="quizTitle">📝 Prova Final</h2>
         <p id="quizQuestion"></p>
         <div id="quizOptions"></div>
         <div class="quiz-feedback" id="quizFeedback"></div>
-        <div class="modal-footer">
+        <div class="modal-footer" id="quizFooter">
             <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()">Próxima Pergunta</button>
         </div>
     </div>
@@ -1806,6 +1807,26 @@ function finishQuiz() {
         container.appendChild(p);
     }
     document.getElementById('quizNextBtn').style.display = 'none';
+    const approved = quizScore >= quizQuestions.length * 50;
+    const footer = document.getElementById('quizFooter');
+    footer.innerHTML = '';
+    if (approved) {
+        const btnCert = document.createElement('button');
+        btnCert.className = 'btn btn-success';
+        btnCert.textContent = '🎓 Ver Certificado';
+        btnCert.onclick = () => { closeModal('quizModal'); showCertificate(); };
+        footer.appendChild(btnCert);
+    }
+    const btnAgain = document.createElement('button');
+    btnAgain.className = 'btn btn-ghost';
+    btnAgain.textContent = '🔁 Refazer Prova';
+    btnAgain.onclick = () => openQuiz();
+    footer.appendChild(btnAgain);
+    const btnClose = document.createElement('button');
+    btnClose.className = 'btn btn-primary';
+    btnClose.textContent = 'Fechar';
+    btnClose.onclick = () => closeModal('quizModal');
+    footer.appendChild(btnClose);
     save();
 }
 
