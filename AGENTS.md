@@ -7,6 +7,7 @@ Portal SF Cyber — landing dark com dois simuladores (VLANs e Segurança/Analis
 ### Regras fixas de desenvolvimento
 
 - **Sempre revisar o código em busca de bugs e vulnerabilidades, usando como referência o OWASP Top 10** (injeção, quebra de autenticação, XSS, CSRF, falhas de configuração, etc.). Antes de dar algo como pronto, verificar se o fluxo não deixa o usuário travado.
+- **Se/integrar LLM/IA (ex.: "SF Cyber AI" prometida nos planos), revisar também contra o OWASP GenAI LLM Top 10 2026** (publicado 03/ago/2026 por genai.owasp.org): LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure (novo nome de System Prompt Leakage), LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling. Filosofia-chave: não construir um modelo que não possa ser enganado; construir o sistema assumindo que ele será ("blast-radius control"). Se o modelo virar ator com tools/memória/consequências, usar o OWASP Top 10 for Agentic Applications 2026.
 - Nunca usar PowerShell para substituir texto em arquivos (corrompe encoding/acentos) — usar as ferramentas de edição.
 - Não usar em-dashes ("—") nos textos.
 - Usar `corepack pnpm <cmd>` (Windows/PowerShell). Rodar `pnpm check` antes de commits com mudanças em TS.
