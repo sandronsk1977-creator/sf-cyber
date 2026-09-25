@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { ContactRail } from "./components/ContactRail";
 import Home from "./pages/Home";
 import { SimulatorPage } from "./pages/SimulatorPage";
+import { SimulatorSecurityPage } from "./pages/SimulatorSecurityPage";
 
 function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -16,6 +17,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/simulador-vlan" component={SimulatorPage} />
+        <Route path="/simulador-seguranca" component={SimulatorSecurityPage} />
         <Route path="/404" component={NotFound} />
 
         {/* Final fallback route */}
