@@ -78,7 +78,7 @@ export function PricingSection() {
               Escolha seu plano e comece hoje
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
-              Acesso imediato. Treinamento de altíssimo nível em cibersegurança e redes.
+              Acesso imediato. Treinamento em cibersegurança e redes.
             </p>
           </div>
 
