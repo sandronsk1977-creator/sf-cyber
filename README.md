@@ -26,11 +26,15 @@ Abra http://localhost:3000
 
 ## Funcionalidades
 
-- Landing page em tema dark com animação de "destrinchamento" de título e trilha de contatos flutuante (LinkedIn, GitHub, WhatsApp) com pulsação.
+- Landing page em tema dark com animação de "destrinchamento" de título e trilha de contatos flutuante (LinkedIn, Projetos Disruptivos e WhatsApp) com pulsação.
 - **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (8 níveis, testes de ping e certificado de conclusão).
-- Cards de áreas da plataforma ("Áreas da Plataforma") revelados pelo botão do hero.
-- Planos de pré-lançamento: **FREE**, **MEMBROS** (R$ 89,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00).
-- Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos, com captura de e-mail (visual) e atalho para o simulador gratuito.
+- **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (8 níveis: nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH; certificado de conclusão).
+- **SF Bot**: assistente robô em ambos os simuladores para guiar o aluno etapa por etapa.
+- Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos dois simuladores.
+- Planos de pré-lançamento: **FREE** (grátis), **MEMBROS** (R$ 39,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00, pagamento único).
+- Modal de escolha de simulador ao clicar em "Começar Grátis" (plano FREE).
+- Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos pagos, com captura de e-mail (visual).
+- Seção **Patrocínio · Parcerias** para empresas, consultores, professores, escolas técnicas e IES, com contato via WhatsApp.
 
 ## Tecnologias
 
@@ -45,10 +49,11 @@ Abra http://localhost:3000
 client/
   index.html          # Entrada da aplicação
   public/vlans/       # Simulador de VLANs (página estática embutida)
+  public/seguranca/   # Simulador de Segurança SOC (página estática embutida)
   src/
     App.tsx           # Rotas e providers globais
-    pages/            # Home, SimuladorVlan, NotFound
-    components/       # Navbar, Hero, Pricing, PreLaunchModal, ContactRail etc.
+    pages/            # Home, SimuladorVlan, SimuladorSeguranca, NotFound
+    components/       # Navbar, Hero, Pricing, SponsorSection, Modais, ContactRail, etc.
     components/ui/    # Componentes shadcn/ui
     index.css         # Tema, animações e utilitários custom
 .github/workflows/    # Deploy para GitHub Pages
