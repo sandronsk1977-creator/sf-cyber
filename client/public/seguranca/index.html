@@ -1256,13 +1256,47 @@ function autocomplete() {
 }
 
 // ===================== COMMAND HANDLER =====================
+const LEVEL_TRIGGERS = [
+    ['ping 192.168.10.20'],
+    ['nmap -sv 192.168.10.20'],
+    ['nmap --script vuln 192.168.10.20'],
+    ['ufw default deny incoming', 'ufw allow openssh', 'ufw allow apache full', 'ufw allow apache', 'ufw allow http', 'ufw allow https', 'ufw enable'],
+    ['systemctl stop vsftpd', 'systemctl disable vsftpd'],
+    ['tail -30 /var/log/auth.log', 'grep failed password /var/log/auth.log'],
+    ['ufw deny from 203.0.113.66'],
+    ['sshd_config permitrootlogin no', 'sshd_config passwordauthentication no', 'service ssh reload'],
+];
+
+const LEVEL_SEC_FLAGS = [
+    ['pingOK'],
+    ['nmapV'],
+    ['nmapVuln'],
+    ['ufwDenyIn', 'ufwAllowOut', 'ufwAllowedSSH', 'ufwAllowedHTTP', 'ufwEnabled'],
+    ['svcStopped', 'svcDisabled'],
+    ['logChecked'],
+    ['ipBlocked'],
+    ['rootNo', 'passNo', 'sshReloaded'],
+];
+
+function normalizeTrig(s) {
+    return s.trim().toLowerCase().replace(/["']/g, '').replace(/\s+/g, ' ');
+}
+
+function commandWasTrigger(raw, lvlIdx) {
+    const norm = normalizeTrig(raw || '');
+    if (!norm) return false;
+    return (LEVEL_TRIGGERS[lvlIdx] || []).some(t => normalizeTrig(t) === norm);
+}
+
 function handleCommand(raw) {
     const parts = raw.trim().split(/\s+/);
+    if (parts[0] && parts[0].toLowerCase() === 'sudo' && parts.length > 1) parts.shift();
     const cmd = (parts[0] || '').toLowerCase();
     const args = parts.slice(1);
 
     switch (cmd) {
         case 'help':
+        case 'ajuda':
             SUGGESTIONS.forEach(s => addOutput(s, 'info'));
             return;
         case 'clear':
@@ -1359,10 +1393,10 @@ function handleCommand(raw) {
                 break;
             }
             if (sub === 'allow') {
-                const svc = args.slice(1).join(' ').toLowerCase();
+                const svc = args.slice(1).join(' ').toLowerCase().replace(/["']/g, '').replace(/\s+/g, ' ');
                 if (svc === 'openssh') { state.sec.ufwAllowedSSH = true; addOutput('Regra adicionada: allow OpenSSH (22)', 'success'); }
                 else if (svc === 'apache full' || svc === 'apache' || svc === 'http' || svc === 'https') { state.sec.ufwAllowedHTTP = true; addOutput('Regra adicionada: allow ' + (svc.length > 8 ? svc[0].toUpperCase() + svc.slice(1) : 'Apache Full') + ' (80/443)', 'success'); }
-                else { addOutput('Regra adicionada: allow ' + args.slice(1).join(' '), 'success'); }
+                else { addOutput('Regra adicionada: allow ' + svc, 'success'); }
                 break;
             }
             if (sub === 'deny') {
@@ -1456,16 +1490,21 @@ function handleCommand(raw) {
             break;
         }
         default:
-            addOutput('comando ' + raw.trim() + ': não encontrado. Digite "ajuda".', 'error');
+            addOutput('comando ' + raw.trim() + ': não encontrado. Digite "ajuda" ou "help".', 'error');
     }
-    checkLevel();
+    checkLevel(raw);
 }
 
 // ===================== LEVEL FLOW =====================
-function checkLevel() {
+function checkLevel(raw) {
     const lvl = levels[state.currentLevel];
     if (!lvl) return;
-    if (state.levelDone[lvl.id]) return;
+    if (state.levelDone[lvl.id]) {
+        if (lvl.check() && commandWasTrigger(raw, state.currentLevel)) {
+            addOutput('✔ Este nível já foi concluído! Use o botão "Próximo Nível" →', 'warning');
+        }
+        return;
+    }
     if (lvl.check()) {
         state.levelDone[lvl.id] = true;
         if (!state.scorePaid) state.scorePaid = new Set();
@@ -1513,8 +1552,16 @@ function showHint() {
 }
 
 function resetLevel() {
-    state.levelDone[levels[state.currentLevel].id] = false;
+    const lvl = levels[state.currentLevel];
+    (LEVEL_SEC_FLAGS[state.currentLevel] || []).forEach(f => { state.sec[f] = false; });
+    state.levelDone[lvl.id] = false;
+    closeModal('successModal');
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
     addOutput('Nível reiniciado. Execute os comandos novamente.', 'system');
+    renderLevel();
+    updateStats();
 }
 
 function renderLevel() {
@@ -1668,7 +1715,7 @@ function openLevelMap() {
     levels.forEach(lvl => {
         const div = document.createElement('div');
         const done = !!state.levelDone[lvl.id];
-        const current = state.currentLevel === lvl.id;
+        const current = state.currentLevel === lvl.id - 1;
         div.className = 'level-card' + (done ? ' done' : current ? ' current' : '');
         div.innerHTML = '<div class="lv-num">' + lvl.id + '</div>' +
             '<div style="font-size:0.85em; color:#4a4a4a;">' + lvl.title.replace(/^Nível \d+: /, '') + '</div>' +
