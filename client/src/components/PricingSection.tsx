@@ -12,7 +12,7 @@ export function PricingSection() {
       icon: "🛡️",
       subtitle: "Para começar a praticar agora mesmo.",
       price: "Grátis",
-      period: "/para sempre",
+      period: "",
       badge: null,
       highlight: false,
       features: [
@@ -110,7 +110,7 @@ export function PricingSection() {
 
                   <div className="my-6 pb-6 border-b border-slate-800 flex items-baseline gap-1">
                     <span className="text-3xl sm:text-4xl font-black text-white font-mono">{p.price}</span>
-                    <span className="text-slate-400 text-sm">{p.period}</span>
+                    {p.period && <span className="text-slate-400 text-sm">{p.period}</span>}
                   </div>
 
                   <ul className="space-y-3.5 mb-8">
