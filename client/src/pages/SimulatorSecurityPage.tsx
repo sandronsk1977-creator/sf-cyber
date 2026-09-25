@@ -39,7 +39,7 @@ export function SimulatorSecurityPage() {
       <main className="flex-1 flex flex-col">
         <div className="container py-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold font-mono">Simulador de Segurança (Analista SOC / Hacker Ético)</h1>
+            <h1 className="text-2xl font-extrabold font-mono">Simulador de Segurança (Analista SOC | Hacker Ético)</h1>
             <p className="text-sm text-slate-400 mt-1">
               Aprenda a proteger um servidor com comandos reais. 8 níveis, firewall, logs e certificado de conclusão.
             </p>
