@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CYBERSEGURANÇA";
+const TARGET_TITLE = "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -101,7 +101,7 @@ export function CryptoAnimationHero() {
         {/* Main Headline with Cryptographic Effect */}
         <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 drop-shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-            {displayText || "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CYBERSEGURANÇA"}
+            {displayText || "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA"}
           </span>
         </h1>
 
