@@ -189,3 +189,80 @@
     }
   }
 }
+
+/* ===== SF Neon Border (LED percorrendo a borda) ===== */
+@property --neon-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.sf-neon-card {
+  position: relative;
+  animation: neon-glow 2.2s ease-in-out infinite;
+}
+
+.sf-neon-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--neon-angle),
+    transparent 0deg 295deg,
+    var(--neon, #22d3ee) 315deg 340deg,
+    transparent 340deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: neon-spin 2.8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes neon-spin {
+  to { --neon-angle: 360deg; }
+}
+
+@keyframes neon-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 30px -10px rgba(2, 6, 23, 0.6),
+      0 0 8px color-mix(in srgb, var(--neon, #22d3ee) 35%, transparent),
+      0 0 26px color-mix(in srgb, var(--neon, #22d3ee) 14%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 10px 30px -10px rgba(2, 6, 23, 0.6),
+      0 0 16px color-mix(in srgb, var(--neon, #22d3ee) 60%, transparent),
+      0 0 46px color-mix(in srgb, var(--neon, #22d3ee) 26%, transparent);
+  }
+}
+
+/* Seta pulsante ("continue navegando") */
+.animate-arrow-pulse {
+  animation: arrow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes arrow-pulse {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(7px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-neon-card,
+  .sf-neon-card::before,
+  .animate-arrow-pulse {
+    animation: none;
+  }
+}

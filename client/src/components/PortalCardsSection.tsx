@@ -20,7 +20,7 @@ const cardFooter = (
     <div className="flex flex-wrap items-center gap-2">{metaChips}</div>
     <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
       Acessar Simulador
-      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      <ArrowRight className="w-4 h-4 animate-arrow-pulse" />
     </span>
   </div>
 );
@@ -45,7 +45,8 @@ export function PortalCardsSection() {
           {/* Card 01 - Redes | Simulador VLAN */}
           <Link
             href="/simulador-vlan"
-            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#22d3ee" } as React.CSSProperties}
+            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="w-14 h-14 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
@@ -69,7 +70,8 @@ export function PortalCardsSection() {
           {/* Card 02 - Cibersegurança | Simulador de Segurança */}
           <Link
             href="/simulador-seguranca"
-            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#3b82f6" } as React.CSSProperties}
+            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="w-14 h-14 rounded-2xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
@@ -93,7 +95,8 @@ export function PortalCardsSection() {
           {/* Card 03 - Segurança Web | SQL Injection | XSS */}
           <Link
             href="/simulador-web"
-            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#34d399" } as React.CSSProperties}
+            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="w-14 h-14 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
@@ -117,7 +120,8 @@ export function PortalCardsSection() {
           {/* Card 04 - Redes | Simulador de DNS */}
           <Link
             href="/simulador-dns"
-            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#8b5cf6" } as React.CSSProperties}
+            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="w-14 h-14 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
