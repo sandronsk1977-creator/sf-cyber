@@ -19,7 +19,7 @@ const cardFooter = (
   <div className="flex flex-col gap-4">
     <div className="flex flex-wrap items-center gap-2">{metaChips}</div>
     <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
-      Acessar Simulador
+      Acessar
       <ArrowRight className="w-4 h-4 animate-arrow-pulse" />
     </span>
   </div>
@@ -37,7 +37,7 @@ export function PortalCardsSection() {
             Escolha sua área e comece agora
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Ferramentas práticas e trilhas de aprendizagem em cibersegurança e redes, construídas para colocar você em ação.
+            Laboratórios para aprendizagem em Cibersegurança e Redes, construídas para colocar você em ação.
           </p>
         </div>
 
