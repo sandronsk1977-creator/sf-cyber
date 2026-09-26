@@ -41,7 +41,7 @@ export function AudienceSection() {
             Isso é para você?
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            A SF Cyber não é para todo mundo, e isso é ótimo. Se você se identifica com os perfis abaixo, este é o seu lugar.
+            SF Cyber recomenda... Se você se identifica com os perfis abaixo, este é o seu lugar.
           </p>
         </div>
 
