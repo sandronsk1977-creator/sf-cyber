@@ -1,6 +1,29 @@
 import React from "react";
-import { Network, ShieldHalf, Bug, Globe, ArrowRight } from "lucide-react";
+import { Network, ShieldHalf, Bug, Globe, ArrowRight, Layers, Award } from "lucide-react";
 import { Link } from "wouter";
+
+const metaChips = (
+  <>
+    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full">
+      <Layers className="w-3.5 h-3.5 text-cyan-400" />
+      8 níveis
+    </span>
+    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full">
+      <Award className="w-3.5 h-3.5 text-cyan-400" />
+      Certificado
+    </span>
+  </>
+);
+
+const cardFooter = (
+  <div className="flex flex-col gap-4">
+    <div className="flex flex-wrap items-center gap-2">{metaChips}</div>
+    <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
+      Acessar Simulador
+      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+    </span>
+  </div>
+);
 
 export function PortalCardsSection() {
   return (
@@ -36,17 +59,11 @@ export function PortalCardsSection() {
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
               Redes · Simulador de VLANs
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Switch Cisco virtual com terminal de comandos reais, 8 níveis progressivos, teste de conectividade (ping) e certificado de conclusão. Comece a praticar agora mesmo, sem precisar de equipamento físico.
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Switch Cisco virtual com terminal de comandos reais para criar e atribuir VLANs. Comece a praticar agora mesmo, sem precisar de equipamento físico.
             </p>
 
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
-                Acessar Simulador
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
-            </div>
+            {cardFooter}
           </Link>
 
           {/* Card 02 - Cibersegurança | Simulador de Segurança */}
@@ -66,17 +83,11 @@ export function PortalCardsSection() {
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
               Cibersegurança · Simulador SOC
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Assuma o papel de um Analista SOC: escaneie o servidor com nmap, aplique firewall, analise logs, bloqueie o atacante e reforce o SSH. 8 níveis progressivos e certificado de conclusão.
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Assuma o papel de um Analista SOC: escaneie com nmap, aplique firewall, analise logs, bloqueie o atacante e reforce o SSH.
             </p>
 
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
-                Acessar Simulador
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
-            </div>
+            {cardFooter}
           </Link>
 
           {/* Card 03 - Segurança Web | SQL Injection | XSS */}
@@ -96,17 +107,11 @@ export function PortalCardsSection() {
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
               Cibersegurança · Segurança Web (SQLi | XSS)
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Analise a Lojinha Online como um pentester: descubra parâmetros dinâmicos, detete SQL Injection, extraia dados via UNION, teste XSS refletido e armazenado e corrija a aplicação. 8 níveis progressivos e certificado de conclusão.
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Analise a Lojinha Online como um pentester: SQL Injection, extração de dados via UNION, XSS refletido e armazenado e correção da aplicação.
             </p>
 
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
-                Acessar Simulador
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
-            </div>
+            {cardFooter}
           </Link>
 
           {/* Card 04 - Redes | Simulador de DNS */}
@@ -126,17 +131,11 @@ export function PortalCardsSection() {
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
               Redes · Simulador de Servidor DNS
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-8">
-              Audite o servidor DNS da empresa como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) aberta, detecte envenenamento de cache e proteja a zona com DNSSEC. 8 níveis progressivos e certificado de conclusão.
+            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+              Audite o servidor DNS como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) e proteja a zona com DNSSEC.
             </p>
 
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
-                Acessar Simulador
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
-            </div>
+            {cardFooter}
           </Link>
         </div>
       </div>
