@@ -46,16 +46,14 @@ export function PortalCardsSection() {
           <Link
             href="/simulador-vlan"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                  <Network className="w-6 h-6" />
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                  Redes
-                </span>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-cyan-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-cyan-500/30 z-10">
+              Redes
+            </span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                <Network className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
@@ -75,17 +73,15 @@ export function PortalCardsSection() {
           {/* Card 02 - Cibersegurança | Simulador de Segurança */}
           <Link
             href="/simulador-seguranca"
-            style={{ "--neon": "#3b82f6" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#f43f5e" } as React.CSSProperties}
+            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                  <ShieldHalf className="w-6 h-6" />
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                  Cibersegurança
-                </span>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-rose-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-500/30 z-10">
+              Cibersegurança
+            </span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                <ShieldHalf className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
@@ -105,17 +101,15 @@ export function PortalCardsSection() {
           {/* Card 03 - Segurança Web | SQL Injection | XSS */}
           <Link
             href="/simulador-web"
-            style={{ "--neon": "#34d399" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#f43f5e" } as React.CSSProperties}
+            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                  <Bug className="w-6 h-6" />
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                  Cibersegurança
-                </span>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-rose-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-500/30 z-10">
+              Cibersegurança
+            </span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <Bug className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
@@ -135,17 +129,15 @@ export function PortalCardsSection() {
           {/* Card 04 - Redes | Simulador de DNS */}
           <Link
             href="/simulador-dns"
-            style={{ "--neon": "#8b5cf6" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            style={{ "--neon": "#22d3ee" } as React.CSSProperties}
+            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                  Redes
-                </span>
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-cyan-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-cyan-500/30 z-10">
+              Redes
+            </span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
+                <Globe className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
