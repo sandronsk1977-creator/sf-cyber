@@ -1,8 +1,13 @@
 import { useEffect, useRef } from "react";
 
-const GLYPHS =
-  "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン" +
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>/\\";
+interface Flake {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  drift: number;
+  phase: number;
+}
 
 export function CyberBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -16,64 +21,50 @@ export function CyberBackground() {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    const fontSize = 16;
-    const speed = 0.45;
-    let cols = 0;
-    let drops: number[] = [];
+    let flakes: Flake[] = [];
     let raf = 0;
+
+    const spawn = (w: number, h: number): Flake => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      size: Math.random() * 2.2 + 0.8,
+      speed: Math.random() * 0.6 + 0.25,
+      drift: Math.random() * 0.5 + 0.15,
+      phase: Math.random() * Math.PI * 2,
+    });
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      cols = Math.floor(window.innerWidth / fontSize);
-      drops = Array.from(
-        { length: cols },
-        () => Math.random() * (window.innerHeight / fontSize)
-      );
+      const count = Math.floor((window.innerWidth * window.innerHeight) / 12000);
+      flakes = Array.from({ length: count }, () => spawn(window.innerWidth, window.innerHeight));
     };
 
     const drawFrame = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `${fontSize}px monospace`;
-      for (let i = 0; i < cols; i++) {
-        drops[i] += speed;
-        const y = drops[i];
-        const x = i * fontSize;
-        const char = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      for (const f of flakes) {
+        f.y += f.speed;
+        f.phase += 0.02;
+        f.x += Math.sin(f.phase) * f.drift;
 
-        ctx.fillStyle = "rgba(190, 242, 255, 0.9)";
-        ctx.fillText(char(), x, y * fontSize);
-        if (y > 1) {
-          ctx.fillStyle = "rgba(34, 211, 238, 0.5)";
-          ctx.fillText(char(), x, (y - 1) * fontSize);
+        if (f.y > canvas.height + 4) {
+          f.y = -4;
+          f.x = Math.random() * canvas.width;
         }
-        if (y > 2) {
-          ctx.fillStyle = "rgba(34, 211, 238, 0.22)";
-          ctx.fillText(char(), x, (y - 2) * fontSize);
-        }
+        if (f.x > canvas.width + 4) f.x = -4;
+        else if (f.x < -4) f.x = canvas.width + 4;
 
-        if (y * fontSize > window.innerHeight && Math.random() > 0.99) {
-          drops[i] = Math.random() * -40;
-        }
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(224, 242, 254, ${f.size > 2 ? 0.85 : 0.6})`;
+        ctx.fill();
       }
       raf = requestAnimationFrame(drawFrame);
     };
 
-    const drawStatic = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `${fontSize}px monospace`;
-      for (let i = 0; i < cols; i++) {
-        const x = i * fontSize;
-        ctx.fillStyle = "rgba(34, 211, 238, 0.18)";
-        ctx.fillText(GLYPHS[Math.floor(Math.random() * GLYPHS.length)], x, fontSize * 3);
-      }
-    };
-
     resize();
     window.addEventListener("resize", resize);
-    if (prefersReduced) {
-      drawStatic();
-    } else {
+    if (!prefersReduced) {
       raf = requestAnimationFrame(drawFrame);
     }
 
