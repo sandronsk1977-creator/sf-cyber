@@ -69,7 +69,7 @@ export function SponsorSection() {
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-500 text-slate-950 font-bold font-mono uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 transition-all"
           >
             <WhatsAppIcon className="w-5 h-5" />
-            Faça sua doação
+            Seja um parceiro
           </a>
           <p className="mt-4 text-xs text-slate-500">
             Todo apoio é aplicado no crescimento do portal e em novos laboratórios.
