@@ -1,6 +1,6 @@
 # SF Cyber Academy
 
-Portal de pré-lançamento da **SF Cyber** - formação prática em Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e certificações.
+Portal de pré-lançamento da **SF Cyber** - formação prática em Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e avaliações.
 
 Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.com.br)
 
@@ -28,7 +28,7 @@ Abra http://localhost:3000
 ## Funcionalidades
 
 - Landing page em tema dark com animação de "destrinchamento" de título e trilha de contatos flutuante (LinkedIn, Projetos Disruptivos e WhatsApp) com pulsação.
-- Todos os simuladores seguem o mesmo fluxo: **8 níveis**, prova final de 8 perguntas (aprovação exige 50%+) e **certificado de conclusão**. O progresso fica salvo no `localStorage`.
+- Todos os simuladores seguem o mesmo fluxo: **aprendizado -> prática -> avaliação -> aprovação -> certificado de conclusão**, com 8 níveis e prova final de 8 perguntas (aprovação exige 50%+). Após realizar a avaliação e atingir o critério de aprovação, você recebe seu certificado de conclusão. O progresso fica salvo no `localStorage`.
 - **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (VLANs, trunk/access, teste de ping e certificado).
 - **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH).
 - **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação).
