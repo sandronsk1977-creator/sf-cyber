@@ -1055,6 +1055,23 @@ const quizQuestions = [
         correct: 1,
         explain: "'ufw deny from <IP>' adiciona uma regra que nega todo o tráfego daquele endereço.",
     },
+    {
+        q: "Para impedir que um serviço volte a subir após o reboot do servidor, o comando é:",
+        options: ["systemctl restart vsftpd", "systemctl disable vsftpd", "systemctl reload vsftpd", "systemctl enable vsftpd"],
+        correct: 1,
+        explain: "'systemctl disable' remove a inicialização automática no boot, mantendo o serviço parado.",
+    },
+    {
+        q: "Por que desabilitar o login de root no SSH é considerado hardening?",
+        options: [
+            "O root não fica visível no nmap",
+            "Obriga o uso de uma conta comum com privilégios controláveis e auditáveis",
+            "Impede a conexão de qualquer usuário",
+            "Reduz o consumo de memória",
+        ],
+        correct: 1,
+        explain: "Com PermitRootLogin no, o acesso administrativo passa por um usuário comum via sudo, registrado no auth.log.",
+    },
 ];
 
 // ===================== ROBO ASSISTENTE (SF Bot) =====================

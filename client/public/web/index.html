@@ -1019,6 +1019,28 @@ const quizQuestions = [
         correct: 1,
         explain: "Escape da saída transforma o script em texto puro, impedindo execução no navegador.",
     },
+    {
+        q: "Além de logins, que outro dado a UNION SELECT pode expor na Lojinha?",
+        options: [
+            "Chaves de API de terceiros",
+            "Dados de outras tabelas do banco, como hashes de senha",
+            "Histórico de navegação do servidor",
+            "Certificados SSL",
+        ],
+        correct: 1,
+        explain: "UNION junta consultas e permite ler outras tabelas, como a tabela 'usuarios' com logins e hashes.",
+    },
+    {
+        q: "Qual medida reduz o impacto de uma SQL Injection além dos prepared statements?",
+        options: [
+            "Aumentar o timeout do servidor",
+            "Usar somente HTTPS",
+            "Mínimo privilégio no usuário do banco",
+            "Trocar o idioma do painel",
+        ],
+        correct: 2,
+        explain: "Uma conta de banco com menos permissões limita o que a injeção consegue ler ou alterar.",
+    },
 ];
 
 // ===================== ROBO ASSISTENTE (SF Bot) =====================
