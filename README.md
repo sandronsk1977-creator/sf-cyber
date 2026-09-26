@@ -35,6 +35,7 @@ Abra http://localhost:3000
 - Planos de pré-lançamento: **FREE** (grátis), **MEMBROS** (R$ 39,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00, pagamento único).
 - Modal de escolha de simulador ao clicar em "Começar Grátis" (plano FREE).
 - Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos pagos, com captura de e-mail (visual).
+- Links diretos para as rotas dos simuladores funcionam no GitHub Pages via fallback SPA (`404.html` + restauração de rota com `sessionStorage`).
 - Seção **Patrocínio · Parcerias** para empresas, consultores, professores, escolas técnicas e IES, com contato via WhatsApp.
 
 ## Tecnologias
