@@ -6,6 +6,7 @@ import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import { ScrollNav } from "@/components/ScrollNav";
 import { SimulatorPage } from "./pages/SimulatorPage";
 import { SimulatorSecurityPage } from "./pages/SimulatorSecurityPage";
 import { SimulatorWebPage } from "./pages/SimulatorWebPage";
@@ -72,6 +73,7 @@ function App() {
       <ErrorBoundary>
         <TooltipProvider>
           <Router />
+          <ScrollNav />
           <Toaster />
         </TooltipProvider>
       </ErrorBoundary>
