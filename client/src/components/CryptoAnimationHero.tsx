@@ -104,7 +104,7 @@ export function CryptoAnimationHero() {
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mb-12 leading-relaxed">
-          Aprenda na prática e prepare-se para as avaliações com laboratórios virtuais de Redes e Cibersegurança.
+          Aprenda na prática com os Laboratórios Virtuais de Redes e Cibersegurança.
         </p>
 
         {/* CTA Buttons */}
