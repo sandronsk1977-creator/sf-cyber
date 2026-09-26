@@ -16,11 +16,26 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
+  const validate = (): string | null => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Digite um e-mail válido.";
+    if (password.length < 6) return "A senha deve ter pelo menos 6 caracteres.";
+    if (mode === "register" && name.trim().length < 3) return "Informe seu nome completo.";
+    return null;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setError(null);
     if (mode === "login") {
       toast.success("Login simulado com sucesso! Bem-vindo de volta à SF Cyber.");
     } else {
@@ -104,6 +119,15 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
             </div>
           </div>
 
+          {error && (
+            <div
+              role="alert"
+              className="mt-2 px-3 py-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm"
+            >
+              {error}
+            </div>
+          )}
+
           <Button
             type="submit"
             className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-2.5 mt-2 transition-all shadow-lg shadow-cyan-900/30"
@@ -117,7 +141,10 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
                 Não tem conta?{" "}
                 <button
                   type="button"
-                  onClick={() => setMode("register")}
+                  onClick={() => {
+                    setMode("register");
+                    setError(null);
+                  }}
                   className="text-cyan-400 font-semibold hover:underline"
                 >
                   Cadastre-se aqui
@@ -128,7 +155,10 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
                 Já tem uma conta?{" "}
                 <button
                   type="button"
-                  onClick={() => setMode("login")}
+                  onClick={() => {
+                    setMode("login");
+                    setError(null);
+                  }}
                   className="text-cyan-400 font-semibold hover:underline"
                 >
                   Faça login
