@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sandro Ferreira">
+    <meta name="robots" content="index, follow">
+    <title>SF Academia Cibersegurança e Redes - Simulador de DNS</title>
+    <link rel="icon" href="favicon-sf-red_blue.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #eef4f9);
+            min-height: 100vh;
+            color: #323130;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.75);
+            border-bottom: 2px solid #0078d4;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .header h1 .shield { vertical-align: middle; margin-right: 8px; }
+        .header p { color: #5e5e5e; margin-top: 5px; }
+
+        .progress-bar {
+            width: 80%;
+            max-width: 600px;
+            height: 20px;
+            background: #e0e6ec;
+            border-radius: 10px;
+            margin: 15px auto;
+            overflow: hidden;
+            border: 1px solid #d0d7de;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .stats span { color: #0078d4; font-weight: bold; }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .topology-panel {
+            flex: 1;
+            min-width: 400px;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .topology-panel h2 { text-align: center; margin-bottom: 15px; color: #106ebe; }
+
+        .topology-canvas {
+            width: 100%;
+            height: 400px;
+            background: #0a0a1a;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .terminal-panel {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-panel {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .task-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .task-panel .level-title { font-size: 1.15em; color: #106ebe; margin-bottom: 5px; word-break: break-word; }
+        .task-panel .task-desc { color: #4a4a4a; line-height: 1.6; }
+        .task-panel .task-desc code, .hint code { background: rgba(0,120,212,0.08); padding: 1px 5px; border-radius: 4px; color: #0b5d96; font-size: 0.95em; }
+
+        .task-panel .hint {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,120,212,0.08);
+            border-left: 3px solid #0078d4;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #0b5d96;
+        }
+
+        .terminal {
+            background: #0d0d0d;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+            height: 460px;
+            max-height: 70vh;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        .terminal-title { margin-left: 10px; color: #888; font-size: 0.85em; }
+
+        .terminal-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            line-height: 1.5;
+        }
+
+        .terminal { position: relative; }
+        .autocomplete {
+            display: none;
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 44px;
+            background: #1a1a2e;
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            z-index: 20;
+            overflow: hidden;
+        }
+        .ac-item {
+            padding: 8px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00d4ff;
+            cursor: pointer;
+        }
+        .ac-item:hover { background: rgba(0,212,255,0.15); }
+
+        .terminal-body .output { margin-bottom: 5px; }
+        .terminal-body .output.user { color: #d2fff0; }
+        .terminal-body .output.success { color: #27c93f; }
+        .terminal-body .output.error { color: #ff5f56; }
+        .terminal-body .output.info { color: #00d4ff; }
+        .terminal-body .output.warning { color: #ffbd2e; }
+        .terminal-body .output.system { color: #888; }
+
+        .input-line { display: flex; align-items: center; margin-top: 5px; }
+
+        .prompt { color: #00d4ff; white-space: nowrap; margin-right: 5px; }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            outline: none;
+            caret-color: #00d4ff;
+        }
+
+        .buttons-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #0078d4, #106ebe); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.35); }
+        .btn-success { background: linear-gradient(135deg, #27c93f, #00a82d); color: #fff; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(39,201,63,0.3); }
+        .btn-warning { background: linear-gradient(135deg, #ffbd2e, #ff8c00); color: #fff; }
+        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,189,46,0.3); }
+        .btn-danger { background: linear-gradient(135deg, #ff5f56, #cc0000); color: #fff; }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,95,86,0.3); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        .svc-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .svc-table th, .svc-table td { padding: 8px 12px; text-align: left; border: 1px solid #d0d7de; }
+        .svc-table th { background: #d7ecff; color: #106ebe; }
+        .svc-table td { background: #f8fafc; }
+        .svc-table .ok { color: #27c93f; font-weight: bold; }
+        .svc-table .bad { color: #cc0000; font-weight: bold; }
+        .svc-table .mid { color: #ff8c00; font-weight: bold; }
+
+        .legend { display: flex; gap: 15px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.85em; }
+        .legend-color { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+        #quizModal { z-index: 1100; }
+
+        .modal {
+            background: #ffffff;
+            color: #323130;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 92vh;
+            overflow-y: auto;
+            text-align: center;
+            border: 2px solid #c7e2f8;
+            animation: modalPop 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 { color: #106ebe; font-size: 1.8em; margin-bottom: 15px; }
+        .modal p { color: #4a4a4a; line-height: 1.6; margin-bottom: 20px; }
+        .modal .score { font-size: 1.5em; color: #0078d4; margin: 15px 0; }
+
+        .welcome-modal { max-width: 600px; }
+        .welcome-modal h2 { line-height: 1.3; margin-bottom: 14px; font-size: 1.3em; }
+        .welcome-modal .shield-m { vertical-align: middle; margin-right: 6px; width: 30px; height: 30px; }
+        .welcome-white { color: #201f1e; -webkit-text-fill-color: #201f1e; }
+        .welcome-grad {
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .welcome-modal .features { text-align: left; margin: 14px 0; }
+        .welcome-modal .feature-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: #4a4a4a; }
+        .feature-item .icon {
+            width: 30px; height: 30px;
+            background: #d7ecff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #0078d4;
+            flex-shrink: 0;
+        }
+
+        .reference-panel { background: #ffffff; border-radius: 15px; padding: 15px; border: 1px solid rgba(0,0,0,0.07); margin-top: 15px; }
+        .reference-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .cmd-list { font-family: 'Courier New', monospace; font-size: 0.8em; }
+        .cmd-list div { padding: 3px 0; color: #5e5e5e; word-break: break-all; }
+        .cmd-list span { color: #0078d4; }
+
+        .rb-next {
+            display: block;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .rb-next:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,120,212,0.4); }
+
+        .btn-ghost { background: #ffffff; color: #106ebe; border: 1px solid rgba(0,120,212,0.4); }
+        .btn-ghost:hover { background: #e8f0fa; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.15); }
+
+        .modal-footer { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:20px; flex-wrap:wrap; position:sticky; bottom:0; background:#f3f7fa; border-top:1px solid rgba(0,0,0,0.06); padding:12px 4px; z-index:2; margin-left:-4px; margin-right:-4px; }
+
+        .concepts-list { text-align: left; margin: 15px 0; }
+        .concept-item { display:flex; gap:10px; margin: 12px 0; color:#4a4a4a; line-height:1.6; }
+        .concept-item .concept-icon { flex-shrink:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#e3edf8; color:#0078d4; font-size:1.1em; }
+        .concept-item b { color:#201f1e; }
+
+        .level-map-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin:15px 0; }
+        .level-card { background:#ffffff; border:1px solid #d7dee6; border-radius:12px; padding:12px; text-align:center; cursor:pointer; transition:all .2s; }
+        .level-card:hover { transform: translateY(-2px); }
+        .level-card.done { border-color: #27c93f; box-shadow:0 0 14px rgba(39,201,63,0.25); }
+        .level-card.current { border-color:#0078d4; box-shadow:0 0 14px rgba(0,120,212,0.35); }
+        .level-card.locked { opacity:0.5; cursor:default; }
+        .level-card .lv-num { font-size:1.5em; font-weight:bold; color:#0078d4; }
+        .level-card .lv-status { font-size:0.78em; margin-top:4px; color:#8a8a8a; }
+        .level-card.done .lv-status { color:#27c93f; }
+        .level-card.current .lv-status { color:#0078d4; }
+
+        .quiz-option { display:block; width:100%; text-align:left; padding:10px 14px; margin:8px 0; background:#f8fafc; border:1px solid #d7dee6; border-radius:10px; color:#323130; cursor:pointer; font-size:0.95em; transition:all .15s; }
+        .quiz-option:hover:not(:disabled) { border-color:#0078d4; background:rgba(0,120,212,0.08); }
+        .quiz-option.selected { border-color:#0078d4; background:rgba(0,120,212,0.1); color:#106ebe; }
+        .quiz-option.correct { border-color:#27c93f; background:rgba(39,201,63,0.2); }
+        .quiz-option.wrong { border-color:#ff5f56; background:rgba(255,95,86,0.2); }
+        .quiz-option:disabled { cursor:default; }
+        .quiz-feedback { margin-top:12px; font-size:0.9em; color:#4a4a4a; min-height:20px; }
+
+        .robot { position: fixed; right: 16px; bottom: 14px; z-index: 900; cursor: pointer; }
+        .robot-hover { transition: transform 0.3s ease; }
+        .robot:hover .robot-hover { transform: translateY(-4px); }
+        .robot-bubble {
+            position: absolute;
+            right: 92px;
+            bottom: 18px;
+            width: 290px;
+            background: #ffffff;
+            border: 1px solid #0078d4;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+            font-size: 0.88em;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.25s ease;
+            color: #323130;
+            text-align: left;
+            z-index: 901;
+        }
+        .robot-bubble.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .robot-bubble b { color: #0078d4; }
+        .robot-bubble .rb-arrow {
+            position: absolute;
+            right: -10px;
+            bottom: 26px;
+            width: 0; height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid #0078d4;
+        }
+        .robot-bubble .rb-close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.07);
+            color: #666;
+            font-size: 11px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        .robot-bubble .rb-close:hover { background: rgba(204,0,0,0.15); color: #c00; }
+        .robot.hidden { display: none !important; }
+
+        .robot-drop {
+            position: absolute;
+            right: 92px;
+            bottom: 18px;
+            background: rgba(10,10,26,0.95);
+            border: 1px solid #0078d4;
+            border-radius: 12px;
+            padding: 10px 0;
+            z-index: 902;
+            width: 190px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.2s ease;
+            box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+        }
+        .robot-drop.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .robot-drop button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: #e6e6e6;
+            font-size: 0.86em;
+            cursor: pointer;
+        }
+        .robot-drop button:hover { background: rgba(0,120,212,0.2); color: #fff; }
+        .rb-caption { color: #9aa4b2; font-size: 0.82em; text-align: center; margin-top: 8px; }
+
+        .robot-reopen {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            width: 92px;
+            height: 92px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#1f2b3e,#28364d);
+            box-shadow: 0 10px 34px rgba(0,0,0,0.3), 0 0 0 2px #0078d4;
+            font-size: 40px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: floaty 2.6s ease-in-out infinite;
+        }
+
+        .robot-reopen.show { display: flex; }
+        .robot-reopen:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 0 0 2px #ffd700; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .antena-led { animation: ledBlink 1.3s steps(2, start) infinite; }
+        @keyframes ledBlink { 0% { opacity: 1; } 50% { opacity: 0.15; } }
+        .eye { transform-box: fill-box; transform-origin: center; animation: blinky 4.5s infinite; }
+        @keyframes blinky { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.12); } }
+        .robot-arm { transform-box: view-box; transform-origin: 80px 101px; animation: pointArm 1.9s ease-in-out infinite; }
+        @keyframes pointArm { 0%, 100% { transform: rotate(2deg); } 50% { transform: rotate(-48deg); } }
+
+        @media (max-width: 760px) {
+            .robot { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen.show { display: flex; transform: scale(0.8); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .topology-panel, .terminal-panel { min-width: 100%; }
+            .level-map-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        .console-line { white-space: pre-wrap; word-break: break-all; }
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Impressão: certificado profissional idêntico à tela */
+        @page { size: A4 portrait; margin: 0; }
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body * { visibility: hidden; }
+            #certificateModal, #certificateModal * { visibility: visible; }
+            #certificateModal {
+                position: absolute; top: 0; left: 0; width: 100%; min-height: 100%;
+                background: #ffffff !important; display: flex !important;
+                align-items: center; justify-content: center; overflow: visible;
+                margin: 0; padding: 12mm;
+            }
+            #certificateModal .modal {
+                background: #ffffff !important;
+                border: none !important; max-width: 100%; width: 100%;
+                max-height: none; overflow: visible; box-shadow: none; padding: 0;
+                animation: none; border-radius: 0 !important;
+            }
+            #certificateModal .modal-footer { display: none !important; }
+            #certificatePrint > div { border-radius: 2mm !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1><svg class="shield" viewBox="0 0 64 64" width="42" height="42" aria-hidden="true">
+        <defs>
+            <linearGradient id="sfGradH" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff2d55"/>
+                <stop offset="0.5" stop-color="#7b2ff7"/>
+                <stop offset="1" stop-color="#00d4ff"/>
+            </linearGradient>
+        </defs>
+        <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradH)" stroke="#ffffff" stroke-width="3"/>
+        <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+    </svg>SF Academia Cibersegurança e Redes</h1>
+    <p>🌐 Aprenda Servidor DNS, registros e segurança de forma interativa</p>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="stats">
+        <div>Nível: <span id="levelDisplay">1</span>/8</div>
+        <div>Pontos: <span id="scoreDisplay">0</span></div>
+        <div>Comandos: <span id="attemptsDisplay">0</span></div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="topology-panel" style="min-width:380px;">
+        <h2>📡 Topologia DNS</h2>
+        <canvas id="topologyCanvas" class="topology-canvas" style="height:380px;"></canvas>
+        <table class="svc-table" style="margin-top:14px;">
+            <tbody id="svcTableBody"></tbody>
+        </table>
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color" style="background:#27c93f;"></span> Correto/Seguro</div>
+            <div class="legend-item"><span class="legend-color" style="background:#ffbd2e;"></span> Atenção</div>
+            <div class="legend-item"><span class="legend-color" style="background:#ff5f56;"></span> Vulnerável</div>
+        </div>
+    </div>
+
+    <div class="terminal-panel">
+        <div class="task-panel">
+            <h3>🎯 Missão Atual</h3>
+            <div class="level-title" id="levelTitle">Nível 1</div>
+            <div class="task-desc" id="taskDesc"></div>
+            <div class="hint" id="hintBox" style="display:none;"></div>
+            <div class="buttons-row">
+                <button class="btn btn-warning" id="btnProvaFinal" style="display:none;" onclick="openQuiz()">📝 Prova Final</button>
+                <button class="btn btn-primary" id="btnDica" onclick="showHint()">💡 Dica</button>
+                <button class="btn btn-primary" onclick="openTheory()">📚 Teoria</button>
+                <button class="btn btn-primary" onclick="openLevelMap()">🗺️ Mapa de Níveis</button>
+                <button class="btn btn-danger" onclick="resetLevel()">↺ Reiniciar Nível</button>
+            </div>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+                <span class="terminal-title">admin-redes@ns1: ~</span>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="input-line" id="inputLine">
+                    <span class="prompt">admin-redes@ns1:~$</span>
+                    <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal de comandos">
+                </div>
+            </div>
+            <div class="autocomplete" id="autocomplete"></div>
+        </div>
+
+        <div class="reference-panel">
+            <h3>🔧 Referência de comandos</h3>
+            <div class="cmd-list">
+                <div><span>dig sfcyber.com.br</span> - resolução A (padrão)</div>
+                <div><span>dig sfcyber.com.br MX</span> - registros de e-mail</div>
+                <div><span>dig sfcyber.com.br NS</span> - servidores autoritativos</div>
+                <div><span>dig @192.168.10.10 dominio AXFR</span> - transferência de zona</div>
+                <div><span>patch dns --axfr-restrict</span> - restringir transferência</div>
+                <div><span>patch dns --dnssec-sign</span> - assinar zona com DNSSEC</div>
+                <div><span>patch dns --cache-flush</span> - limpar cache envenenado</div>
+                <div><span>help</span> ou <span>ajuda</span> - listar comandos</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SF Bot -->
+<div class="robot" id="robot" onclick="toggleRobot()">
+    <div class="robot-hover" style="position:relative;">
+        <svg width="86" height="86" viewBox="0 0 120 120" style="filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));">
+            <circle cx="60" cy="86" r="34" fill="#2c3e5c"/>
+            <rect x="50" y="78" width="20" height="31" rx="6" fill="#3b5177"/>
+            <ellipse cx="46" cy="94" rx="30" ry="9" fill="#1d2942"/>
+            <ellipse cx="74" cy="94" rx="30" ry="9" fill="#1d2942"/>
+            <rect x="26" y="60" width="68" height="26" rx="13" fill="#344974"/>
+            <circle cx="40" cy="73" r="7" fill="#ffffff" class="eye"/>
+            <circle cx="80" cy="73" r="7" fill="#ffffff" class="eye"/>
+            <circle cx="42" cy="71" r="3" fill="#00d4ff"/>
+            <circle cx="78" cy="71" r="3" fill="#00d4ff"/>
+            <path d="M60 73 L60 49 L63 49 L63 73 Z" fill="#00d4ff"/>
+            <rect x="52" y="46" width="16" height="4" rx="2" fill="#00d4ff"/>
+            <path class="robot-arm" d="M28 88 Q14 94 18 108 Q30 112 40 104" fill="#2c3e5c" stroke="#00d4ff" stroke-width="3" fill-opacity="0.9"/>
+            <path d="M60 8 L60 20" stroke="#00d4ff" stroke-width="3" class="antena-led"/>
+            <circle cx="60" cy="6" r="4" fill="#ffbd2e" class="antena-led"/>
+        </svg>
+        <div class="robot-bubble" id="robotBubble">
+            <button class="rb-close" onclick="event.stopPropagation(); closeRobot();" aria-label="Fechar assistente">✕</button>
+            <div class="rb-arrow"></div>
+            <div class="rb-caption" id="robotTitle" style="font-weight:bold; color:#0078d4; margin-bottom:6px;">SF Bot</div>
+            <div id="robotText" style="line-height:1.5;">Olá! Sou seu assistente neste laboratório.</div>
+            <button class="rb-next" id="robotContinueBtn" style="display:none;" onclick="event.stopPropagation(); robotContinue();">Entendi, continuar →</button>
+        </div>
+    </div>
+</div>
+
+<button class="robot-reopen" id="robotReopenBtn" onclick="openRobot()" aria-label="Abrir assistente SF Bot" title="SF Bot">🤖</button>
+
+<!-- Theory Modal -->
+<div class="modal-overlay" id="theoryModal">
+    <div class="modal" style="max-width:640px; text-align:left;">
+        <h2 style="text-align:center;">📚 Teoria do Nível</h2>
+        <div class="concepts-list" id="theoryContent"></div>
+        <div class="modal-footer" style="display:flex; justify-content:center; margin-top:16px;">
+            <button class="btn btn-primary" onclick="closeModal('theoryModal')">Entendi, voltar ▶</button>
+        </div>
+    </div>
+</div>
+
+<!-- Level Map Modal -->
+<div class="modal-overlay" id="levelMapModal">
+    <div class="modal" style="max-width:680px;">
+        <h2>🗺️ Mapa de Níveis</h2>
+        <div class="level-map-grid" id="levelMapGrid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;"></div>
+        <div class="modal-footer" style="display:flex; justify-content:center; margin-top:16px;">
+            <button class="btn btn-primary" onclick="closeModal('levelMapModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Quiz Modal -->
+<div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="modal" style="position:relative;">
+        <button class="rb-close" onclick="closeModal('quizModal')" aria-label="Fechar prova final" title="Fechar">✕</button>
+        <h2 id="quizTitle">📝 Prova Final</h2>
+        <p id="quizQuestion"></p>
+        <div id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="modal-footer" id="quizFooter">
+            <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()">Próxima Pergunta</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal">
+        <h2 id="confirmTitle">Tem certeza?</h2>
+        <p id="confirmText">Esta ação não pode ser desfeita.</p>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('confirmModal')">Cancelar</button>
+            <button class="btn btn-danger" id="confirmOkBtn">Sim, continuar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal -->
+<div class="modal-overlay active" id="welcomeModal">
+    <div class="modal welcome-modal">
+        <h2><svg class="shield shield-m" viewBox="0 0 64 64" width="38" height="38" aria-hidden="true">
+                <defs>
+                    <linearGradient id="sfGradM" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff2d55"/>
+                        <stop offset="0.5" stop-color="#7b2ff7"/>
+                        <stop offset="1" stop-color="#00d4ff"/>
+                    </linearGradient>
+                </defs>
+                <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradM)" stroke="#ffffff" stroke-width="3"/>
+                <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+            </svg>
+            <span class="welcome-white">Bem-Vindo à SF Cyber</span><br>
+            <span class="welcome-grad">Academia CiberSegurança e Redes</span>
+        </h2>
+        <p>Assuma o papel de um <b>Administrador de Redes</b> e audite o servidor DNS da empresa (<b>ns1 · 192.168.10.10</b>) que responde pelo domínio <b>sfcyber.com.br</b>. Investigue registros, descubra falhas e proteja a zona com boas práticas.</p>
+        <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
+                   maxlength="42" autocomplete="off"
+                   style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
+                          background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+        </div>
+        <div class="features">
+            <div class="feature-item"><div class="icon">1</div><span>Resolver o domínio com <b>dig</b></span></div>
+            <div class="feature-item"><div class="icon">2</div><span>Mapear registros <b>MX e NS</b></span></div>
+            <div class="feature-item"><div class="icon">3</div><span>Encontrar subdomínios expostos</span></div>
+            <div class="feature-item"><div class="icon">4</div><span>Testar transferência de zona (<b>AXFR</b>)</span></div>
+            <div class="feature-item"><div class="icon">5</div><span>Detectar envenenamento de cache</span></div>
+            <div class="feature-item"><div class="icon">6</div><span>Corrigir com <b>AXFR restrito + DNSSEC</b></span></div>
+        </div>
+        <p style="font-size:0.9em; color:#888;">Use o terminal com comandos reais de administração DNS!</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="closeWelcome()" id="welcomeBtn" style="font-size:1.1em; padding: 15px 40px;">
+                🧩 Começar!
+            </button>
+            <button class="btn btn-ghost" id="resumeBtn" style="display:none; font-size:1.1em; padding: 15px 30px;" onclick="resumeGame()">
+                ⏩ Continuar
+            </button>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.08);">
+            <a href="https://projetosdisruptivos.com.br/" target="_blank" rel="noopener"
+               style="color:#106ebe; text-decoration:none; font-size:0.85em; letter-spacing:0.5px; transition:color 0.3s ease;">
+                👨‍💻 Developed by <b>SF</b> · Projetos Disruptivos
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <h2 id="successTitle">🎉 Nível Completo!</h2>
+        <p id="successMsg">Parabéns! Você completou o nível!</p>
+        <div class="score" id="successScore">+50 pontos</div>
+        <button class="btn btn-success" id="btnSuccessPrimary" onclick="nextLevel()" style="font-size:1.1em; padding: 15px 40px;">
+            Próximo Nível →
+        </button>
+    </div>
+</div>
+
+<!-- Game Complete Modal -->
+<div class="modal-overlay" id="gameCompleteModal">
+    <div class="modal">
+        <h2>🏆 Missão Cumprida!</h2>
+        <p>Parabéns! Você auditou o servidor DNS, descobriu a transferência de zona aberta e o envenenamento de cache, e protegeu a zona com DNSSEC!</p>
+        <div class="score" id="finalScore">Pontuação Final: 0</div>
+        <p style="color:#888;">Você agora sabe:</p>
+        <div style="text-align:left; color:#4a4a4a; margin: 15px 0;">
+            ✓ Resolver domínios e interpretar registros DNS<br>
+            ✓ Mapear registros (A, MX, NS) e subdomínios<br>
+            ✓ Identificar transferência de zona (AXFR) indevida<br>
+            ✓ Detectar envenenamento de cache (DNS poisoning)<br>
+            ✓ Restringir transferências com allow-transfer<br>
+            ✓ Assinar a zona com DNSSEC e limpar o cache
+        </div>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-success" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
+                🎓 Ver Certificado
+            </button>
+            <button class="btn btn-warning" onclick="openQuiz()" style="font-size:1.05em; padding: 15px 30px;">
+                📝 Refazer Prova
+            </button>
+            <button class="btn btn-primary" onclick="resetGame()" style="font-size:1.1em; padding: 15px 40px;">
+                🔄 Jogar Novamente
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Certificate Modal -->
+<div class="modal-overlay" id="certificateModal">
+    <div class="modal" style="max-width:720px; text-align:center;">
+        <div id="certificatePrint" style="text-align:center;">
+            <div style="border:4px double rgba(255,215,0,0.7); border-radius:16px; padding:34px 24px; background:linear-gradient(180deg,#1a1a2e 0%,#0f0f23 100%);">
+                <svg class="shield" viewBox="0 0 64 64" width="86" height="86" style="display:block; margin:0 auto 14px;" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="sfGradCert" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ff2d55"/>
+                            <stop offset="0.5" stop-color="#7b2ff7"/>
+                            <stop offset="1" stop-color="#00d4ff"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradCert)" stroke="#ffd700" stroke-width="3"/>
+                    <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+                </svg>
+                <div style="font-size:0.9em; letter-spacing:6px; color:#ffd700; text-transform:uppercase;">SF Cyber Academy</div>
+                <div style="font-size:1.05em; color:#00d4ff; margin-top:4px;">Redes e Cibersegurança</div>
+                <div style="width:120px; height:3px; margin:18px auto; background:linear-gradient(90deg,#ff2d55,#7b2ff7,#00d4ff); border-radius:2px;"></div>
+                <h2 style="font-family:Georgia, 'Times New Roman', serif; color:#fff; font-size:1.9em; margin:6px 0 2px; text-align:center;">CERTIFICADO DE CONCLUSÃO</h2>
+                <p style="color:#bbb; font-size:0.95em; margin-top:14px;">Este certificado é concedido a</p>
+                <div style="font-family:Georgia, 'Times New Roman', serif; font-size:2em; color:#ffd700; margin:14px 0; font-weight:bold; word-break:break-word;" id="certStudentName">Aluno(a)</div>
+                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o laboratório prático</p>
+                <div style="font-size:1.15em; color:#00d4ff; font-weight:bold; margin:10px 0;">Redes · Servidor DNS (resolução, AXFR e DNSSEC)</div>
+                <p style="color:#bbb; font-size:0.9em; margin-top:6px;">Simulador Interativo de DNS 8 níveis + prova final</p>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:34px; text-align:center; gap:16px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certScore" style="font-size:1.3em; color:#fff; font-weight:bold;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">PONTUAÇÃO FINAL</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div style="font-family:Georgia, 'Times New Roman', serif; font-style:italic; color:#fff; font-size:1em;">SF Cyber</div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVAÇÃO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="downloadCertificate()">⬇️ Baixar Certificado</button>
+            <button class="btn btn-ghost" onclick="closeModal('certificateModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===================== GAME STATE =====================
+const state = {
+    currentLevel: 0,
+    score: 0,
+    attempts: 0,
+    quizDone: false,
+    studentName: '',
+    dns: {
+        baseResolved: false,
+        mxSeen: false,
+        nsSeen: false,
+        subFound: false,
+        axfrOpen: false,
+        poisonSpotted: false,
+        axfrPatched: false,
+        dnssecSigned: false,
+        cacheFlushed: false,
+    },
+    levelDone: {},
+    commandHistory: [],
+    historyIndex: -1,
+};
+
+// ===================== LEVELS =====================
+const SITE_IP = '192.168.10.30';
+const NS_IP = '192.168.10.10';
+const DOMAIN = 'sfcyber.com.br';
+
+const levels = [
+    {
+        id: 1,
+        title: "Nível 1: Resolver o domínio",
+        desc: "Você é o Administrador de Redes. O servidor DNS da empresa (ns1 em " + NS_IP + ") responde pelo domínio " + DOMAIN + ". Consulte o registro A do domínio com o dig para confirmar que está resolvendo.",
+        hint: "💡 Dica: Digite <code>dig " + DOMAIN + "</code> no terminal.",
+        check: () => state.dns.baseResolved,
+        successMsg: "Domínio resolvendo! sfcyber.com.br aponta para " + SITE_IP + " (o site da empresa).",
+    },
+    {
+        id: 2,
+        title: "Nível 2: Mapear os servidores de e-mail",
+        desc: "Descubra os registros MX (Mail eXchange) do domínio: eles indicam quais servidores recebem o e-mail da empresa.",
+        hint: "💡 Dica: Use <code>dig " + DOMAIN + " MX</code>.",
+        check: () => state.dns.mxSeen,
+        successMsg: "Registros MX encontrados! mail.sfcyber.com.br é o servidor de e-mail da empresa.",
+    },
+    {
+        id: 3,
+        title: "Nível 3: Mapear os servidores NS",
+        desc: "Consulte os registros NS (Name Server) para descobrir quais são os servidores autoritativos do domínio.",
+        hint: "💡 Dica: Use <code>dig " + DOMAIN + " NS</code>.",
+        check: () => state.dns.nsSeen,
+        successMsg: "Servidores NS mapeados! ns1.sfcyber.local é o servidor autoritativo.",
+    },
+    {
+        id: 4,
+        title: "Nível 4: Encontrar subdomínio exposto",
+        desc: "Nem todo subdomínio deve ser público. Consulte um subdomínio sensível (vpn) para ver se ele está publicado no DNS.",
+        hint: "💡 Dica: Use <code>dig vpn." + DOMAIN + "</code>.",
+        check: () => state.dns.subFound,
+        successMsg: "Subdomínio vpn exposto! Alvos sensíveis acessíveis publicamente são um risco de superfície de ataque.",
+    },
+    {
+        id: 5,
+        title: "Nível 5: Testar transferência de zona (AXFR)",
+        desc: "Tente copiar toda a zona consultando diretamente o ns1 (" + NS_IP + "). Se a transferência for permitida, qualquer pessoa consegue ler TODOS os registros internos.",
+        hint: "💡 Dica: Use <code>dig @" + NS_IP + " " + DOMAIN + " AXFR</code>.",
+        check: () => state.dns.axfrOpen,
+        successMsg: "Falha confirmada! A transferência de zona está ABERTA: registros internos e subdomínios vazaram.",
+    },
+    {
+        id: 6,
+        title: "Nível 6: Detectar envenenamento de cache",
+        desc: "Consulte o ns1 diretamente para ver o que ele responde. Desconfie se o IP devolvido para " + DOMAIN + " for diferente do oficial (" + SITE_IP + ").",
+        hint: "💡 Dica: Use <code>dig @" + NS_IP + " " + DOMAIN + " +short</code>.",
+        check: () => state.dns.poisonSpotted,
+        successMsg: "Cache ENVENENADO! O ns1 responde 203.0.113.66 (atacante) em vez de " + SITE_IP + ". Usuários estão sendo levados para um site falso.",
+    },
+    {
+        id: 7,
+        title: "Nível 7: Restringir transferência de zona",
+        desc: "Corrija a primeira falha: limite o AXFR apenas aos servidores autorizados. Aplique a correção no servidor DNS.",
+        hint: "💡 Dica: Use <code>patch dns --axfr-restrict</code>.",
+        check: () => state.dns.axfrPatched,
+        successMsg: "AXFR restrito! Agora a transferência de zona só funciona para servidores autorizados.",
+    },
+    {
+        id: 8,
+        title: "Nível 8: Proteger a zona com DNSSEC e limpar o cache",
+        desc: "Finalize o endurecimento: (1) assine a zona com DNSSEC para garantir autenticidade e (2) limpe o cache envenenado para devolver as respostas corretas.",
+        hint: "💡 Dica: <code>patch dns --dnssec-sign</code> e depois <code>patch dns --cache-flush</code>",
+        check: () => state.dns.dnssecSigned && state.dns.cacheFlushed,
+        successMsg: "🏆 Missão cumprida! Zona assinada com DNSSEC e cache limpo. O DNS da empresa está protegido.",
+    },
+];
+
+const theoryLevels = {
+    1: [
+        { icon: "🌐", title: "Resolução DNS", desc: "O <b>dig</b> consulta resolvers e devolve os registros pedidos. Um domínio resolve para um endereço IP via registro <b>A</b> (IPv4) ou <b>AAAA</b> (IPv6)." },
+        { icon: "🎯", title: "Registro A", desc: "O registro <b>A</b> associa um nome a um IPv4. Se a resposta não bater com o oficial, pode haver problema (ex.: envenenamento)." },
+    ],
+    2: [
+        { icon: "✉️", title: "Registro MX", desc: "O <b>MX</b> aponta os servidores de e-mail de um domínio, com prioridade (quanto menor o número, maior a preferência)." },
+        { icon: "📬", title: "Fluxo de e-mail", desc: "Outros servidores leem o MX para saber para onde enviar mensagens do domínio." },
+    ],
+    3: [
+        { icon: "🗂️", title: "Registro NS", desc: "O <b>NS</b> define os servidores <b>autoritativos</b> (que respondem oficialmente pelo domínio)." },
+        { icon: "🔁", title: "Autoridade", desc: "Resolvers consultam esses servidores como fonte final de verdade para o domínio." },
+    ],
+    4: [
+        { icon: "🌿", title: "Subdomínios", desc: "Cada subdomínio é um registro próprio (<code>vpn.sfcyber.com.br</code>). Subdomínios esquecidos costumam concentrar sistemas antigos e frágeis." },
+        { icon: "🕵️", title: "Enumeração passiva", desc: "Listar subdomínios é o primeiro passo de reconhecimento de um atacante contra a infraestrutura." },
+    ],
+    5: [
+        { icon: "📤", title: "Transferência de zona (AXFR)", desc: "O <b>AXFR</b> copia toda a zona para outro servidor. Sem restrição (<code>allow-transfer</code>), qualquer um baixa o mapa completo da rede." },
+        { icon: "🗺️", title: "Vazamento de topologia", desc: "Registros internos, nomes de servidores e subdomínios ficam visíveis para o atacante planejar ataques." },
+    ],
+    6: [
+        { icon: "☠️", title: "Envenenamento de cache", desc: "O atacante injeta uma resposta falsa no resolver. Usuários acessam IPs controlados pelo atacante sem perceber (phishing, malware)." },
+        { icon: "⚖️", title: "Conferir respostas", desc: "Comparar a resposta com a fonte oficial (resolver padrão) revela divergências: IP diferente = cache envenenado." },
+    ],
+    7: [
+        { icon: "🔒", title: "allow-transfer", desc: "A diretiva limita o AXFR a IPs específicos (<b>slaves</b> autorizados), impedindo consultas completas da zona." },
+        { icon: "🔐", title: "Restrição por padrão", desc: "Servidores bem configurados bloqueiam transferência por padrão e liberam apenas o necessário." },
+    ],
+    8: [
+        { icon: "🛡️", title: "DNSSEC", desc: "O <b>DNSSEC</b> assina a zona com criptografia: cada resposta carrega assinaturas (RRSIG) que validam autenticidade e integridade." },
+        { icon: "🧹", title: "Flush de cache", desc: "Após corrigir o servidor, limpar o cache (flush) remove respostas falsas antigas e força novas consultas íntegras." },
+    ],
+};
+
+// ===================== ROBO ASSISTENTE (SF Bot) =====================
+const ROBOT_NAME = 'SF Bot';
+const robotBubble = document.getElementById('robotBubble');
+const robotTitleEl = document.getElementById('robotTitle');
+const robotTextEl = document.getElementById('robotText');
+let robotStepKey = '';
+let robotTimer = null;
+let robotOpen = false;
+
+function setRobotBubble(title, text) {
+    robotTitleEl.textContent = title;
+    robotTextEl.innerHTML = text;
+    robotBubble.classList.add('visible');
+    robotBubble.style.animation = 'none';
+    void robotBubble.offsetWidth;
+    robotBubble.style.animation = '';
+}
+
+function toggleRobot() {
+    robotOpen = !robotOpen;
+    if (robotOpen) { setRobotBubble(robotTitleEl.textContent, robotTextEl.innerHTML); }
+    else closeRobot();
+}
+
+function getRobotStep(lvl) {
+    const d = state.dns;
+    switch (lvl) {
+        case 0:
+            if (!d.baseResolved) return [ROBOT_NAME + ' 🌐', 'Comece resolvendo o domínio: <b>dig ' + DOMAIN + '</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Domínio resolvido! Toque em <b>Próximo Nível</b> para continuar.'];
+        case 1:
+            if (!d.mxSeen) return [ROBOT_NAME + ' ✉️', 'Descubra os e-mails: <b>dig ' + DOMAIN + ' MX</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Registros MX mapeados! Toque em <b>Próximo Nível</b>.'];
+        case 2:
+            if (!d.nsSeen) return [ROBOT_NAME + ' 🗂️', 'Veja os servidores autoritativos: <b>dig ' + DOMAIN + ' NS</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Servidores NS mapeados! Toque em <b>Próximo Nível</b>.'];
+        case 3:
+            if (!d.subFound) return [ROBOT_NAME + ' 🕵️', 'Procure o subdomínio sensível: <b>dig vpn.' + DOMAIN + '</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Subdomínio encontrado! Toque em <b>Próximo Nível</b>.'];
+        case 4:
+            if (!d.axfrOpen) return [ROBOT_NAME + ' 📤', 'Teste a transferência de zona: <b>dig @' + NS_IP + ' ' + DOMAIN + ' AXFR</b>'];
+            return [ROBOT_NAME + ' 🎉', 'AXFR aberto encontrado! Toque em <b>Próximo Nível</b>.'];
+        case 5:
+            if (!d.poisonSpotted) return [ROBOT_NAME + ' ☠️', 'Compare a resposta do ns1: <b>dig @' + NS_IP + ' ' + DOMAIN + ' +short</b>'];
+            return [ROBOT_NAME + ' 🚨', 'Cache envenenado! Toque em <b>Próximo Nível</b>.'];
+        case 6:
+            if (!d.axfrPatched) return [ROBOT_NAME + ' 🔒', 'Restrinja a transferência: <b>patch dns --axfr-restrict</b>'];
+            return [ROBOT_NAME + ' 🎉', 'AXFR restrito! Toque em <b>Próximo Nível</b>.'];
+        case 7:
+            if (!d.dnssecSigned) return [ROBOT_NAME + ' 🛡️', 'Assine a zona: <b>patch dns --dnssec-sign</b>'];
+            if (!d.cacheFlushed) return [ROBOT_NAME + ' 🧹', 'Limpe o cache envenenado: <b>patch dns --cache-flush</b>'];
+            return [ROBOT_NAME + ' 🏆', 'DNS protegido! Toque em <b>Próximo Nível</b>.'];
+    }
+    return [ROBOT_NAME + ' 🤖', 'Boa sorte nesta etapa!'];
+}
+
+function updateRobot() {
+    if (!robotBubble) return;
+    const lvl = state.currentLevel;
+    const complete = levels[lvl].check();
+    let title, text;
+    if (complete) {
+        if (lvl >= levels.length - 1) {
+            title = '🏆 ' + ROBOT_NAME;
+            text = 'Missão cumprida! O servidor DNS está protegido. Toque em <b>Próximo Nível</b> para a prova final!';
+        } else {
+            title = '🎉 ' + ROBOT_NAME + ' Nível ' + (lvl + 1) + ' completo!';
+            text = 'Próxima etapa: toque em <b>Próximo Nível</b> →';
+        }
+    } else {
+        const g = getRobotStep(lvl);
+        title = g[0];
+        text = g[1];
+    }
+    const key = lvl + '|' + complete + '|' + title + text;
+    if (key !== robotStepKey) {
+        robotStepKey = key;
+        setRobotBubble(title, text);
+    }
+}
+
+function scheduleUpdateRobot() {
+    clearTimeout(robotTimer);
+    robotTimer = setTimeout(updateRobot, 80);
+}
+
+function closeRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.add('hidden');
+    if (reopen) reopen.classList.add('show');
+}
+
+function openRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.remove('hidden');
+    if (reopen) reopen.classList.remove('show');
+    robotOpen = true;
+    setTimeout(updateRobot, 50);
+}
+
+function robotIntro(greeting) {
+    robotStepKey = '';
+    setRobotBubble(
+        ROBOT_NAME + (greeting ? ' ' + greeting : ' 🤖 Olá!'),
+        greeting === 'De volta!'
+            ? 'Você parou no <b>' + (state.currentLevel + 1) + '° nível</b>. Continue por onde parou!'
+            : 'Vou te acompanhar até proteger o servidor DNS. Sempre que terminar uma etapa, eu te mostro a <b>próxima</b>. Pode digitar <b>help</b> a qualquer momento!'
+    );
+    document.getElementById('robotContinueBtn').style.display = 'block';
+}
+
+function robotContinue() {
+    document.getElementById('robotContinueBtn').style.display = 'none';
+    updateRobot();
+}
+
+// ===================== TERMINAL =====================
+const term = document.getElementById('terminalBody');
+const input = document.getElementById('terminalInput');
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitCmd();
+    if (e.key === 'ArrowUp') { e.preventDefault(); navHistory(-1); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); navHistory(1); }
+    if (e.key === 'Tab') { e.preventDefault(); autocomplete(); }
+});
+
+function addOutput(text, cls = '') {
+    const div = document.createElement('div');
+    div.className = 'output console-line ' + cls;
+    div.textContent = text;
+    term.insertBefore(div, input.parentNode);
+    term.scrollTop = term.scrollHeight;
+}
+
+function echo(text) {
+    addOutput(text, 'user');
+}
+
+function submitCmd() {
+    const raw = input.value.trim();
+    if (raw) {
+        echo('admin-redes@ns1:~$ ' + raw);
+        state.attempts++;
+        updateStats();
+        state.commandHistory.push(raw);
+        state.historyIndex = state.commandHistory.length;
+        handleCommand(raw);
+    } else {
+        echo('');
+    }
+    scheduleUpdateRobot();
+    input.value = '';
+    hideAutocomplete();
+    save();
+}
+
+function navHistory(dir) {
+    const h = state.commandHistory;
+    if (!h.length) return;
+    state.historyIndex += dir;
+    if (state.historyIndex < 0) state.historyIndex = 0;
+    if (state.historyIndex > h.length) state.historyIndex = h.length;
+    input.value = state.historyIndex === h.length ? '' : h[state.historyIndex];
+}
+
+const SUGGESTIONS = [
+    'clear', 'help', 'dig ' + DOMAIN,
+    'dig ' + DOMAIN + ' MX',
+    'dig ' + DOMAIN + ' NS',
+    'dig vpn.' + DOMAIN,
+    'dig @' + NS_IP + ' ' + DOMAIN + ' AXFR',
+    'dig @' + NS_IP + ' ' + DOMAIN + ' +short',
+    'patch dns --axfr-restrict', 'patch dns --dnssec-sign', 'patch dns --cache-flush',
+];
+
+function showAutocomplete() {
+    const val = input.value.toLowerCase();
+    if (!val) { hideAutocomplete(); return; }
+    const matches = SUGGESTIONS.filter(s => s.toLowerCase().startsWith(val)).slice(0, 6);
+    const box = document.getElementById('autocomplete');
+    if (!matches.length) { hideAutocomplete(); return; }
+    box.innerHTML = '';
+    matches.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'ac-item';
+        div.textContent = m;
+        div.onclick = () => { input.value = m; input.focus(); hideAutocomplete(); };
+        box.appendChild(div);
+    });
+    box.style.display = 'block';
+}
+
+function hideAutocomplete() { document.getElementById('autocomplete').style.display = 'none'; }
+input.addEventListener('input', showAutocomplete);
+
+function autocomplete() {
+    const val = input.value.toLowerCase();
+    const match = SUGGESTIONS.find(s => s.toLowerCase().startsWith(val));
+    if (match) { input.value = match; showAutocomplete(); }
+}
+
+// ===================== COMMAND HANDLER =====================
+const LEVEL_TRIGGERS = [
+    ['dig sfcyber.com.br'],
+    ['dig sfcyber.com.br mx'],
+    ['dig sfcyber.com.br ns'],
+    ['dig vpn.sfcyber.com.br'],
+    ['dig @192.168.10.10 sfcyber.com.br axfr'],
+    ['dig @192.168.10.10 sfcyber.com.br +short'],
+    ['patch dns --axfr-restrict'],
+    ['patch dns --dnssec-sign', 'patch dns --cache-flush'],
+];
+
+const LEVEL_SEC_FLAGS = [
+    ['baseResolved'],
+    ['mxSeen'],
+    ['nsSeen'],
+    ['subFound'],
+    ['axfrOpen'],
+    ['poisonSpotted'],
+    ['axfrPatched'],
+    ['dnssecSigned', 'cacheFlushed'],
+];
+
+function normalizeTrig(s) {
+    return s.trim().toLowerCase().replace(/["']/g, '').replace(/\s+/g, ' ');
+}
+
+function commandWasTrigger(raw, lvlIdx) {
+    const norm = normalizeTrig(raw || '');
+    if (!norm) return false;
+    return (LEVEL_TRIGGERS[lvlIdx] || []).some(t => normalizeTrig(t) === norm);
+}
+
+function handleCommand(raw) {
+    const parts = raw.trim().split(/\s+/);
+    if (parts[0] && parts[0].toLowerCase() === 'sudo' && parts.length > 1) parts.shift();
+    const cmd = (parts[0] || '').toLowerCase();
+    const args = parts.slice(1);
+
+    switch (cmd) {
+        case 'help':
+        case 'ajuda':
+            SUGGESTIONS.forEach(s => addOutput(s, 'info'));
+            return;
+        case 'clear':
+        case 'cls': {
+            const keep = input.parentNode;
+            term.querySelectorAll('.output').forEach(o => o.remove());
+            term.insertBefore(keep, term.firstChild);
+            return;
+        }
+        case 'whoami':
+            addOutput('admin-redes (laboratório SF Cyber)', 'success');
+            return;
+        case 'echo':
+            addOutput(args.join(' ') || '', 'system');
+            return;
+        case 'nslookup':
+            addOutput('Dica: neste laboratório use o comando real "dig" (Linux/BIND) para consultas mais completas.', 'info');
+            return;
+        case 'patch': {
+            const target = (args[0] || '').toLowerCase();
+            const opt = (args[1] || '').toLowerCase();
+            if (target !== 'dns') {
+                addOutput('uso: patch dns --axfr-restrict | --dnssec-sign | --cache-flush', 'error');
+                break;
+            }
+            if (opt === '--axfr-restrict') {
+                state.dns.axfrPatched = true;
+                addOutput('Aplicando allow-transfer restrito no ns1...', 'system');
+                addOutput('Transferência de zona (AXFR) liberada apenas para os slaves autorizados.', 'success');
+                addOutput('Re-teste: "dig @' + NS_IP + ' ' + DOMAIN + ' AXFR" agora retorna "Transfer failed".', 'success');
+            } else if (opt === '--dnssec-sign') {
+                state.dns.dnssecSigned = true;
+                addOutput('Assinando a zona com DNSSEC (dnssec-signzone)...', 'system');
+                addOutput('Registros RRSIG e DNSKEY adicionados: respostas agora são assinadas e verificáveis.', 'success');
+            } else if (opt === '--cache-flush') {
+                state.dns.cacheFlushed = true;
+                addOutput('Limpando o cache do resolver (rndc flush)...', 'system');
+                addOutput('Respostas falsas removidas: o ns1 volta a responder o IP oficial ' + SITE_IP + '.', 'success');
+            } else {
+                addOutput('uso: patch dns --axfr-restrict | --dnssec-sign | --cache-flush', 'error');
+            }
+            break;
+        }
+        case 'dig': {
+            if (!args.length) {
+                addOutput('uso: dig [@servidor] <domínio> [tipo] [+short]', 'error');
+                break;
+            }
+            const d = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+            const has = (s) => d.indexOf(s) !== -1;
+
+            // Transferência de zona (AXFR) direto no ns1
+            if (has('axfr')) {
+                if (state.dns.axfrPatched) {
+                    addOutput('; <<>> DiG 9.18 <<>> @' + NS_IP + ' ' + DOMAIN + ' AXFR', 'system');
+                    addOutput(';; ->>HEADER<<- opcode: QUERY, status: REFUSED, id: 38142', 'system');
+                    addOutput(';; Transfer failed: access denied.', 'warning');
+                    addOutput('AXFR agora está RESTRITO: somente os slaves autorizados recebem a zona.', 'success');
+                } else {
+                    state.dns.axfrOpen = true;
+                    addOutput('; <<>> DiG 9.18 <<>> @' + NS_IP + ' ' + DOMAIN + ' AXFR', 'system');
+                    addOutput(';; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 18473', 'system');
+                    addOutput(';; flags: qr aa; ZONA TRANSFERIDA (AXFR):', 'info');
+                    addOutput('sfcyber.com.br.      3600 IN SOA  ns1.sfcyber.local. admin.sfcyber.local. 2026092601 7200 3600 1209600 3600', 'system');
+                    addOutput('sfcyber.com.br.      300  IN A     ' + SITE_IP, 'system');
+                    addOutput('mail.sfcyber.com.br. 300  IN A     ' + SITE_IP, 'system');
+                    addOutput('vpn.sfcyber.com.br.  300  IN A     192.168.10.55', 'error');
+                    addOutput('db1.sfcyber.com.br.  300  IN A     192.168.10.71', 'error');
+                    addOutput('admin.crm.sfcyber.br.300 IN A     10.0.0.88', 'error');
+                    addOutput('⚠ Transferência de zona ABERTA: todo o mapa interno da rede foi entregue!', 'warning');
+                }
+                break;
+            }
+            // Consulta direto no ns1 (detecção de envenenamento)
+            if (has('@192.168.10.10') && has('+short')) {
+                if (state.dns.cacheFlushed) {
+                    addOutput(SITE_IP, 'success');
+                    addOutput('O ns1 agora responde o endereço oficial de ' + DOMAIN + '.', 'info');
+                } else {
+                    state.dns.poisonSpotted = true;
+                    addOutput('203.0.113.66', 'error');
+                    addOutput('‼ A resposta NÃO é o IP oficial (' + SITE_IP + ').', 'warning');
+                    addOutput('O cache do ns1 está ENVENENADO: resolver padrão diz ' + SITE_IP + ' e o ns1 responde 203.0.113.66 (atacante).', 'warning');
+                    addOutput('Usuários que dependerem deste resolver serão levados a um site falso.', 'warning');
+                }
+                break;
+            }
+            // Registros MX
+            if (has('mx')) {
+                state.dns.mxSeen = true;
+                addOutput('; <<>> DiG 9.18 <<>> ' + DOMAIN + ' MX', 'system');
+                addOutput(';; ANSWER SECTION:', 'system');
+                addOutput(DOMAIN + '.  300 IN MX  10 mail.' + DOMAIN + '.', 'success');
+                addOutput(DOMAIN + '.  300 IN MX  20 backup-mail.' + DOMAIN + '.', 'success');
+                addOutput('Servidores de e-mail mapeados (prioridade 10 é a principal).', 'info');
+                break;
+            }
+            // Registros NS
+            if (has('ns')) {
+                state.dns.nsSeen = true;
+                addOutput('; <<>> DiG 9.18 <<>> ' + DOMAIN + ' NS', 'system');
+                addOutput(';; ANSWER SECTION:', 'system');
+                addOutput(DOMAIN + '.  3600 IN NS  ns1.' + DOMAIN + '.', 'success');
+                addOutput(DOMAIN + '.  3600 IN NS  ns2.' + DOMAIN + '.', 'success');
+                addOutput('Servidores autoritativos: ns1 (192.168.10.10) e ns2 (192.168.10.11).', 'info');
+                break;
+            }
+            // Subdomínio vpn
+            if (has('vpn.')) {
+                state.dns.subFound = true;
+                addOutput('; <<>> DiG 9.18 <<>> vpn.' + DOMAIN, 'system');
+                addOutput(';; ANSWER SECTION:', 'system');
+                addOutput('vpn.' + DOMAIN + '.  300 IN A  192.168.10.55', 'success');
+                addOutput('⚠ O portal VPN é um subdomínio público. Alvos administrativos expostos aumentam a superfície de ataque.', 'warning');
+                break;
+            }
+            // Resolução base
+            if (has(DOMAIN)) {
+                state.dns.baseResolved = true;
+                addOutput('; <<>> DiG 9.18 <<>> ' + DOMAIN, 'system');
+                addOutput(';; QUESTION SECTION:', 'system');
+                addOutput(';' + DOMAIN + '.      IN      A', 'system');
+                addOutput(';; ANSWER SECTION:', 'system');
+                addOutput(DOMAIN + '.  300 IN A  ' + SITE_IP, 'success');
+                addOutput(';; Query time: 23 msec; SERVER: 8.8.8.8#53 (resolver padrão)', 'system');
+                addOutput('Domínio resolvendo corretamente pelo resolver padrão.', 'info');
+                break;
+            }
+            addOutput('Alvo não reconhecido. Consulte o domínio ' + DOMAIN + ' ou use "help".', 'warning');
+            break;
+        }
+        default:
+            addOutput('comando ' + raw.trim() + ': não encontrado. Digite "ajuda" ou "help".', 'error');
+    }
+    checkLevel(raw);
+}
+
+// ===================== LEVEL FLOW =====================
+function checkLevel(raw) {
+    const lvl = levels[state.currentLevel];
+    if (!lvl) return;
+    if (state.levelDone[lvl.id]) {
+        if (lvl.check() && commandWasTrigger(raw, state.currentLevel)) {
+            addOutput('✔ Este nível já foi concluído! Use o botão "Próximo Nível" →', 'warning');
+        }
+        return;
+    }
+    if (lvl.check()) {
+        state.levelDone[lvl.id] = true;
+        if (!state.scorePaid) state.scorePaid = new Set();
+        if (!state.scorePaid.has(lvl.id)) {
+            state.score += 50;
+            state.scorePaid.add(lvl.id);
+        }
+        updateStats();
+        drawScene();
+        renderSvcTable();
+        document.getElementById('successMsg').textContent = lvl.successMsg;
+        document.getElementById('successScore').textContent = '+50 pontos';
+        document.getElementById('btnSuccessPrimary').textContent =
+            state.currentLevel < levels.length - 1 ? 'Próximo Nível →' : '🏆 Concluir Missão';
+        openModal('successModal');
+        updateRobot();
+        save();
+    }
+}
+
+function nextLevel() {
+    closeModal('successModal');
+    const lvl = levels[state.currentLevel];
+    if (lvl && !state.levelDone[lvl.id]) {
+        addOutput('Você ainda não completou este nível. Use as dicas!', 'warning');
+        return;
+    }
+    if (state.currentLevel < levels.length - 1) {
+        state.currentLevel++;
+        renderLevel();
+        addOutput('--- Nível ' + (state.currentLevel + 1) + ' - ' + levels[state.currentLevel].title.replace(/^Nível \d+: /, '') + ' ---', 'system');
+    } else {
+        closeModal('successModal');
+        openGameComplete();
+    }
+}
+
+function skipNotImplemented() {}
+
+function showHint() {
+    const lvl = levels[state.currentLevel];
+    const box = document.getElementById('hintBox');
+    box.innerHTML = lvl.hint;
+    box.style.display = 'block';
+}
+
+function resetLevel() {
+    const lvl = levels[state.currentLevel];
+    (LEVEL_SEC_FLAGS[state.currentLevel] || []).forEach(f => { state.dns[f] = false; });
+    state.levelDone[lvl.id] = false;
+    closeModal('successModal');
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    addOutput('Nível reiniciado. Execute os comandos novamente.', 'system');
+    renderLevel();
+    updateStats();
+}
+
+function renderLevel() {
+    const lvl = levels[state.currentLevel];
+    document.getElementById('levelTitle').textContent = lvl.title;
+    document.getElementById('taskDesc').textContent = lvl.desc;
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    const isLast = state.currentLevel === levels.length - 1;
+    document.getElementById('btnProvaFinal').style.display = isLast ? 'inline-block' : 'none';
+    document.getElementById('levelDisplay').textContent = lvl.id;
+    const pct = ((state.currentLevel) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    drawScene();
+    renderSvcTable();
+    updateRobot();
+    save();
+}
+
+function updateStats() {
+    document.getElementById('levelDisplay').textContent = levels[state.currentLevel].id;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('attemptsDisplay').textContent = state.attempts;
+    const pct = ((state.currentLevel) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ===================== CANVAS =====================
+const canvas = document.getElementById('topologyCanvas');
+const ctx = canvas.getContext('2d');
+ctx.roundRect = (x, y, w, h, r) => {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+};
+
+function drawScene() {
+    const W = canvas.width, H = canvas.height;
+    const d = state.dns;
+    ctx.clearRect(0, 0, W, H);
+    drawGrid(W, H);
+
+    // Atacante
+    const ax = W * 0.06, ay = H * 0.22, aw = W * 0.2, ah = H * 0.24;
+    ctx.fillStyle = '#2a1014';
+    ctx.strokeStyle = '#ff5f56';
+    ctx.lineWidth = 3;
+    ctx.roundRect(ax, ay, aw, ah, 12); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ff8a80'; ctx.font = 'bold ' + (H * 0.045) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🕵️ ATACANTE', ax + aw / 2, ay - 10);
+    ctx.font = (H * 0.03) + 'px monospace';
+    ctx.fillText('(teste de segurança)', ax + aw / 2, ay + ah / 2 - 8);
+    ctx.fillStyle = d.dnssecSigned && d.axfrPatched && d.cacheFlushed ? '#27c93f' : '#ffbd2e';
+    ctx.fillText(d.dnssecSigned && d.axfrPatched && d.cacheFlushed ? '(relatório entregue)' : '(investigando)', ax + aw / 2, ay + ah / 2 + 20);
+
+    // Servidor DNS
+    const sx = W * 0.52, sy = H * 0.14, sw = W * 0.42, sh = H * 0.4;
+    ctx.fillStyle = '#0f1a2b';
+    ctx.strokeStyle = '#00d4ff';
+    ctx.lineWidth = 3;
+    ctx.roundRect(sx, sy, sw, sh, 14); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#00d4ff'; ctx.font = 'bold ' + (H * 0.045) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🖥️ SERVIDOR DNS', sx + sw / 2, sy - 12);
+    ctx.font = (H * 0.03) + 'px monospace'; ctx.fillStyle = '#8ab4d8';
+    ctx.fillText('ns1 · ' + NS_IP + ' · BIND9', sx + sw / 2, sy + 24);
+
+    // Estado da zona
+    const rows = [
+        { lbl: 'A · sfcyber.com.br -> ' + SITE_IP, state: d.baseResolved ? 'ok' : 'idle' },
+        { lbl: 'MX · mail.sfcyber.com.br', state: d.mxSeen ? 'ok' : 'idle' },
+        { lbl: 'NS · ns1 / ns2', state: d.nsSeen ? 'ok' : 'idle' },
+        { lbl: 'vpn.sfcyber.com.br (exposto)', state: d.subFound ? (d.axfrPatched ? 'warn' : 'bad') : 'idle' },
+        { lbl: 'AXFR (transferência)', state: d.axfrOpen ? (d.axfrPatched ? 'ok' : 'bad') : 'idle' },
+        { lbl: 'Cache do resolver', state: d.poisonSpotted ? (d.cacheFlushed ? 'ok' : 'bad') : 'idle' },
+        { lbl: 'DNSSEC (assinatura)', state: d.dnssecSigned ? 'ok' : 'idle' },
+    ];
+    let ry = sy + 46;
+    const rowH = 30;
+    rows.forEach(r => {
+        let color = '#777';
+        if (r.state === 'ok') color = '#27c93f';
+        else if (r.state === 'bad') color = '#ff5f56';
+        else if (r.state === 'warn') color = '#ffbd2e';
+        ctx.fillStyle = '#101828'; ctx.strokeStyle = color; ctx.lineWidth = 2;
+        ctx.roundRect(sx + 14, ry - 12, sw - 28, 22, 6); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = color; ctx.font = (H * 0.024) + 'px monospace'; ctx.textAlign = 'left';
+        ctx.fillText((color === '#ff5f56' ? '⚠ ' : color === '#27c93f' ? '✔ ' : color === '#ffbd2e' ? '· ' : '· ') + r.lbl, sx + 22, ry + 3);
+        ry += rowH;
+    });
+
+    // Zona (banco de registros)
+    const dbX = sx + sw * 0.5, dbY = sy + sh + 14;
+    ctx.strokeStyle = d.dnssecSigned ? '#27c93f' : '#ffbd2e';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, sw * 0.24, 9, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#101828';
+    ctx.beginPath();
+    ctx.moveTo(dbX - sw * 0.24, dbY);
+    ctx.lineTo(dbX - sw * 0.24, dbY + 30);
+    ctx.quadraticCurveTo(dbX - sw * 0.24, dbY + 42, dbX, dbY + 42);
+    ctx.quadraticCurveTo(dbX + sw * 0.24, dbY + 42, dbX + sw * 0.24, dbY + 30);
+    ctx.lineTo(dbX + sw * 0.24, dbY);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, sw * 0.24, 9, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#101828'; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#8ab4d8'; ctx.font = (H * 0.026) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🗄️ Zona sfcyber.com.br', dbX, dbY + 26);
+    ctx.fillStyle = d.dnssecSigned ? '#27c93f' : '#ffbd2e';
+    ctx.fillText(d.dnssecSigned ? 'DNSSEC ativo ✔' : 'sem assinatura', dbX, dbY + 42);
+
+    // Seta atacante -> servidor
+    ctx.strokeStyle = (d.dnssecSigned && d.axfrPatched && d.cacheFlushed) ? '#27c93f' : '#ffbd2e';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(ax + aw, ay + ah / 2);
+    ctx.lineTo(sx - 10, sy + sh / 2);
+    ctx.stroke();
+}
+
+function drawGrid(W, H) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+}
+
+function renderSvcTable() {
+    const d = state.dns;
+    const hard = d.axfrPatched && d.dnssecSigned && d.cacheFlushed;
+    const rows = [
+        { svc: 'Resolução A (sfcyber.com.br)', status: d.baseResolved ? 'Resolvendo' : 'Não consultado', cls: d.baseResolved ? 'ok' : 'mid' },
+        { svc: 'Registros MX / NS', status: (d.mxSeen && d.nsSeen) ? 'Mapeados' : 'Parcial', cls: (d.mxSeen && d.nsSeen) ? 'ok' : 'mid' },
+        { svc: 'Subdomínio vpn exposto', status: d.subFound ? (d.axfrPatched ? 'Documentado' : 'Expõe vpn') : 'Não testado', cls: d.subFound ? (d.axfrPatched ? 'ok' : 'bad') : 'mid' },
+        { svc: 'Transferência de zona (AXFR)', status: d.axfrOpen ? (d.axfrPatched ? 'Restrita' : 'Aberta!') : 'Não testada', cls: d.axfrOpen ? (d.axfrPatched ? 'ok' : 'bad') : 'mid' },
+        { svc: 'Cache do resolver', status: d.poisonSpotted ? (d.cacheFlushed ? 'Limpo' : 'Envenenado!') : 'Não testado', cls: d.poisonSpotted ? (d.cacheFlushed ? 'ok' : 'bad') : 'mid' },
+        { svc: 'DNSSEC', status: d.dnssecSigned ? 'Ativo' : 'Não configurado', cls: d.dnssecSigned ? 'ok' : 'mid' },
+        { svc: 'Servidor DNS', status: hard ? 'Protegido' : 'Em análise', cls: hard ? 'ok' : 'mid' },
+    ];
+    const tbody = document.getElementById('svcTableBody');
+    tbody.innerHTML = '';
+    rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.svc + '</td><td class="' + r.cls + '">' + r.status + '</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// ===================== MODALS =====================
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function openTheory() {
+    const theory = document.getElementById('theoryContent');
+    theory.innerHTML = '';
+    const items = theoryLevels[levels[state.currentLevel].id] || [];
+    items.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'concept-item';
+        div.innerHTML = '<div class="concept-icon">' + t.icon + '</div><div><b>' + t.title + '</b><br>' + t.desc + '</div>';
+        theory.appendChild(div);
+    });
+    openModal('theoryModal');
+}
+
+function openLevelMap() {
+    const grid = document.getElementById('levelMapGrid');
+    grid.innerHTML = '';
+    levels.forEach(lvl => {
+        const div = document.createElement('div');
+        const done = !!state.levelDone[lvl.id];
+        const current = state.currentLevel === lvl.id - 1;
+        div.className = 'level-card' + (done ? ' done' : current ? ' current' : '');
+        div.innerHTML = '<div class="lv-num">' + lvl.id + '</div>' +
+            '<div style="font-size:0.85em; color:#4a4a4a;">' + lvl.title.replace(/^Nível \d+: /, '') + '</div>' +
+            '<div class="lv-status">' + (done ? '✔ Concluído' : current ? '► Atual' : '') + '</div>';
+        if (done || current) div.onclick = () => { state.currentLevel = lvl.id - 1; closeModal('levelMapModal'); renderLevel(); };
+        grid.appendChild(div);
+    });
+    openModal('levelMapModal');
+}
+
+// ===================== QUIZ =====================
+const quizQuestions = [
+    {
+        q: "Qual porta e protocolo o DNS usa por padrão para consultas comuns?",
+        options: ["80/TCP", "443/TCP", "53/UDP (e 53/TCP para respostas grandes)", "25/TCP"],
+        correct: 2,
+        explain: "Consultas DNS padrão usam a porta 53 por UDP; TCP também é usado na 53 para respostas maiores, como AXFR.",
+    },
+    {
+        q: "Qual registro associa um nome de domínio a um endereço IPv4?",
+        options: ["MX", "NS", "CNAME", "A"],
+        correct: 3,
+        explain: "O registro A mapeia o nome para um IPv4; AAAA faz o mesmo para IPv6.",
+    },
+    {
+        q: "O que o registro MX indica sobre um domínio?",
+        options: [
+            "Quais são os servidores autoritativos do domínio",
+            "Quais servidores recebem o e-mail do domínio",
+            "O endereço IP do site",
+            "A data de expiração do domínio",
+        ],
+        correct: 1,
+        explain: "MX (Mail eXchange) aponta os servidores de e-mail, com prioridade (número menor = mais preferido).",
+    },
+    {
+        q: "Quais servidores são considerados autoritativos para um domínio?",
+        options: ["Os registrados no registro NS", "O servidor que resolve mais rápido", "Qualquer resolver público", "O servidor do provedor de internet"],
+        correct: 0,
+        explain: "Os NS definem os servidores autoritativos: a fonte final de verdade para o domínio.",
+    },
+    {
+        q: "O que uma transferência de zona (AXFR) sem restrição permite a um atacante?",
+        options: [
+            "Enviar e-mails em nome do domínio",
+            "Copiar toda a zona, revelando registros internos e subdomínios",
+            "Trocar o IP do site",
+            "Derreter o processador do servidor",
+        ],
+        correct: 1,
+        explain: "Sem allow-transfer, qualquer pessoa baixa o mapa completo da rede: servidores, subdomínios e IPs internos.",
+    },
+    {
+        q: "Como corrigir corretamente uma transferência de zona aberta?",
+        options: [
+            "Remover o registro NS do servidor",
+            "Restringir o AXFR com allow-transfer apenas para os slaves autorizados",
+            "Aumentar o TTL da zona",
+            "Bloquear a porta 53 no firewall de borda",
+        ],
+        correct: 1,
+        explain: "allow-transfer limita a transferência aos servidores secundários autorizados, mantendo a replicação legítima.",
+    },
+    {
+        q: "O que é o envenenamento de cache (DNS poisoning)?",
+        options: [
+            "Alterar o arquivo de zona do servidor",
+            "Injetar respostas falsas no resolver para levar usuários a IPs do atacante",
+            "Encher o cache com consultas legítimas",
+            "Trocar a senha do administrador do DNS",
+        ],
+        correct: 1,
+        explain: "O atacante injeta dados falsos na cache do resolver; usuários acessam sites falsos sem perceber (phishing).",
+    },
+    {
+        q: "O que o DNSSEC adiciona a uma zona DNS?",
+        options: [
+            "Uma camada de criptografia de tráfego (TLS)",
+            "Um firewall para a porta 53",
+            "Assinaturas digitais (RRSIG/DNSKEY) que validam autenticidade e integridade das respostas",
+            "Uma senha para quem consulta o domínio",
+        ],
+        correct: 2,
+        explain: "DNSSEC assina a zona: cada resposta carrega assinaturas verificáveis, impedindo respostas falsas.",
+    },
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function openQuiz(force) {
+    quizIndex = 0;
+    quizScore = 0;
+    quizAnswered = false;
+    document.getElementById('quizFeedback').textContent = '';
+    showQuizQuestion();
+    openModal('quizModal');
+}
+
+function showQuizQuestion() {
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    const q = quizQuestions[quizIndex];
+    document.getElementById('quizQuestion').textContent = '(' + (quizIndex + 1) + '/' + quizQuestions.length + ') ' + q.q;
+    const opts = document.getElementById('quizOptions');
+    opts.innerHTML = '';
+    quizAnswered = false;
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerQuiz(i);
+        opts.appendChild(btn);
+    });
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizNextBtn').style.display = 'none';
+}
+
+function answerQuiz(i) {
+    if (quizAnswered) return;
+    quizAnswered = true;
+    const q = quizQuestions[quizIndex];
+    const btns = document.querySelectorAll('#quizOptions .quiz-option');
+    btns.forEach((b, bIdx) => {
+        b.disabled = true;
+        if (bIdx === q.correct) b.classList.add('correct');
+        else if (bIdx === i) b.classList.add('wrong');
+    });
+    if (i === q.correct) { quizScore += 100; document.getElementById('quizFeedback').textContent = '✅ ' + q.explain; }
+    else document.getElementById('quizFeedback').textContent = '❌ ' + q.explain;
+    document.getElementById('quizNextBtn').style.display = 'inline-block';
+    document.getElementById('quizNextBtn').textContent = quizIndex + 1 < quizQuestions.length ? 'Próxima ▶' : 'Ver Resultado';
+}
+
+function quizNext() {
+    if (!quizAnswered) return;
+    quizIndex++;
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    showQuizQuestion();
+}
+
+function finishQuiz() {
+    state.score += quizScore;
+    state.quizDone = true;
+    updateStats();
+    document.getElementById('quizQuestion').textContent = '🏁 Resultado da Prova Final';
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizFeedback').textContent = '';
+    const container = document.getElementById('quizOptions');
+    const box = document.createElement('div');
+    box.className = 'score';
+    box.textContent = 'Você acertou ' + (quizScore / 100) + ' de ' + quizQuestions.length + ' perguntas';
+    box.style.fontSize = '1.3em';
+    container.appendChild(box);
+    if (quizScore >= quizQuestions.length * 50) {
+        const p = document.createElement('p');
+        p.style.color = '#27c93f'; p.style.fontWeight = 'bold';
+        p.textContent = '🎓 Aprovado! Procure seu certificado na tela final.';
+        container.appendChild(p);
+    } else {
+        const p = document.createElement('p');
+        p.style.color = '#ff8c00';
+        p.textContent = '💪 Você pode refazer a prova quando quiser!';
+        container.appendChild(p);
+    }
+    document.getElementById('quizNextBtn').style.display = 'none';
+    const approved = quizScore >= quizQuestions.length * 50;
+    const footer = document.getElementById('quizFooter');
+    footer.innerHTML = '';
+    if (approved) {
+        const btnCert = document.createElement('button');
+        btnCert.className = 'btn btn-success';
+        btnCert.textContent = '🎓 Ver Certificado';
+        btnCert.onclick = () => { closeModal('quizModal'); showCertificate(); };
+        footer.appendChild(btnCert);
+    }
+    const btnAgain = document.createElement('button');
+    btnAgain.className = 'btn btn-ghost';
+    btnAgain.textContent = '🔁 Refazer Prova';
+    btnAgain.onclick = () => openQuiz();
+    footer.appendChild(btnAgain);
+    const btnClose = document.createElement('button');
+    btnClose.className = 'btn btn-primary';
+    btnClose.textContent = 'Fechar';
+    btnClose.onclick = () => closeModal('quizModal');
+    footer.appendChild(btnClose);
+    save();
+}
+
+// ===================== GAME FLOW =====================
+function confirmAction(kind) {
+    document.getElementById('confirmText').textContent =
+        kind === 'reset' ? 'Todo o progresso e a pontuação serão reiniciados. Continuar?' : '';
+    document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); resetGame(); };
+    openModal('confirmModal');
+}
+
+function resetGame() {
+    state.currentLevel = 0;
+    state.score = 0;
+    state.attempts = 0;
+    state.quizDone = false;
+    state.levelDone = {};
+    state.scorePaid = new Set();
+    Object.keys(state.dns).forEach(k => state.dns[k] = false);
+    term.querySelectorAll('.output').forEach(o => o.remove());
+    addOutput('Jogo reiniciado. Boa sorte!', 'system');
+    renderLevel();
+    updateStats();
+    updateRobot();
+    save();
+}
+
+function openGameComplete() {
+    document.getElementById('finalScore').textContent = 'Pontuação Final: ' + state.score;
+    document.getElementById('btnProvaFinal').style.display = 'none';
+    openModal('gameCompleteModal');
+}
+
+function showCertificate() {
+    const name = state.studentName || 'Aluno(a)';
+    document.getElementById('certStudentName').textContent = name;
+    document.getElementById('certScore').textContent = state.score + ' pts';
+    document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
+    closeModal('gameCompleteModal');
+    closeModal('successModal');
+    openModal('certificateModal');
+}
+
+function downloadCertificate() {
+    const node = document.getElementById('certificatePrint');
+    if (window.htmlToImage) {
+        htmlToImage.toPng(node, { pixelRatio: 2, backgroundColor: '#f3f7fa' })
+            .then(dataUrl => {
+                const a = document.createElement('a');
+                a.download = 'certificado-sfcyber-dns-' + (state.studentName || 'aluno').toLowerCase().replace(/\s+/g, '-') + '.png';
+                a.href = dataUrl;
+                a.click();
+            })
+            .catch(() => window.print());
+    } else {
+        window.print();
+    }
+}
+
+// ===================== WELCOME / STORAGE =====================
+function closeWelcome() {
+    const nameInput = document.getElementById('studentNameInput');
+    const name = (nameInput.value || '').trim();
+    state.studentName = name || 'Aluno(a)';
+    closeModal('welcomeModal');
+    input.focus();
+    startIfNew();
+    robotIntro();
+    save();
+}
+
+function startIfNew() {
+    state.dns.baseResolved = false;
+    renderLevel();
+    updateStats();
+}
+
+function resumeGame() {
+    closeModal('welcomeModal');
+    input.focus();
+    renderLevel();
+    updateStats();
+    robotIntro('De volta!');
+}
+
+function save() {
+    try {
+        const data = {
+            currentLevel: state.currentLevel,
+            score: state.score,
+            attempts: state.attempts,
+            studentName: state.studentName,
+            dns: state.dns,
+            levelDone: state.levelDone,
+            quizDone: state.quizDone,
+        };
+        localStorage.setItem('sfcyber-dns-v1', JSON.stringify(data));
+    } catch (e) {}
+}
+
+function load() {
+    try {
+        const raw = localStorage.getItem('sfcyber-dns-v1');
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        state.currentLevel = data.currentLevel || 0;
+        state.score = data.score || 0;
+        state.attempts = data.attempts || 0;
+        state.studentName = data.studentName || '';
+        state.quizDone = data.quizDone || false;
+        state.dns = Object.assign(state.dns, data.dns || {});
+        state.levelDone = data.levelDone || {};
+        state.scorePaid = new Set(Object.keys(state.levelDone).map(Number));
+        return true;
+    } catch (e) { return false; }
+}
+
+// ===================== INIT =====================
+function resizeCanvas() {
+    const cssH = 380;
+    canvas.width = Math.max(canvas.clientWidth, 50) * 2;
+    canvas.height = cssH * 2;
+    drawScene();
+}
+window.addEventListener('resize', resizeCanvas);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const had = load();
+    document.getElementById('studentNameInput').value = state.studentName || '';
+    if (had && state.studentName) document.getElementById('resumeBtn').style.display = 'inline-block';
+    resizeCanvas();
+    if (!had || !state.studentName) {
+        openModal('welcomeModal');
+        document.getElementById('studentNameInput').focus();
+    } else {
+        closeModal('welcomeModal');
+        robotIntro('De volta!');
+    }
+    renderLevel();
+    updateStats();
+    renderSvcTable();
+    input.focus();
+});
+</script>
+</body>
+</html>
