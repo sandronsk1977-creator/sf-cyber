@@ -56,6 +56,20 @@
   }
 }
 
+@keyframes neon-badge {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(34, 211, 238, 0.35), 0 0 18px rgba(34, 211, 238, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.7), 0 0 32px rgba(34, 211, 238, 0.35);
+  }
+}
+
+.animate-neon-badge {
+  animation: neon-badge 2s ease-in-out infinite;
+}
+
 :root {
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
