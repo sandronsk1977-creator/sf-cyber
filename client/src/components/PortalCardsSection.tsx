@@ -16,9 +16,9 @@ const metaChips = (
 );
 
 const cardFooter = (
-  <div className="flex flex-col gap-4">
+  <div className="flex flex-col gap-3">
     <div className="flex flex-wrap items-center gap-2">{metaChips}</div>
-    <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
+    <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-2.5 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
       Acessar
       <ArrowRight className="w-4 h-4 animate-arrow-pulse" />
     </span>
@@ -41,26 +41,26 @@ export function PortalCardsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <Link
             href="/simulador-vlan"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                <Network className="w-7 h-7" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                <Network className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
               </span>
             </div>
 
-            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
               Redes · Laboratório de VLANs
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Switch Cisco virtual com terminal de comandos reais para criar e atribuir VLANs. Comece a praticar agora mesmo, sem precisar de equipamento físico.
             </p>
 
@@ -71,21 +71,21 @@ export function PortalCardsSection() {
           <Link
             href="/simulador-seguranca"
             style={{ "--neon": "#3b82f6" } as React.CSSProperties}
-            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                <ShieldHalf className="w-7 h-7" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                <ShieldHalf className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
               </span>
             </div>
 
-            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
               Cibersegurança · Laboratório SOC
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Assuma o papel de um Analista SOC: escaneie com nmap, aplique firewall, analise logs, bloqueie o atacante e reforce o SSH.
             </p>
 
@@ -96,21 +96,21 @@ export function PortalCardsSection() {
           <Link
             href="/simulador-web"
             style={{ "--neon": "#34d399" } as React.CSSProperties}
-            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                <Bug className="w-7 h-7" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <Bug className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
               </span>
             </div>
 
-            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
               Cibersegurança · Segurança Web (SQLi | XSS)
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Analise a Lojinha Online como um pentester: SQL Injection, extração de dados via UNION, XSS refletido e armazenado e correção da aplicação.
             </p>
 
@@ -121,21 +121,21 @@ export function PortalCardsSection() {
           <Link
             href="/simulador-dns"
             style={{ "--neon": "#8b5cf6" } as React.CSSProperties}
-            className="sf-neon-card group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative p-6 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <div className="flex items-start justify-between mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
-                <Globe className="w-7 h-7" />
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
+                <Globe className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
                 Disponível
               </span>
             </div>
 
-            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
               Redes · Laboratório de Servidor DNS
             </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Audite o servidor DNS como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) e proteja a zona com DNSSEC.
             </p>
 
