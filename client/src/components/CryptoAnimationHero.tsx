@@ -129,7 +129,7 @@ export function CryptoAnimationHero() {
               document.getElementById("portal")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            Ver os simuladores →
+            Ver os Laboratórios →
           </Button>
         </div>
 
