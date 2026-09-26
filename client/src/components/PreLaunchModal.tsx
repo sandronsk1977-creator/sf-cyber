@@ -97,7 +97,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
               área de membros (cursos, laboratórios e avaliações) abrir.
             </p>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              Enquanto isso, já pode praticar nos simuladores grátis com 8 níveis e certificado
+              Enquanto isso, já pode praticar nos laboratórios grátis com 8 níveis e certificado
               de conclusão.
             </p>
             <div className="grid gap-3 mb-5">
@@ -106,28 +106,28 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-5 rounded-xl shadow-xl shadow-cyan-500/25"
               >
                 <Bot className="w-5 h-5 mr-2" />
-                Testar o Simulador de Segurança (SOC)
+                Testar o Laboratório de Segurança (SOC)
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-vlan")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Boxes className="w-5 h-5 mr-2" />
-                Testar o Simulador de VLANs
+                Testar o Laboratório de VLANs
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-web")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Bug className="w-5 h-5 mr-2" />
-                Testar o Simulador de Segurança Web
+                Testar o Laboratório de Segurança Web
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-dns")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Globe className="w-5 h-5 mr-2" />
-                Testar o Simulador de Servidor DNS
+                Testar o Laboratório de Servidor DNS
               </Button>
             </div>
             <button
@@ -142,7 +142,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
             <p className="text-sm text-slate-300 leading-relaxed mb-5">
               A área de membros (cursos, laboratórios e avaliações) estará disponível em
-              breve. Enquanto isso, aproveite os Simuladores grátis, com 8 níveis e
+              breve. Enquanto isso, aproveite os Laboratórios grátis, com 8 níveis e
               certificado de conclusão.
             </p>
 
@@ -177,7 +177,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
               onClick={() => goToSimulator("/simulador-vlan")}
               className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-6 rounded-xl"
             >
-              Aproveitar o Simulador de VLANs Grátis
+              Aproveitar o Laboratório de VLANs Grátis
             </Button>
 
             <button

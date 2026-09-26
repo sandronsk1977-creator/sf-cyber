@@ -23,7 +23,7 @@ export function SimulatorPage() {
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full">
               <Network className="w-3.5 h-3.5" />
-              Simulador de VLANs
+Laboratório de VLANs
             </span>
             <Link
               href="/"
@@ -39,7 +39,7 @@ export function SimulatorPage() {
       <main className="flex-1 flex flex-col">
         <div className="container py-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold font-mono">Simulador do Switch Cisco VLANs</h1>
+            <h1 className="text-2xl font-extrabold font-mono">Laboratório do Switch Cisco VLANs</h1>
             <p className="text-sm text-slate-400 mt-1">
               Aprenda a configurar VLANs com comandos reais. 8 níveis, teste de ping e certificado de conclusão.
             </p>
@@ -58,7 +58,7 @@ export function SimulatorPage() {
         <div className="flex-1 px-4 pb-6 sm:px-6">
           <iframe
             src="/vlans/index.html"
-            title="Simulador de VLANs do Switch Cisco"
+            title="Laboratório de VLANs do Switch Cisco"
             className="w-full h-full min-h-[70vh] rounded-2xl border border-slate-800 bg-white shadow-2xl shadow-cyan-500/5"
           />
         </div>

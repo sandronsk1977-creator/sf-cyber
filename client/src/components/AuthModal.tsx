@@ -24,7 +24,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
     if (mode === "login") {
       toast.success("Login simulado com sucesso! Bem-vindo de volta à SF Cyber.");
     } else {
-      toast.success("Conta criada com sucesso! Simuladores para o aprendizado prático em Redes e Cibersegurança.");
+      toast.success("Conta criada com sucesso! Laboratórios para o aprendizado prático em Redes e Cibersegurança.");
     }
     onClose();
   };

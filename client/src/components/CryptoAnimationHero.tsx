@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA";
+const TARGET_TITLE = "LABORATÓRIOS PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -91,14 +91,14 @@ export function CryptoAnimationHero() {
         {/* Badge tag */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-8 shadow-lg shadow-cyan-500/10">
           <ShieldCheck className="w-4 h-4 text-cyan-400" />
-          <span>Aprenda com Simulador de Redes e CiberSegurança</span>
+          <span>Aprenda com Laboratório de Redes e CiberSegurança</span>
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
-        <h1 className="sr-only">Simuladores para o aprendizado prático em Redes e Cibersegurança</h1>
+        <h1 className="sr-only">Laboratórios para o aprendizado prático em Redes e Cibersegurança</h1>
         <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 drop-shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-            {displayText || "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA"}
+            {displayText || "LABORATÓRIOS PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA"}
           </span>
         </h1>
 

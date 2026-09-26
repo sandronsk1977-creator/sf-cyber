@@ -19,10 +19,10 @@ export function PricingSection() {
       highlight: false,
       simulator: true,
       features: [
-        "Simulador de VLANs Switch Cisco (8 níveis)",
-        "Simulador de Segurança (Analista SOC | Hacker Ético) (8 níveis)",
-        "Simulador de Segurança Web (SQL Injection | XSS) (8 níveis)",
-        "Simulador de Servidor DNS (Resolução | AXFR | DNSSEC) (8 níveis)",
+        "Laboratório de VLANs Switch Cisco (8 níveis)",
+        "Laboratório de Segurança (Analista SOC | Hacker Ético) (8 níveis)",
+        "Laboratório de Segurança Web (SQL Injection | XSS) (8 níveis)",
+        "Laboratório de Servidor DNS (Resolução | AXFR | DNSSEC) (8 níveis)",
         "Teste de conectividade e prova final",
         "Certificado de conclusão",
         "Progresso salvo automaticamente",
@@ -43,7 +43,7 @@ export function PricingSection() {
         "Simulados e testes de avaliação",
         "Certificado de conclusão por curso",
         "SF Cyber AI (assistente inteligente)",
-        "Novos cursos e simuladores incluídos",
+        "Novos cursos e laboratórios incluídos",
         "Suporte humano dedicado",
       ],
       cta: "Seja Membro",
@@ -58,10 +58,10 @@ export function PricingSection() {
       highlight: true,
       features: [
         "Acesso vitalício a todos os cursos",
-        "Todos os simuladores e laboratórios",
+        "Todos os laboratórios",
         "Simulados e testes de avaliação",
         "Certificado de conclusão por curso",
-        "Novos cursos e simuladores inclusos",
+        "Novos cursos e laboratórios inclusos",
         "Suporte prioritário vitalício",
       ],
       cta: "Seja Membro Vitalício",
@@ -82,7 +82,7 @@ export function PricingSection() {
               Plano FREE... comece agora
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
-              Acesso imediato aos quatro simuladores: VLANs, SOC, Segurança Web e Servidor DNS
+              Acesso imediato aos quatro laboratórios: VLANs, SOC, Segurança Web e Servidor DNS
             </p>
           </div>
 

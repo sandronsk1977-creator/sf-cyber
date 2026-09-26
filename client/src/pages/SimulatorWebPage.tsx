@@ -23,7 +23,7 @@ export function SimulatorWebPage() {
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full">
               <Bug className="w-3.5 h-3.5" />
-              Simulador de Segurança Web
+Laboratório de Segurança Web
             </span>
             <Link
               href="/"
@@ -39,7 +39,7 @@ export function SimulatorWebPage() {
       <main className="flex-1 flex flex-col">
         <div className="container py-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold font-mono">Simulador de Segurança Web (SQL Injection | XSS)</h1>
+            <h1 className="text-2xl font-extrabold font-mono">Laboratório de Segurança Web (SQL Injection | XSS)</h1>
             <p className="text-sm text-slate-400 mt-1">
               Teste uma aplicação web vulnerável com comandos reais. 8 níveis, SQL Injection, XSS e certificado de conclusão.
             </p>
@@ -58,7 +58,7 @@ export function SimulatorWebPage() {
         <div className="flex-1 px-4 pb-6 sm:px-6">
           <iframe
             src="/web/index.html"
-            title="Simulador de Segurança Web da SF Cyber"
+            title="Laboratório de Segurança Web da SF Cyber"
             className="w-full h-full min-h-[70vh] rounded-2xl border border-slate-800 bg-white shadow-2xl shadow-cyan-500/5"
           />
         </div>

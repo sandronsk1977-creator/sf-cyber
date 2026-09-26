@@ -31,9 +31,9 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
           Plano FREE · Grátis
         </div>
 
-        <h2 id="simulator-choice-title" className="text-2xl font-extrabold font-mono text-white mb-3">Escolha seu simulador</h2>
+        <h2 id="simulator-choice-title" className="text-2xl font-extrabold font-mono text-white mb-3">Escolha seu laboratório</h2>
         <p className="text-sm text-slate-300 leading-relaxed mb-6">
-          Comece a praticar agora mesmo. Os quatro simuladores são{" "}
+          Comece a praticar agora mesmo. Os quatro laboratórios são{" "}
           <strong className="text-cyan-400">grátis</strong>, com 8 níveis e certificado de conclusão.
         </p>
 
@@ -46,7 +46,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <div className="w-12 h-12 mb-4 rounded-xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
               <Network className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold font-mono text-white mb-2">Simulador de VLANs</h3>
+            <h3 className="font-extrabold font-mono text-white mb-2">Laboratório de VLANs</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Configure um Switch Cisco: crie VLANs, atribua portas, teste a conectividade.
             </p>
@@ -64,7 +64,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <div className="w-12 h-12 mb-4 rounded-xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
               <ShieldHalf className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold font-mono text-white mb-2">Simulador SOC</h3>
+            <h3 className="font-extrabold font-mono text-white mb-2">Laboratório SOC</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Seja um Analista SOC: escaneie, proteja o firewall e bloqueie o atacante.
             </p>
@@ -82,7 +82,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <div className="w-12 h-12 mb-4 rounded-xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
               <Bug className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold font-mono text-white mb-2">Simulador de Segurança Web</h3>
+            <h3 className="font-extrabold font-mono text-white mb-2">Laboratório de Segurança Web</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Descubra SQL Injection e XSS numa aplicação web e depois corrija a falha.
             </p>
@@ -100,7 +100,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <div className="w-12 h-12 mb-4 rounded-xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
               <Globe className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold font-mono text-white mb-2">Simulador de Servidor DNS</h3>
+            <h3 className="font-extrabold font-mono text-white mb-2">Laboratório de Servidor DNS</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Resolva registros com dig, descubra o AXFR aberto e aplique DNSSEC.
             </p>

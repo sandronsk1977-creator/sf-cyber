@@ -72,7 +72,7 @@ export function SponsorSection() {
             Faça sua doação
           </a>
           <p className="mt-4 text-xs text-slate-500">
-            Todo apoio é aplicado no crescimento do portal e em novos simuladores.
+            Todo apoio é aplicado no crescimento do portal e em novos laboratórios.
           </p>
         </div>
       </div>

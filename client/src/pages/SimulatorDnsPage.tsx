@@ -23,7 +23,7 @@ export function SimulatorDnsPage() {
           <div className="flex items-center gap-4">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full">
               <Globe className="w-3.5 h-3.5" />
-              Simulador de DNS
+              Laboratório de DNS
             </span>
             <Link
               href="/"
@@ -39,7 +39,7 @@ export function SimulatorDnsPage() {
       <main className="flex-1 flex flex-col">
         <div className="container py-6 flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold font-mono">Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)</h1>
+            <h1 className="text-2xl font-extrabold font-mono">Laboratório de Servidor DNS (Resolução | AXFR | DNSSEC)</h1>
             <p className="text-sm text-slate-400 mt-1">
               Audite um servidor DNS com comandos reais de administração. 8 níveis, transferência de zona, envenenamento de cache e certificado de conclusão.
             </p>
@@ -58,7 +58,7 @@ export function SimulatorDnsPage() {
         <div className="flex-1 px-4 pb-6 sm:px-6">
           <iframe
             src="/dns/index.html"
-            title="Simulador de Servidor DNS da SF Cyber"
+            title="Laboratório de Servidor DNS da SF Cyber"
             className="w-full h-full min-h-[70vh] rounded-2xl border border-slate-800 bg-white shadow-2xl shadow-cyan-500/5"
           />
         </div>

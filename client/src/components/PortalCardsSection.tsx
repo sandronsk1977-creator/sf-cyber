@@ -58,7 +58,7 @@ export function PortalCardsSection() {
             </div>
 
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
-              Redes · Simulador de VLANs
+              Redes · Laboratório de VLANs
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Switch Cisco virtual com terminal de comandos reais para criar e atribuir VLANs. Comece a praticar agora mesmo, sem precisar de equipamento físico.
@@ -83,7 +83,7 @@ export function PortalCardsSection() {
             </div>
 
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
-              Cibersegurança · Simulador SOC
+              Cibersegurança · Laboratório SOC
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Assuma o papel de um Analista SOC: escaneie com nmap, aplique firewall, analise logs, bloqueie o atacante e reforce o SSH.
@@ -133,7 +133,7 @@ export function PortalCardsSection() {
             </div>
 
             <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
-              Redes · Simulador de Servidor DNS
+              Redes · Laboratório de Servidor DNS
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Audite o servidor DNS como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) e proteja a zona com DNSSEC.
