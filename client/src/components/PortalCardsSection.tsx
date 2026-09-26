@@ -1,5 +1,5 @@
 import React from "react";
-import { Network, ShieldHalf, ArrowRight } from "lucide-react";
+import { Network, ShieldHalf, Bug, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 export function PortalCardsSection() {
@@ -18,7 +18,7 @@ export function PortalCardsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <Link
             href="/simulador-vlan"
@@ -68,6 +68,36 @@ export function PortalCardsSection() {
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
               Assuma o papel de um Analista SOC: escaneie o servidor com nmap, aplique firewall, analise logs, bloqueie o atacante e reforce o SSH. 8 níveis progressivos e certificado de conclusão.
+            </p>
+
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
+                Acessar Simulador
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
+            </div>
+          </Link>
+
+          {/* Card 03 - Segurança Web | SQL Injection | XSS */}
+          <Link
+            href="/simulador-web"
+            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+          >
+            <div className="flex items-start justify-between mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <Bug className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                Disponível
+              </span>
+            </div>
+
+            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+              Cibersegurança · Segurança Web (SQLi | XSS)
+            </h3>
+            <p className="text-slate-400 text-sm leading-relaxed mb-8">
+              Analise a Lojinha Online como um pentester: descubra parâmetros dinâmicos, detete SQL Injection, extraia dados via UNION, teste XSS refletido e armazenado e corrija a aplicação. 8 níveis progressivos e certificado de conclusão.
             </p>
 
             <div className="flex items-center justify-between">

@@ -21,6 +21,7 @@ export function PricingSection() {
       features: [
         "Simulador de VLANs Switch Cisco (8 níveis)",
         "Simulador de Segurança (Analista SOC | Hacker Ético) (8 níveis)",
+        "Simulador de Segurança Web (SQL Injection | XSS) (8 níveis)",
         "Teste de conectividade e prova final",
         "Certificado de conclusão",
         "Progresso salvo automaticamente",

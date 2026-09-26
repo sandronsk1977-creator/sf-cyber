@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "wouter";
-import { X, Rocket, CheckCircle2, Bot, Boxes } from "lucide-react";
+import { X, Rocket, CheckCircle2, Bot, Boxes, Bug } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -98,17 +98,24 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             <div className="grid gap-3 mb-5">
               <Button
                 onClick={() => goToSimulator("/simulador-seguranca")}
-                className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-6 rounded-xl shadow-xl shadow-cyan-500/25"
+                className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-5 rounded-xl shadow-xl shadow-cyan-500/25"
               >
                 <Bot className="w-5 h-5 mr-2" />
                 Testar o Simulador de Segurança (SOC)
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-vlan")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-6 rounded-xl"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Boxes className="w-5 h-5 mr-2" />
                 Testar o Simulador de VLANs
+              </Button>
+              <Button
+                onClick={() => goToSimulator("/simulador-web")}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
+              >
+                <Bug className="w-5 h-5 mr-2" />
+                Testar o Simulador de Segurança Web
               </Button>
             </div>
             <button
