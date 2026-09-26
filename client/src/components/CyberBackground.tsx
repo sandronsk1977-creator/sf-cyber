@@ -17,6 +17,7 @@ export function CyberBackground() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
     const fontSize = 16;
+    const speed = 0.45;
     let cols = 0;
     let drops: number[] = [];
     let raf = 0;
@@ -25,9 +26,9 @@ export function CyberBackground() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       cols = Math.floor(window.innerWidth / fontSize);
-      const active = Math.floor(cols * 0.55);
-      drops = Array.from({ length: cols }, (_, i) =>
-        i < active ? Math.random() * -80 : -1000
+      drops = Array.from(
+        { length: cols },
+        () => Math.random() * (window.innerHeight / fontSize)
       );
     };
 
@@ -35,7 +36,7 @@ export function CyberBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px monospace`;
       for (let i = 0; i < cols; i++) {
-        drops[i] += 1;
+        drops[i] += speed;
         const y = drops[i];
         const x = i * fontSize;
         const char = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
@@ -51,8 +52,8 @@ export function CyberBackground() {
           ctx.fillText(char(), x, (y - 2) * fontSize);
         }
 
-        if (y * fontSize > window.innerHeight && Math.random() > 0.975) {
-          drops[i] = 0;
+        if (y * fontSize > window.innerHeight && Math.random() > 0.99) {
+          drops[i] = Math.random() * -40;
         }
       }
       raf = requestAnimationFrame(drawFrame);
