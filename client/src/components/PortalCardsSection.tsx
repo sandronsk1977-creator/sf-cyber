@@ -17,7 +17,7 @@ const metaChips = (
 
 const cardFooter = (
   <div className="flex flex-col gap-3">
-    <div className="flex flex-wrap items-center gap-2">{metaChips}</div>
+    <div className="flex items-center justify-between gap-2">{metaChips}</div>
     <span className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-2.5 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors w-full">
       Acessar
       <ArrowRight className="w-4 h-4 animate-arrow-pulse" />
