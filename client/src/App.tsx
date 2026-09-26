@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { CyberBackground } from "./components/CyberBackground";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { ScrollNav } from "@/components/ScrollNav";
@@ -71,6 +72,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark">
       <ErrorBoundary>
+        <CyberBackground />
         <TooltipProvider>
           <Router />
           <ScrollNav />
