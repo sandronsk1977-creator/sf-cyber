@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SF Cyber</title>
+    <style>
+      body {
+        margin: 0;
+        background: #020617;
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        color: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+      .box {
+        text-align: center;
+        padding: 48px;
+      }
+      .brand {
+        color: #22d3ee;
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+      p {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="brand">SF Cyber</div>
+      <p>Carregando...</p>
+    </div>
+    <script>
+      (function () {
+        try {
+          sessionStorage.setItem(
+            "sfcyberRoute",
+            window.location.pathname + window.location.search
+          );
+        } catch (e) {}
+        window.location.replace("/");
+      })();
+    </script>
+  </body>
+</html>
