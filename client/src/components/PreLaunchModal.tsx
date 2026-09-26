@@ -177,7 +177,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
               onClick={() => goToSimulator("/simulador-vlan")}
               className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-6 rounded-xl"
             >
-              Aproveitar o Laboratório de VLANs Grátis
+              Aproveitar os Laboratórios Grátis
             </Button>
 
             <button
