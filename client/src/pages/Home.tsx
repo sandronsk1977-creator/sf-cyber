@@ -6,6 +6,7 @@ import { PricingSection } from "@/components/PricingSection";
 import { SponsorSection } from "@/components/SponsorSection";
 import { PortalCardsSection } from "@/components/PortalCardsSection";
 import { ContactRail } from "@/components/ContactRail";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
         <PricingSection />
       </main>
       <ContactRail />
+      <Footer />
     </div>
   );
 }
