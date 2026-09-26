@@ -264,13 +264,6 @@
 }
 
 /* ===== Cyber Background (fundo cinematográfico de hacker) ===== */
-.cyber-grid {
-  background-image:
-    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-
 .cyber-scanlines {
   background-image: repeating-linear-gradient(
     0deg,

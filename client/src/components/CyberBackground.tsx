@@ -94,7 +94,6 @@ export function CyberBackground() {
         ref={canvasRef}
         className="absolute inset-0 w-full h-full mix-blend-screen"
       />
-      <div className="absolute inset-0 cyber-grid" />
       <div className="absolute inset-0 cyber-scanlines" />
       <div className="absolute inset-0 cyber-vignette" />
     </div>
