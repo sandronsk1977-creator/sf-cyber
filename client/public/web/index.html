@@ -899,7 +899,7 @@ const levels = [
         id: 6,
         title: "Nível 6: Descobrir XSS refletido",
         desc: "A busca da loja reflete o termo digitado na página. Injete um script na busca e veja que ele é devolvido sem escapar no HTML.",
-        hint: "💡 Dica: <code>curl \"http://192.168.10.30/lojinha/busca.php?q=<script>alert('x')</script>\"</code>",
+        hint: "💡 Dica: <code>curl \"http://192.168.10.30/lojinha/busca.php?q=<script>alert('x')<\/script>\"</code>",
         check: () => state.web.xssRefl,
         successMsg: "Script refletido no HTML de resposta! Qualquer vítima que abrir o link executa o script.",
     },
@@ -907,7 +907,7 @@ const levels = [
         id: 7,
         title: "Nível 7: Descobrir XSS armazenado",
         desc: "Os comentários dos produtos são salvos no servidor. Envie um comentário com script: ele ficará armazenado e rodará no navegador de todo visitante.",
-        hint: "💡 Dica: <code>curl -X POST -d \"produto=1&comentario=<script>alert('stored')</script>\" http://192.168.10.30/lojinha/comentar.php</code>",
+        hint: "💡 Dica: <code>curl -X POST -d \"produto=1&comentario=<script>alert('stored')<\/script>\" http://192.168.10.30/lojinha/comentar.php</code>",
         check: () => state.web.xssStored,
         successMsg: "Comentário com script salvo! XSS armazenado: a munição fica no servidor e ataca todos.",
     },
@@ -1208,8 +1208,8 @@ const SUGGESTIONS = [
     'curl "http://192.168.10.30/lojinha/produto.php?id=1\'"',
     'curl -X POST -d "usuario=admin&senha=\' OR \'1\'=\'1" http://192.168.10.30/lojinha/login.php',
     'curl "http://192.168.10.30/lojinha/produto.php?id=99 UNION SELECT 1,usuario,senha FROM usuarios"',
-    'curl "http://192.168.10.30/lojinha/busca.php?q=<script>alert(\'x\')</script>"',
-    'curl -X POST -d "produto=1&comentario=<script>alert(\'stored\')</script>" http://192.168.10.30/lojinha/comentar.php',
+    'curl "http://192.168.10.30/lojinha/busca.php?q=<script>alert(\'x\')<\/script>"',
+    'curl -X POST -d "produto=1&comentario=<script>alert(\'stored\')<\/script>" http://192.168.10.30/lojinha/comentar.php',
     'patch lojinha --prepared-statements', 'patch lojinha --escape-output',
 ];
 
@@ -1246,8 +1246,8 @@ const LEVEL_TRIGGERS = [
     ['curl http://192.168.10.30/lojinha/produto.php?id=1'],
     ['curl -x post -d usuario=admin&senha= or 1=1 http://192.168.10.30/lojinha/login.php'],
     ['curl http://192.168.10.30/lojinha/produto.php?id=99 union select 1,usuario,senha from usuarios'],
-    ['curl http://192.168.10.30/lojinha/busca.php?q=<script>alert(x)</script>'],
-    ['curl -x post -d produto=1&comentario=<script>alert(stored)</script> http://192.168.10.30/lojinha/comentar.php'],
+    ['curl http://192.168.10.30/lojinha/busca.php?q=<script>alert(x)<\/script>'],
+    ['curl -x post -d produto=1&comentario=<script>alert(stored)<\/script> http://192.168.10.30/lojinha/comentar.php'],
     ['patch lojinha --prepared-statements', 'patch lojinha --escape-output'],
 ];
 
@@ -1342,7 +1342,7 @@ function handleCommand(raw) {
                 addOutput('Comentário enviado com sucesso!', 'success');
                 addOutput('Comentários do produto #1 (todos os visitantes veem):', 'system');
                 addOutput('  [1] Maria: Ótimo produto!', 'system');
-                addOutput('  [2] Você: <script>alert(\'stored\')</script>  ← SALVO NO BANCO', 'warning');
+                addOutput('  [2] Você: <script>alert(\'stored\')<\/script>  ← SALVO NO BANCO', 'warning');
                 addOutput('O script fica armazenado e roda no navegador de cada usuário que abrir a página.', 'warning');
                 break;
             }
@@ -1351,7 +1351,7 @@ function handleCommand(raw) {
                 state.web.xssRefl = true;
                 addOutput('HTTP/1.1 200 OK', 'system');
                 addOutput('Pesquisa por: ' + (raw.match(/q=([^"&\s]*)/) || [])[1] || '(script)', 'system');
-                addOutput('Resultados para: <script>alert(\'x\')</script>', 'warning');
+                addOutput('Resultados para: <script>alert(\'x\')<\/script>', 'warning');
                 addOutput('⚠ O termo foi refletido no HTML SEM escapar: qualquer vítima que abrir o link executa o script.', 'warning');
                 break;
             }
