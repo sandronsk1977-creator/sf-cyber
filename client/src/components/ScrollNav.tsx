@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 function getSections() {
-  return Array.from(document.querySelectorAll("main section")) as HTMLElement[];
+  const nodes = Array.from(
+    document.querySelectorAll("main section, main footer")
+  ) as HTMLElement[];
+  return nodes;
 }
 
 function currentIndex(sections: HTMLElement[]) {
