@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sandro Ferreira">
+    <meta name="robots" content="index, follow">
+    <title>SF Academia Cibersegurança e Redes - Segurança Web</title>
+    <link rel="icon" href="favicon-sf-red_blue.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #eef4f9);
+            min-height: 100vh;
+            color: #323130;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.75);
+            border-bottom: 2px solid #0078d4;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .header h1 .shield { vertical-align: middle; margin-right: 8px; }
+        .header p { color: #5e5e5e; margin-top: 5px; }
+
+        .progress-bar {
+            width: 80%;
+            max-width: 600px;
+            height: 20px;
+            background: #e0e6ec;
+            border-radius: 10px;
+            margin: 15px auto;
+            overflow: hidden;
+            border: 1px solid #d0d7de;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .stats span { color: #0078d4; font-weight: bold; }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .topology-panel {
+            flex: 1;
+            min-width: 400px;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .topology-panel h2 { text-align: center; margin-bottom: 15px; color: #106ebe; }
+
+        .topology-canvas {
+            width: 100%;
+            height: 400px;
+            background: #0a0a1a;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .terminal-panel {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-panel {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .task-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .task-panel .level-title { font-size: 1.15em; color: #106ebe; margin-bottom: 5px; word-break: break-word; }
+        .task-panel .task-desc { color: #4a4a4a; line-height: 1.6; }
+        .task-panel .task-desc code, .hint code { background: rgba(0,120,212,0.08); padding: 1px 5px; border-radius: 4px; color: #0b5d96; font-size: 0.95em; }
+
+        .task-panel .hint {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,120,212,0.08);
+            border-left: 3px solid #0078d4;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #0b5d96;
+        }
+
+        .terminal {
+            background: #0d0d0d;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+            height: 460px;
+            max-height: 70vh;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        .terminal-title { margin-left: 10px; color: #888; font-size: 0.85em; }
+
+        .terminal-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            line-height: 1.5;
+        }
+
+        .terminal { position: relative; }
+        .autocomplete {
+            display: none;
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 44px;
+            background: #1a1a2e;
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            z-index: 20;
+            overflow: hidden;
+        }
+        .ac-item {
+            padding: 8px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00d4ff;
+            cursor: pointer;
+        }
+        .ac-item:hover { background: rgba(0,212,255,0.15); }
+
+        .terminal-body .output { margin-bottom: 5px; }
+        .terminal-body .output.user { color: #d2fff0; }
+        .terminal-body .output.success { color: #27c93f; }
+        .terminal-body .output.error { color: #ff5f56; }
+        .terminal-body .output.info { color: #00d4ff; }
+        .terminal-body .output.warning { color: #ffbd2e; }
+        .terminal-body .output.system { color: #888; }
+
+        .input-line { display: flex; align-items: center; margin-top: 5px; }
+
+        .prompt { color: #00d4ff; white-space: nowrap; margin-right: 5px; }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            outline: none;
+            caret-color: #00d4ff;
+        }
+
+        .buttons-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #0078d4, #106ebe); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.35); }
+        .btn-success { background: linear-gradient(135deg, #27c93f, #00a82d); color: #fff; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(39,201,63,0.3); }
+        .btn-warning { background: linear-gradient(135deg, #ffbd2e, #ff8c00); color: #fff; }
+        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,189,46,0.3); }
+        .btn-danger { background: linear-gradient(135deg, #ff5f56, #cc0000); color: #fff; }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,95,86,0.3); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        .svc-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .svc-table th, .svc-table td { padding: 8px 12px; text-align: left; border: 1px solid #d0d7de; }
+        .svc-table th { background: #d7ecff; color: #106ebe; }
+        .svc-table td { background: #f8fafc; }
+        .svc-table .ok { color: #27c93f; font-weight: bold; }
+        .svc-table .bad { color: #cc0000; font-weight: bold; }
+        .svc-table .mid { color: #ff8c00; font-weight: bold; }
+
+        .legend { display: flex; gap: 15px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.85em; }
+        .legend-color { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+        #quizModal { z-index: 1100; }
+
+        .modal {
+            background: #ffffff;
+            color: #323130;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 92vh;
+            overflow-y: auto;
+            text-align: center;
+            border: 2px solid #c7e2f8;
+            animation: modalPop 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 { color: #106ebe; font-size: 1.8em; margin-bottom: 15px; }
+        .modal p { color: #4a4a4a; line-height: 1.6; margin-bottom: 20px; }
+        .modal .score { font-size: 1.5em; color: #0078d4; margin: 15px 0; }
+
+        .welcome-modal { max-width: 600px; }
+        .welcome-modal h2 { line-height: 1.3; margin-bottom: 14px; font-size: 1.3em; }
+        .welcome-modal .shield-m { vertical-align: middle; margin-right: 6px; width: 30px; height: 30px; }
+        .welcome-white { color: #201f1e; -webkit-text-fill-color: #201f1e; }
+        .welcome-grad {
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .welcome-modal .features { text-align: left; margin: 14px 0; }
+        .welcome-modal .feature-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: #4a4a4a; }
+        .feature-item .icon {
+            width: 30px; height: 30px;
+            background: #d7ecff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #0078d4;
+            flex-shrink: 0;
+        }
+
+        .reference-panel { background: #ffffff; border-radius: 15px; padding: 15px; border: 1px solid rgba(0,0,0,0.07); margin-top: 15px; }
+        .reference-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .cmd-list { font-family: 'Courier New', monospace; font-size: 0.8em; }
+        .cmd-list div { padding: 3px 0; color: #5e5e5e; word-break: break-all; }
+        .cmd-list span { color: #0078d4; }
+
+        .rb-next {
+            display: block;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .rb-next:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,120,212,0.4); }
+
+        .btn-ghost { background: #ffffff; color: #106ebe; border: 1px solid rgba(0,120,212,0.4); }
+        .btn-ghost:hover { background: #e8f0fa; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.15); }
+
+        .modal-footer { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:20px; flex-wrap:wrap; position:sticky; bottom:0; background:#f3f7fa; border-top:1px solid rgba(0,0,0,0.06); padding:12px 4px; z-index:2; margin-left:-4px; margin-right:-4px; }
+
+        .concepts-list { text-align: left; margin: 15px 0; }
+        .concept-item { display:flex; gap:10px; margin: 12px 0; color:#4a4a4a; line-height:1.6; }
+        .concept-item .concept-icon { flex-shrink:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#e3edf8; color:#0078d4; font-size:1.1em; }
+        .concept-item b { color:#201f1e; }
+
+        .level-map-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:15px 0; }
+        .level-card { background:#ffffff; border:1px solid #d7dee6; border-radius:12px; padding:12px; text-align:center; cursor:pointer; transition:all .2s; }
+        .level-card:hover { transform: translateY(-2px); }
+        .level-card.done { border-color: #27c93f; box-shadow:0 0 14px rgba(39,201,63,0.25); }
+        .level-card.current { border-color:#0078d4; box-shadow:0 0 14px rgba(0,120,212,0.35); }
+        .level-card.locked { opacity:0.5; cursor:default; }
+        .level-card .lv-num { font-size:1.5em; font-weight:bold; color:#0078d4; }
+        .level-card .lv-status { font-size:0.78em; margin-top:4px; color:#8a8a8a; }
+        .level-card.done .lv-status { color:#27c93f; }
+        .level-card.current .lv-status { color:#0078d4; }
+
+        .quiz-option { display:block; width:100%; text-align:left; padding:10px 14px; margin:8px 0; background:#f8fafc; border:1px solid #d7dee6; border-radius:10px; color:#323130; cursor:pointer; font-size:0.95em; transition:all .15s; }
+        .quiz-option:hover:not(:disabled) { border-color:#0078d4; background:rgba(0,120,212,0.08); }
+        .quiz-option.selected { border-color:#0078d4; background:rgba(0,120,212,0.1); color:#106ebe; }
+        .quiz-option.correct { border-color:#27c93f; background:rgba(39,201,63,0.2); }
+        .quiz-option.wrong { border-color:#ff5f56; background:rgba(255,95,86,0.2); }
+        .quiz-option:disabled { cursor:default; }
+        .quiz-feedback { margin-top:12px; font-size:0.9em; color:#4a4a4a; min-height:20px; }
+
+        /* ===== Assistente Robô (SF Bot) ===== */
+        .robot {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .robot-bubble {
+            position: relative;
+            max-width: 310px;
+            background: #ffffff;
+            color: #16213e;
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 10px 34px rgba(0,0,0,0.18), 0 0 0 2px #0078d4;
+            font-size: 0.95em;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .robot-bubble.visible { display: block; animation: robotPop 0.35s ease; }
+
+        .robot-bubble::after {
+            content: '';
+            position: absolute;
+            right: 24px;
+            left: auto;
+            bottom: -10px;
+            border: 7px solid transparent;
+            border-top: 11px solid #0078d4;
+        }
+
+        .rb-title { display: block; font-weight: 700; color: #106ebe; margin-bottom: 4px; }
+        .rb-text b { color: #0078d4; }
+
+        @keyframes robotPop {
+            from { transform: scale(0.65) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .robot-figure {
+            width: 92px;
+            height: 92px;
+            animation: floaty 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+        }
+
+        .rb-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            line-height: 1;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.08);
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .rb-close:hover { background: rgba(204,0,0,0.15); color: #c00; }
+        .robot.hidden { display: none !important; }
+
+        .robot-reopen {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            width: 92px;
+            height: 92px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#1f2b3e,#28364d);
+            box-shadow: 0 10px 34px rgba(0,0,0,0.3), 0 0 0 2px #0078d4;
+            font-size: 40px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: floaty 2.6s ease-in-out infinite;
+        }
+
+        .robot-reopen.show { display: flex; }
+        .robot-reopen:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 0 0 2px #ffd700; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .antena-led { animation: ledBlink 1.3s steps(2, start) infinite; }
+        @keyframes ledBlink { 0% { opacity: 1; } 50% { opacity: 0.15; } }
+        .eye { transform-box: fill-box; transform-origin: center; animation: blinky 4.5s infinite; }
+        @keyframes blinky { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.12); } }
+        .robot-arm { transform-box: view-box; transform-origin: 80px 101px; animation: pointArm 1.9s ease-in-out infinite; }
+        @keyframes pointArm { 0%, 100% { transform: rotate(2deg); } 50% { transform: rotate(-48deg); } }
+
+        @media (max-width: 760px) {
+            .robot { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen.show { display: flex; transform: scale(0.8); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .topology-panel, .terminal-panel { min-width: 100%; }
+            .level-map-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        .console-line { white-space: pre-wrap; word-break: break-all; }
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Impressão: certificado profissional idêntico à tela */
+        @page { size: A4 portrait; margin: 0; }
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body * { visibility: hidden; }
+            #certificateModal, #certificateModal * { visibility: visible; }
+            #certificateModal {
+                position: absolute; top: 0; left: 0; width: 100%; min-height: 100%;
+                background: #ffffff !important; display: flex !important;
+                align-items: center; justify-content: center; overflow: visible;
+                margin: 0; padding: 12mm;
+            }
+            #certificateModal .modal {
+                background: #ffffff !important;
+                border: none !important; max-width: 100%; width: 100%;
+                max-height: none; overflow: visible; box-shadow: none; padding: 0;
+                animation: none; border-radius: 0 !important;
+            }
+            #certificateModal .modal-footer { display: none !important; }
+            #certificatePrint > div { border-radius: 2mm !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1><svg class="shield" viewBox="0 0 64 64" width="42" height="42" aria-hidden="true">
+        <defs>
+            <linearGradient id="sfGradH" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff2d55"/>
+                <stop offset="0.5" stop-color="#7b2ff7"/>
+                <stop offset="1" stop-color="#00d4ff"/>
+            </linearGradient>
+        </defs>
+        <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradH)" stroke="#ffffff" stroke-width="3"/>
+        <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+    </svg>SF Academia Cibersegurança e Redes</h1>
+    <p>🕸️ Aprenda Segurança Web e Hacker Ético de forma interativa</p>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="stats">
+        <div>Nível: <span id="levelDisplay">1</span>/8</div>
+        <div>Pontos: <span id="scoreDisplay">0</span></div>
+        <div>Comandos digitados: <span id="attemptsDisplay">0</span></div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="topology-panel">
+        <h2>🕸️ Laboratório Web · Lojinha Online</h2>
+        <canvas class="topology-canvas" id="topologyCanvas"></canvas>
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color" style="background:#ff5f56"></span> Exposto/vulnerável</div>
+            <div class="legend-item"><span class="legend-color" style="background:#ffbd2e"></span> Sem teste</div>
+            <div class="legend-item"><span class="legend-color" style="background:#27c93f"></span> Protegido</div>
+        </div>
+        <table class="svc-table" id="svcTable" style="margin-top:15px;">
+            <thead>
+                <tr>
+                    <th>Superfície / Falha</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="svcTableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="terminal-panel">
+        <div class="task-panel">
+            <div class="level-title" id="levelTitle">Nível 1: Acessar a aplicação web</div>
+            <div class="task-desc" id="taskDesc">
+                Você é um Analista de Segurança Web. A loja de uma empresa (Lojinha Online) fica em http://192.168.10.30/lojinha. Acesse a página inicial para mapear a aplicação.
+            </div>
+            <div class="hint" id="hintBox" style="display:none">
+                💡 Dica: use o <code>curl</code> para buscar a página: <code>curl http://192.168.10.30/lojinha</code>
+            </div>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">analista-web@lab-sfcyber</span>
+            </div>
+            <div class="terminal-body" id="terminalBody" aria-live="polite">
+                <div class="output system">Laboratório SF Cyber inicializado.</div>
+                <div class="output info">Bem-vindo ao simulador de Segurança Web (SQL Injection | XSS)!</div>
+                <div class="output system">Digite 'ajuda' para ver os comandos disponíveis.</div>
+                <div class="input-line">
+                    <span class="prompt">analista-web@lab:~$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Linha de comando">
+                </div>
+            </div>
+            <div class="autocomplete" id="autocomplete"></div>
+        </div>
+
+        <div class="buttons-row">
+            <button class="btn btn-primary" onclick="showHint()">💡 Dica</button>
+            <button class="btn btn-ghost" onclick="openTheory()">📚 Revisão</button>
+            <button class="btn btn-ghost" onclick="openLevelMap()">🗺️ Níveis</button>
+            <button class="btn btn-warning" onclick="resetLevel()">🔄 Resetar Nível</button>
+            <button class="btn btn-success" onclick="nextLevel()">⏭ Próximo Nível</button>
+            <button class="btn btn-danger" onclick="confirmAction('reset')">🏠 Reiniciar Jogo</button>
+            <button class="btn btn-warning" id="btnProvaFinal" style="display:none;" onclick="openQuiz(true)">📝 Prova Final</button>
+        </div>
+
+        <div class="reference-panel">
+            <h3>📖 Referência de Comandos</h3>
+            <div class="cmd-list">
+                <div><span>clear / cls</span> - Limpar a tela do terminal</div>
+                <div><span>help</span> - Listar comandos disponíveis</div>
+                <div><span>curl http://192.168.10.30/lojinha</span> - Acessar a home da aplicação</div>
+                <div><span>curl ".../produto.php?id=1"</span> - Ver página do produto</div>
+                <div><span>curl ".../produto.php?id=1'"</span> - Testar SQL Injection (quebra a consulta)</div>
+                <div><span>curl -X POST -d "usuario=admin&amp;senha=' OR '1'='1" .../login.php</span> - Contornar login vulnerável</div>
+                <div><span>curl ".../produto.php?id=99 UNION SELECT 1,usuario,senha FROM usuarios"</span> - Extrair dados via UNION</div>
+                <div><span>curl ".../busca.php?q=&lt;script&gt;alert('x')&lt;/script&gt;"</span> - Testar XSS refletido</div>
+                <div><span>curl -X POST -d "produto=1&amp;comentario=&lt;script&gt;..." .../comentar.php</span> - XSS armazenado</div>
+                <div><span>patch lojinha --prepared-statements</span> - Corrigir SQL Injection</div>
+                <div><span>patch lojinha --escape-output</span> - Corrigir XSS (escapar saída)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Robot Assistant -->
+<div class="robot" id="robot">
+    <div class="robot-bubble" id="robotBubble">
+        <button class="rb-close" id="robotCloseBtn" onclick="closeRobot()" aria-label="Fechar SF Bot">✕</button>
+        <span class="rb-title" id="robotTitle">SF Bot 🤖</span>
+        <span class="rb-text" id="robotText"></span>
+        <button class="rb-next" id="robotContinueBtn" style="display:none;" onclick="robotContinue()">▶ Iniciar Etapa</button>
+    </div>
+    <svg class="robot-figure" id="robotFigure" viewBox="0 0 130 130" aria-hidden="true">
+        <line x1="60" y1="34" x2="46" y2="10" stroke="#00d4ff" stroke-width="4" stroke-linecap="round"/>
+        <circle class="antena-led" cx="46" cy="10" r="5" fill="#ffd700"/>
+        <rect x="8" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="98" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="20" y="32" width="80" height="58" rx="18" fill="#232a33" stroke="#00d4ff" stroke-width="3"/>
+        <circle class="eye" cx="47" cy="58" r="7" fill="#00d4ff"/>
+        <circle class="eye" cx="73" cy="58" r="7" fill="#00d4ff"/>
+        <path d="M48 74 Q60 82 72 74" stroke="#00d4ff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <rect x="36" y="94" width="48" height="24" rx="9" fill="#232a33" stroke="#00d4ff" stroke-width="2"/>
+        <circle cx="60" cy="106" r="5" fill="#ff2d55"/>
+        <g class="robot-arm">
+            <rect x="76" y="96" width="28" height="10" rx="5" fill="#00d4ff"/>
+            <path d="M102 92 L122 80 L124 122 L104 108 Z" fill="#ffd700" stroke="#7b2ff7" stroke-width="1.5"/>
+        </g>
+    </svg>
+</div>
+
+<button class="robot-reopen" id="robotReopenBtn" onclick="openRobot()" title="Reabrir SF Bot" aria-label="Reabrir SF Bot">
+    🤖
+</button>
+
+<!-- Theory Modal -->
+<div class="modal-overlay" id="theoryModal" role="dialog" aria-modal="true" aria-labelledby="theoryTitle">
+    <div class="modal">
+        <h2 id="theoryTitle">📚 Revisão de Conceitos</h2>
+        <p>Aqui vai um resumo rápido dos conceitos que você acabou de praticar!</p>
+        <div class="concepts-list" id="theoryContent"></div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeModal('theoryModal')">Entendi! ✅</button>
+        </div>
+    </div>
+</div>
+
+<!-- Level Map Modal -->
+<div class="modal-overlay" id="levelMapModal" role="dialog" aria-modal="true" aria-labelledby="levelMapTitle">
+    <div class="modal">
+        <h2 id="levelMapTitle">🗺️ Mapa dos Níveis</h2>
+        <div class="level-map-grid" id="levelMapGrid"></div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('levelMapModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Quiz Modal -->
+<div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="modal" style="position:relative;">
+        <button class="rb-close" onclick="closeModal('quizModal')" aria-label="Fechar prova final" title="Fechar">✕</button>
+        <h2 id="quizTitle">📝 Prova Final</h2>
+        <p id="quizQuestion"></p>
+        <div id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="modal-footer" id="quizFooter">
+            <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()">Próxima Pergunta</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal">
+        <h2 id="confirmTitle">Tem certeza?</h2>
+        <p id="confirmText">Esta ação não pode ser desfeita.</p>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('confirmModal')">Cancelar</button>
+            <button class="btn btn-danger" id="confirmOkBtn">Sim, continuar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal -->
+<div class="modal-overlay active" id="welcomeModal">
+    <div class="modal welcome-modal">
+        <h2><svg class="shield shield-m" viewBox="0 0 64 64" width="38" height="38" aria-hidden="true">
+                <defs>
+                    <linearGradient id="sfGradM" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff2d55"/>
+                        <stop offset="0.5" stop-color="#7b2ff7"/>
+                        <stop offset="1" stop-color="#00d4ff"/>
+                    </linearGradient>
+                </defs>
+                <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradM)" stroke="#ffffff" stroke-width="3"/>
+                <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+            </svg>
+            <span class="welcome-white">Bem-Vindo à SF Cyber</span><br>
+            <span class="welcome-grad">Academia CiberSegurança e Redes</span>
+        </h2>
+        <p>Assuma o papel de um Analista de Segurança Web e teste a aplicação <b>Lojinha Online</b> (http://192.168.10.30/lojinha) contra SQL Injection e XSS, como faria em um pentest.</p>
+        <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
+                   maxlength="42" autocomplete="off"
+                   style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
+                          background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+        </div>
+        <div class="features">
+            <div class="feature-item"><div class="icon">1</div><span>Acessar a aplicação com <b>curl</b></span></div>
+            <div class="feature-item"><div class="icon">2</div><span>Descobrir parâmetros dinâmicos</span></div>
+            <div class="feature-item"><div class="icon">3</div><span>Detectar e explorar SQL Injection</span></div>
+            <div class="feature-item"><div class="icon">4</div><span>Extrair dados via UNION SELECT</span></div>
+            <div class="feature-item"><div class="icon">5</div><span>Testar XSS refletido e armazenado</span></div>
+            <div class="feature-item"><div class="icon">6</div><span>Corrigir com prepared statements + escaping</span></div>
+        </div>
+        <p style="font-size:0.9em; color:#888;">Use o terminal com comandos reais de segurança web!</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="closeWelcome()" id="welcomeBtn" style="font-size:1.1em; padding: 15px 40px;">
+                🧩 Começar!
+            </button>
+            <button class="btn btn-ghost" id="resumeBtn" style="display:none; font-size:1.1em; padding: 15px 30px;" onclick="resumeGame()">
+                ⏩ Continuar
+            </button>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.08);">
+            <a href="https://projetosdisruptivos.com.br/" target="_blank" rel="noopener"
+               style="color:#106ebe; text-decoration:none; font-size:0.85em; letter-spacing:0.5px; transition:color 0.3s ease;">
+                👨‍💻 Developed by <b>SF</b> · Projetos Disruptivos
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <h2 id="successTitle">🎉 Nível Completo!</h2>
+        <p id="successMsg">Parabéns! Você completou o nível!</p>
+        <div class="score" id="successScore">+50 pontos</div>
+        <button class="btn btn-success" id="btnSuccessPrimary" onclick="nextLevel()" style="font-size:1.1em; padding: 15px 40px;">
+            Próximo Nível →
+        </button>
+    </div>
+</div>
+
+<!-- Game Complete Modal -->
+<div class="modal-overlay" id="gameCompleteModal">
+    <div class="modal">
+        <h2>🏆 Missão Cumprida!</h2>
+        <p>Parabéns! Você mapeou a Lojinha Online, encontrou SQL Injection e XSS, e corrigiu a aplicação!</p>
+        <div class="score" id="finalScore">Pontuação Final: 0</div>
+        <p style="color:#888;">Você agora sabe:</p>
+        <div style="text-align:left; color:#4a4a4a; margin: 15px 0;">
+            ✓ Acessar e mapear aplicações web (curl)<br>
+            ✓ Encontrar parâmetros dinâmicos<br>
+            ✓ Detectar e explorar SQL Injection<br>
+            ✓ Extrair dados com UNION SELECT<br>
+            ✓ Identificar XSS refletido e armazenado<br>
+            ✓ Corrigir com prepared statements e escaping
+        </div>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-success" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
+                🎓 Ver Certificado
+            </button>
+            <button class="btn btn-warning" onclick="openQuiz()" style="font-size:1.05em; padding: 15px 30px;">
+                📝 Refazer Prova
+            </button>
+            <button class="btn btn-primary" onclick="resetGame()" style="font-size:1.1em; padding: 15px 40px;">
+                🔄 Jogar Novamente
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Certificate Modal -->
+<div class="modal-overlay" id="certificateModal">
+    <div class="modal" style="max-width:720px; text-align:center;">
+        <div id="certificatePrint" style="text-align:center;">
+            <div style="border:4px double rgba(255,215,0,0.7); border-radius:16px; padding:34px 24px; background:linear-gradient(180deg,#1a1a2e 0%,#0f0f23 100%);">
+                <svg class="shield" viewBox="0 0 64 64" width="86" height="86" style="display:block; margin:0 auto 14px;" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="sfGradCert" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ff2d55"/>
+                            <stop offset="0.5" stop-color="#7b2ff7"/>
+                            <stop offset="1" stop-color="#00d4ff"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradCert)" stroke="#ffd700" stroke-width="3"/>
+                    <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+                </svg>
+                <div style="font-size:0.9em; letter-spacing:6px; color:#ffd700; text-transform:uppercase;">SF Cyber Academy</div>
+                <div style="font-size:1.05em; color:#00d4ff; margin-top:4px;">CiberSegurança e Redes</div>
+                <div style="width:120px; height:3px; margin:18px auto; background:linear-gradient(90deg,#ff2d55,#7b2ff7,#00d4ff); border-radius:2px;"></div>
+                <h2 style="font-family:Georgia, 'Times New Roman', serif; color:#fff; font-size:1.9em; margin:6px 0 2px; text-align:center;">CERTIFICADO DE CONCLUSÃO</h2>
+                <p style="color:#bbb; font-size:0.95em; margin-top:14px;">Este certificado é concedido a</p>
+                <div style="font-family:Georgia, 'Times New Roman', serif; font-size:2em; color:#ffd700; margin:14px 0; font-weight:bold; word-break:break-word;" id="certStudentName">Aluno(a)</div>
+                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o laboratório prático</p>
+                <div style="font-size:1.15em; color:#00d4ff; font-weight:bold; margin:10px 0;">Segurança Web (SQL Injection | XSS)</div>
+                <p style="color:#bbb; font-size:0.9em; margin-top:6px;">Simulador Interativo de Segurança Web 8 níveis + prova final</p>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:34px; text-align:center; gap:16px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certScore" style="font-size:1.3em; color:#fff; font-weight:bold;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">PONTUAÇÃO FINAL</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div style="font-family:Georgia, 'Times New Roman', serif; font-style:italic; color:#fff; font-size:1em;">SF Cyber</div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVAÇÃO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="downloadCertificate()">⬇️ Baixar Certificado</button>
+            <button class="btn btn-ghost" onclick="closeModal('certificateModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===================== GAME STATE =====================
+const state = {
+    currentLevel: 0,
+    score: 0,
+    attempts: 0,
+    quizDone: false,
+    studentName: '',
+    web: {
+        homeSeen: false,
+        prodSeen: false,
+        sqliDetected: false,
+        loginBypassed: false,
+        unionDone: false,
+        xssRefl: false,
+        xssStored: false,
+        patchedPS: false,
+        patchedEscape: false,
+    },
+    levelDone: {},
+    commandHistory: [],
+    historyIndex: -1,
+};
+
+// ===================== LEVELS =====================
+const APP_URL = 'http://192.168.10.30/lojinha';
+
+const levels = [
+    {
+        id: 1,
+        title: "Nível 1: Acessar a aplicação web",
+        desc: "Você é o Analista de Segurança Web. A Lojinha Online fica em " + APP_URL + ". Acesse a página inicial com o curl para ver os recursos expostos.",
+        hint: "💡 Dica: Digite <code>curl http://192.168.10.30/lojinha</code> no terminal.",
+        check: () => state.web.homeSeen,
+        successMsg: "Aplicação respondendo! Você encontrou links para login.php e produto.php.",
+    },
+    {
+        id: 2,
+        title: "Nível 2: Mapear o parâmetro dinâmico",
+        desc: "A página produto.php carrega itens pelo parâmetro id (entrada do usuário). Busque um produto e observe como a página usa o parâmetro.",
+        hint: "💡 Dica: Use <code>curl \"http://192.168.10.30/lojinha/produto.php?id=1\"</code>.",
+        check: () => state.web.prodSeen,
+        successMsg: "Produto carregado via parámetro id. Qualquer entrada do usuário sem validação é um risco.",
+    },
+    {
+        id: 3,
+        title: "Nível 3: Confirmar SQL Injection (teste)",
+        desc: "Suspeite da consulta SQL. Injete uma aspa simples no id para forçar um erro: se o banco 'reclamar', a consulta está concatenada.",
+        hint: "💡 Dica: Use <code>curl \"http://192.168.10.30/lojinha/produto.php?id=1'\"</code> (aspas no final do 1).",
+        check: () => state.web.sqliDetected,
+        successMsg: "Erro SQL exposto! A consulta está concatenando a entrada do usuário: SQL Injection confirmada.",
+    },
+    {
+        id: 4,
+        title: "Nível 4: Explorar SQL Injection (login bypass)",
+        desc: "A página de login valida usuário e senha na própria consulta. Envie o payload ' OR '1'='1 na senha para tornar a condição sempre verdadeira.",
+        hint: "💡 Dica: <code>curl -X POST -d \"usuario=admin&senha=' OR '1'='1\" http://192.168.10.30/lojinha/login.php</code>",
+        check: () => state.web.loginBypassed,
+        successMsg: "Acesso como admin sem saber a senha! A falha compromete toda a autenticação.",
+    },
+    {
+        id: 5,
+        title: "Nível 5: Extrair dados (UNION SELECT)",
+        desc: "Com a injeção confirmada, use a técnica UNION SELECT para unir a consulta original a outra tabela e ler usuários e senhas.",
+        hint: "💡 Dica: <code>curl \"http://192.168.10.30/lojinha/produto.php?id=99 UNION SELECT 1,usuario,senha FROM usuarios\"</code>",
+        check: () => state.web.unionDone,
+        successMsg: "Dados do banco expostos! Você leu usuários e hashes de senha (md5).",
+    },
+    {
+        id: 6,
+        title: "Nível 6: Descobrir XSS refletido",
+        desc: "A busca da loja reflete o termo digitado na página. Injete um script na busca e veja que ele é devolvido sem escapar no HTML.",
+        hint: "💡 Dica: <code>curl \"http://192.168.10.30/lojinha/busca.php?q=<script>alert('x')</script>\"</code>",
+        check: () => state.web.xssRefl,
+        successMsg: "Script refletido no HTML de resposta! Qualquer vítima que abrir o link executa o script.",
+    },
+    {
+        id: 7,
+        title: "Nível 7: Descobrir XSS armazenado",
+        desc: "Os comentários dos produtos são salvos no servidor. Envie um comentário com script: ele ficará armazenado e rodará no navegador de todo visitante.",
+        hint: "💡 Dica: <code>curl -X POST -d \"produto=1&comentario=<script>alert('stored')</script>\" http://192.168.10.30/lojinha/comentar.php</code>",
+        check: () => state.web.xssStored,
+        successMsg: "Comentário com script salvo! XSS armazenado: a munição fica no servidor e ataca todos.",
+    },
+    {
+        id: 8,
+        title: "Nível 8: Corrigir a aplicação",
+        desc: "Agora proteja a Lojinha: (1) use prepared statements nas consultas SQL e (2) escape toda saída HTML para neutralizar o XSS.",
+        hint: "💡 Dica: <code>patch lojinha --prepared-statements</code> e depois <code>patch lojinha --escape-output</code>",
+        check: () => state.web.patchedPS && state.web.patchedEscape,
+        successMsg: "🏆 Missão cumprida! SQL Injection e XSS corrigidos na Lojinha Online.",
+    },
+];
+
+const theoryLevels = {
+    1: [
+        { icon: "⛓️", title: "Curl (HTTP)", desc: "O <b>curl</b> envia requisições HTTP/HTTPS. É a ferramenta base do pentester web para mapear uma aplicação." },
+        { icon: "🎯", title: "Reconhecimento", desc: "Todo teste web começa pela <b>enumeração</b>: descobrir páginas, parâmetros e funcionalidades acessíveis." },
+    ],
+    2: [
+        { icon: "🧩", title: "Parâmetros dinâmicos", desc: "Páginas como <code>produto.php?id=1</code> recebem o valor na <b>URL</b>. Entrada do usuário em consulta é o vetor clássico de SQL Injection." },
+        { icon: "🔍", title: "Mapeamento de inputs", desc: "Identificar <b>todas as entradas</b> do usuário (parâmetros, formulários, cookies) é o primeiro passo antes de testar." },
+    ],
+    3: [
+        { icon: "🐛", title: "SQL Injection", desc: "Quando o valor é <b>concatenado</b> na consulta SQL, uma aspa simples quebra a sintaxe e expõe um erro do banco." },
+        { icon: "📄", title: "Erros expostos", desc: "Mensagens de erro do banco na tela (stack trace) confirmam a falha e entregam informações do servidor ao atacante." },
+    ],
+    4: [
+        { icon: "🚪", title: "Login bypass", desc: "O payload <code>' OR '1'='1</code> faz a condição <code>WHERE usuario='admin' AND senha='...'</code> ser <b>sempre verdadeira</b>." },
+        { icon: "🔓", title: "Autenticação frágil", desc: "Validar senha dentro da consulta SQL (em vez de comparar no código) torna a autenticação contornável." },
+    ],
+    5: [
+        { icon: "🧬", title: "UNION SELECT", desc: "A cláusula <b>UNION</b> junta o resultado da consulta original com outra consulta, lendo tabelas que a aplicação não deveria expor." },
+        { icon: "🔑", title: "Extração de dados", desc: "Com poucos campos é possível ler <b>usuários, senhas e dados sensíveis</b> direto do banco." },
+    ],
+    6: [
+        { icon: "🖼️", title: "XSS Refletido", desc: "O termo de busca é refletido na resposta <b>sem escapar</b>. Um link malicioso executa o script no navegador da vítima." },
+        { icon: "🎣", title: "Engenharia de entrega", desc: "O refletido depende da vítima clicar num <b>link</b> (phishing). O armazenado não depende." },
+    ],
+    7: [
+        { icon: "🗄️", title: "XSS Armazenado", desc: "O script fica <b>salvo no servidor</b> (ex.: comentário) e roda para todo visitante da página. O mais perigoso dos dois." },
+        { icon: "🍪", title: "Roubo de sessão", desc: "Com <code>document.cookie</code> o script envia o cookie da vítima para o atacante, sequestrando a sessão." },
+    ],
+    8: [
+        { icon: "🧰", title: "Prepared Statements", desc: "SQL <b>parametrizado</b> separa código de dado: a entrada vira valor, nunca parte do comando. Fim do SQL Injection." },
+        { icon: "🛡️", title: "Escapar a saída", desc: "Escape/sanitize todo HTML antes de exibir (<code>htmlspecialchars</code> etc.). O script vira <b>texto</b>, não executa." },
+    ],
+};
+
+// ===================== QUIZ =====================
+const quizQuestions = [
+    {
+        q: "Qual falha permite que um atacante manipule uma consulta SQL injetando entrada do usuário?",
+        options: ["XSS", "SQL Injection", "CSRF", "DDoS"],
+        correct: 1,
+        explain: "SQL Injection ocorre quando a entrada do usuário é concatenada diretamente na consulta SQL.",
+    },
+    {
+        q: "O payload ' OR '1'='1 costuma ser usado para:",
+        options: [
+            "Fazer a condição SQL ser sempre verdadeira e contornar o login",
+            "Escanear portas da aplicação",
+            "Forçar o download de arquivos",
+            "Enumerar versões do servidor",
+        ],
+        correct: 0,
+        explain: "A condição vira sempre verdadeira, liberando acesso sem conhecer a senha.",
+    },
+    {
+        q: "O que a técnica UNION SELECT permite?",
+        options: [
+            "Chamar funções administrativas do servidor",
+            "Blindar a aplicação contra ataques",
+            "Combinar o resultado com outra consulta e ler outras tabelas",
+            "Criptografar a sessão do usuário",
+        ],
+        correct: 2,
+        explain: "UNION junta dois resultados, permitindo extrair dados de tabelas que a aplicação não deveria expor.",
+    },
+    {
+        q: "Qual a diferença do XSS armazenado (stored) em relação ao refletido?",
+        options: [
+            "É idêntico ao refletido, sem diferença",
+            "O script fica salvo no servidor e ataca todos os visitantes da página",
+            "Só funciona em navegadores antigos",
+            "Não requer interação do servidor",
+        ],
+        correct: 1,
+        explain: "No armazenado o payload persiste (ex.: comentário) e qualquer visitante da página é atingido.",
+    },
+    {
+        q: "Como corrigir corretamente uma SQL Injection?",
+        options: [
+            "Usar prepared statements / consultas parametrizadas",
+            "Bloquear o IP do atacante no firewall",
+            "Trocar o nome da tabela",
+            "Esconder a mensagem de erro",
+        ],
+        correct: 0,
+        explain: "Consultas parametrizadas separam código de dado: a entrada nunca vira parte do comando SQL.",
+    },
+    {
+        q: "Para neutralizar um XSS na saída, o desenvolvedor deve:",
+        options: [
+            "Usar apenas HTTPS",
+            "Escapar/sanitizar a saída antes de exibir no HTML",
+            "Desabilitar o JavaScript do navegador do usuário",
+            "Apagar os cookies",
+        ],
+        correct: 1,
+        explain: "Escape da saída transforma o script em texto puro, impedindo execução no navegador.",
+    },
+];
+
+// ===================== ROBO ASSISTENTE (SF Bot) =====================
+const ROBOT_NAME = 'SF Bot';
+const robotBubble = document.getElementById('robotBubble');
+const robotTitleEl = document.getElementById('robotTitle');
+const robotTextEl = document.getElementById('robotText');
+let robotStepKey = '';
+let robotTimer = null;
+
+function setRobotBubble(title, text) {
+    robotTitleEl.textContent = title;
+    robotTextEl.innerHTML = text;
+    robotBubble.classList.add('visible');
+    robotBubble.style.animation = 'none';
+    void robotBubble.offsetWidth;
+    robotBubble.style.animation = '';
+}
+
+function getRobotStep(lvl) {
+    const w = state.web;
+    switch (lvl) {
+        case 0:
+            if (!w.homeSeen) return [ROBOT_NAME + ' 🌐', 'Acesse a loja: <b>curl http://192.168.10.30/lojinha</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Aplicação acessada! Toque em <b>Próximo Nível</b>.'];
+        case 1:
+            if (!w.prodSeen) return [ROBOT_NAME + ' 📦', 'Veja um produto: <b>curl "http://192.168.10.30/lojinha/produto.php?id=1"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Parâmetro id mapeado! Toque em <b>Próximo Nível</b>.'];
+        case 2:
+            if (!w.sqliDetected) return [ROBOT_NAME + ' 🧪', 'Teste a injeção: <b>curl "http://192.168.10.30/lojinha/produto.php?id=1\'"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Erro SQL! Toque em <b>Próximo Nível</b>.'];
+        case 3:
+            if (!w.loginBypassed) return [ROBOT_NAME + ' 🔓', 'Contorne o login: <b>curl -X POST -d "usuario=admin&senha=\' OR \'1\'=\'1" http://192.168.10.30/lojinha/login.php</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Login contornado! Toque em <b>Próximo Nível</b>.'];
+        case 4:
+            if (!w.unionDone) return [ROBOT_NAME + ' 🧬', 'Extraia dados: <b>curl "http://192.168.10.30/lojinha/produto.php?id=99 UNION SELECT 1,usuario,senha FROM usuarios"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Banco exposto! Toque em <b>Próximo Nível</b>.'];
+        case 5:
+            if (!w.xssRefl) return [ROBOT_NAME + ' 🖼️', 'Teste o XSS refletido na busca: <b>curl "http://192.168.10.30/lojinha/busca.php?q=&lt;script&gt;alert(\'x\')&lt;/script&gt;"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Script refletido! Toque em <b>Próximo Nível</b>.'];
+        case 6:
+            if (!w.xssStored) return [ROBOT_NAME + ' 📝', 'Salve um comentário malicioso: <b>curl -X POST -d "produto=1&comentario=&lt;script&gt;alert(\'stored\')&lt;/script&gt;" http://192.168.10.30/lojinha/comentar.php</b>'];
+            return [ROBOT_NAME + ' 🎉', 'XSS armazenado! Toque em <b>Próximo Nível</b>.'];
+        case 7:
+            if (!w.patchedPS) return [ROBOT_NAME + ' 🧰', 'Corrija as consultas: <b>patch lojinha --prepared-statements</b>'];
+            if (!w.patchedEscape) return [ROBOT_NAME + ' 🛡️', 'Agora escape a saída: <b>patch lojinha --escape-output</b>'];
+            return [ROBOT_NAME + ' 🏆', 'Aplicação protegida! Toque em <b>Próximo Nível</b>.'];
+    }
+    return [ROBOT_NAME + ' 🤖', 'Boa sorte nesta etapa!'];
+}
+
+function updateRobot() {
+    if (!robotBubble) return;
+    const lvl = state.currentLevel;
+    const complete = levels[lvl].check();
+    let title, text;
+    if (complete) {
+        if (lvl >= levels.length - 1) {
+            title = '🏆 ' + ROBOT_NAME;
+            text = 'Missão cumprida! A Lojinha Online está protegida. Toque em <b>Próximo Nível</b> para a prova final!';
+        } else {
+            title = '🎉 ' + ROBOT_NAME + ' Nível ' + (lvl + 1) + ' completo!';
+            text = 'Próxima etapa: toque em <b>Próximo Nível</b> →';
+        }
+    } else {
+        const g = getRobotStep(lvl);
+        title = g[0];
+        text = g[1];
+    }
+    const key = lvl + '|' + complete + '|' + title + text;
+    if (key !== robotStepKey) {
+        robotStepKey = key;
+        setRobotBubble(title, text);
+    }
+}
+
+function scheduleUpdateRobot() {
+    clearTimeout(robotTimer);
+    robotTimer = setTimeout(updateRobot, 80);
+}
+
+function closeRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.add('hidden');
+    if (reopen) reopen.classList.add('show');
+}
+
+function openRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.remove('hidden');
+    if (reopen) reopen.classList.remove('show');
+    setTimeout(updateRobot, 50);
+}
+
+function robotIntro(greeting) {
+    robotStepKey = '';
+    setRobotBubble(
+        ROBOT_NAME + (greeting ? ' ' + greeting : ' 🤖 Olá!'),
+        greeting === 'De volta!'
+            ? 'Você parou no <b>' + (state.currentLevel + 1) + '° nível</b>. Continue por onde parou!'
+            : 'Vou te acompanhar até proteger a Lojinha Online. Sempre que terminar uma etapa, eu te mostro a <b>próxima</b>. Pode digitar <b>help</b> a qualquer momento!'
+    );
+    document.getElementById('robotContinueBtn').style.display = 'block';
+}
+
+function robotContinue() {
+    document.getElementById('robotContinueBtn').style.display = 'none';
+    updateRobot();
+}
+
+// ===================== TERMINAL =====================
+const term = document.getElementById('terminalBody');
+const input = document.getElementById('terminalInput');
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitCmd();
+    if (e.key === 'ArrowUp') { e.preventDefault(); navHistory(-1); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); navHistory(1); }
+    if (e.key === 'Tab') { e.preventDefault(); autocomplete(); }
+});
+
+function addOutput(text, cls = '') {
+    const div = document.createElement('div');
+    div.className = 'output console-line ' + cls;
+    div.textContent = text;
+    term.insertBefore(div, input.parentNode);
+    term.scrollTop = term.scrollHeight;
+}
+
+function echo(text) {
+    addOutput(text, 'user');
+}
+
+function submitCmd() {
+    const raw = input.value.trim();
+    if (raw) {
+        echo('analista-web@lab:~$ ' + raw);
+        state.attempts++;
+        updateStats();
+        state.commandHistory.push(raw);
+        state.historyIndex = state.commandHistory.length;
+        handleCommand(raw);
+    } else {
+        echo('');
+    }
+    scheduleUpdateRobot();
+    input.value = '';
+    hideAutocomplete();
+    save();
+}
+
+function navHistory(dir) {
+    const h = state.commandHistory;
+    if (!h.length) return;
+    state.historyIndex += dir;
+    if (state.historyIndex < 0) state.historyIndex = 0;
+    if (state.historyIndex > h.length) state.historyIndex = h.length;
+    input.value = state.historyIndex === h.length ? '' : h[state.historyIndex];
+}
+
+const SUGGESTIONS = [
+    'clear', 'help', 'curl http://192.168.10.30/lojinha',
+    'curl "http://192.168.10.30/lojinha/produto.php?id=1"',
+    'curl "http://192.168.10.30/lojinha/produto.php?id=1\'"',
+    'curl -X POST -d "usuario=admin&senha=\' OR \'1\'=\'1" http://192.168.10.30/lojinha/login.php',
+    'curl "http://192.168.10.30/lojinha/produto.php?id=99 UNION SELECT 1,usuario,senha FROM usuarios"',
+    'curl "http://192.168.10.30/lojinha/busca.php?q=<script>alert(\'x\')</script>"',
+    'curl -X POST -d "produto=1&comentario=<script>alert(\'stored\')</script>" http://192.168.10.30/lojinha/comentar.php',
+    'patch lojinha --prepared-statements', 'patch lojinha --escape-output',
+];
+
+function showAutocomplete() {
+    const val = input.value.toLowerCase();
+    if (!val) { hideAutocomplete(); return; }
+    const matches = SUGGESTIONS.filter(s => s.toLowerCase().startsWith(val)).slice(0, 6);
+    const box = document.getElementById('autocomplete');
+    if (!matches.length) { hideAutocomplete(); return; }
+    box.innerHTML = '';
+    matches.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'ac-item';
+        div.textContent = m;
+        div.onclick = () => { input.value = m; input.focus(); hideAutocomplete(); };
+        box.appendChild(div);
+    });
+    box.style.display = 'block';
+}
+
+function hideAutocomplete() { document.getElementById('autocomplete').style.display = 'none'; }
+input.addEventListener('input', showAutocomplete);
+
+function autocomplete() {
+    const val = input.value.toLowerCase();
+    const match = SUGGESTIONS.find(s => s.toLowerCase().startsWith(val));
+    if (match) { input.value = match; showAutocomplete(); }
+}
+
+// ===================== COMMAND HANDLER =====================
+const LEVEL_TRIGGERS = [
+    ['curl http://192.168.10.30/lojinha'],
+    ['curl http://192.168.10.30/lojinha/produto.php?id=1'],
+    ['curl http://192.168.10.30/lojinha/produto.php?id=1'],
+    ['curl -x post -d usuario=admin&senha= or 1=1 http://192.168.10.30/lojinha/login.php'],
+    ['curl http://192.168.10.30/lojinha/produto.php?id=99 union select 1,usuario,senha from usuarios'],
+    ['curl http://192.168.10.30/lojinha/busca.php?q=<script>alert(x)</script>'],
+    ['curl -x post -d produto=1&comentario=<script>alert(stored)</script> http://192.168.10.30/lojinha/comentar.php'],
+    ['patch lojinha --prepared-statements', 'patch lojinha --escape-output'],
+];
+
+const LEVEL_SEC_FLAGS = [
+    ['homeSeen'],
+    ['prodSeen'],
+    ['sqliDetected'],
+    ['loginBypassed'],
+    ['unionDone'],
+    ['xssRefl'],
+    ['xssStored'],
+    ['patchedPS', 'patchedEscape'],
+];
+
+function normalizeTrig(s) {
+    return s.trim().toLowerCase().replace(/["']/g, '').replace(/\s+/g, ' ');
+}
+
+function commandWasTrigger(raw, lvlIdx) {
+    const norm = normalizeTrig(raw || '');
+    if (!norm) return false;
+    return (LEVEL_TRIGGERS[lvlIdx] || []).some(t => normalizeTrig(t) === norm);
+}
+
+function handleCommand(raw) {
+    const parts = raw.trim().split(/\s+/);
+    if (parts[0] && parts[0].toLowerCase() === 'sudo' && parts.length > 1) parts.shift();
+    const cmd = (parts[0] || '').toLowerCase();
+    const args = parts.slice(1);
+
+    switch (cmd) {
+        case 'help':
+        case 'ajuda':
+            SUGGESTIONS.forEach(s => addOutput(s, 'info'));
+            return;
+        case 'clear':
+        case 'cls': {
+            const keep = input.parentNode;
+            term.querySelectorAll('.output').forEach(o => o.remove());
+            term.insertBefore(keep, term.firstChild);
+            return;
+        }
+        case 'whoami':
+            addOutput('analista-web (laboratório SF Cyber)', 'success');
+            return;
+        case 'echo':
+            addOutput(args.join(' ') || '', 'system');
+            return;
+        case 'patch': {
+            const target = (args[0] || '').toLowerCase();
+            const opt = (args[1] || '').toLowerCase();
+            if (target !== 'lojinha') {
+                addOutput('uso: patch lojinha --prepared-statements | --escape-output', 'error');
+                break;
+            }
+            if (opt === '--prepared-statements') {
+                state.web.patchedPS = true;
+                addOutput('Aplicando prepared statements na Lojinha Online...', 'system');
+                addOutput('Todas as consultas SQL agora são parametrizadas: a entrada do usuário virou dado, não comando.', 'success');
+                addOutput('Re-teste: "id=1\'" agora retorna página normal (sem erro SQL).', 'success');
+            } else if (opt === '--escape-output') {
+                state.web.patchedEscape = true;
+                addOutput('Aplicando escaping de saída (HTML entities)...', 'system');
+                addOutput('Todo o conteúdo do usuário é escapado antes de renderizar: scripts viraram texto.', 'success');
+                addOutput('Re-teste: a busca agora exibe "<script>" como texto puro.', 'success');
+            } else {
+                addOutput('uso: patch lojinha --prepared-statements | --escape-output', 'error');
+            }
+            break;
+        }
+        case 'curl': {
+            if (!args.length) {
+                addOutput('uso: curl <url> ou curl -X POST -d "dados" <url>', 'error');
+                break;
+            }
+            const d = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+            const has = (s) => d.indexOf(s) !== -1;
+
+            // Login Bypass (SQLi na autenticação)
+            if (has('login.php') && has("or '1'='1")) {
+                state.web.loginBypassed = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('Set-Cookie: SFPHPSSID=7f3a91c2ab45a1de', 'system');
+                addOutput('Bem-vindo(a), admin! Acesso concedido. [usuario: admin]', 'success');
+                addOutput('⚠ Você entrou SEM senha: a consulta SQL validou "' + "senha=' OR '1'='1" + '" que é sempre verdadeira.', 'warning');
+                break;
+            }
+            // XSS armazenado
+            if (has('comentar.php') && has('<script>')) {
+                state.web.xssStored = true;
+                addOutput('HTTP/1.1 201 Created', 'system');
+                addOutput('Comentário enviado com sucesso!', 'success');
+                addOutput('Comentários do produto #1 (todos os visitantes veem):', 'system');
+                addOutput('  [1] Maria: Ótimo produto!', 'system');
+                addOutput('  [2] Você: <script>alert(\'stored\')</script>  ← SALVO NO BANCO', 'warning');
+                addOutput('O script fica armazenado e roda no navegador de cada usuário que abrir a página.', 'warning');
+                break;
+            }
+            // XSS refletido
+            if (has('busca.php') && has('<script>')) {
+                state.web.xssRefl = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('Pesquisa por: ' + (raw.match(/q=([^"&\s]*)/) || [])[1] || '(script)', 'system');
+                addOutput('Resultados para: <script>alert(\'x\')</script>', 'warning');
+                addOutput('⚠ O termo foi refletido no HTML SEM escapar: qualquer vítima que abrir o link executa o script.', 'warning');
+                break;
+            }
+            // UNION SELECT
+            if (has('produto.php') && has('union select')) {
+                state.web.unionDone = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('Consultando produto...', 'system');
+                addOutput('───── Tabela: usuarios ─────', 'info');
+                addOutput('id | usuario     | senha (md5)', 'info');
+                addOutput('1  | admin       | 21232f297a57a5a743894a0e4a801fc3  (admin)', 'error');
+                addOutput('2  | joao        | 5f4dcc3b5aa765d61d8327deb882cf99  (password)', 'error');
+                addOutput('3  | julia       | e10adc3949ba59abbe56e057f20f883e  (123456)', 'error');
+                addOutput('Dados sensíveis expostos via UNION SELECT!', 'success');
+                break;
+            }
+            // SQL Injection (erro)
+            if (has('produto.php') && has("id=1'")) {
+                state.web.sqliDetected = true;
+                addOutput('HTTP/1.1 500 Internal Server Error', 'system');
+                addOutput('Fatal error: Uncaught mysqli_sql_exception:', 'error');
+                addOutput('You have an error in your SQL syntax; check the manual near', 'error');
+                addOutput("'id=1'' LIMIT 0,30' at line 1", 'error');
+                addOutput('⚠ O erro do banco vazou na tela: a consulta SQL está CONCATENANDO a entrada do usuário.', 'warning');
+                break;
+            }
+            // Produto (parâmetro id normal)
+            if (has('produto.php') && has('id=')) {
+                state.web.prodSeen = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('Lojinha Online → Produto #1', 'system');
+                addOutput('📦 Notebook Dell Inspiron i7', 'system');
+                addOutput('Preço: R$ 2.499,00', 'system');
+                addOutput('A página carrega o produto pelo parâmetro id (entrada do usuário) para montar a consulta SQL.', 'info');
+                break;
+            }
+            // Login page (sem ataque)
+            if (has('login.php')) {
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('<form action="login.php" method="POST">', 'system');
+                addOutput('  <input name="usuario"> ', 'system');
+                addOutput('  <input name="senha" type="password">', 'system');
+                addOutput('  <button>Entrar</button>', 'system');
+                addOutput('Página de login da Lojinha Online (valida usuário/senha via consulta SQL).', 'info');
+                break;
+            }
+            // Home
+            if (has('lojinha')) {
+                state.web.homeSeen = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('<h1>Bem-vindo à Lojinha Online</h1>', 'system');
+                addOutput('<a href="login.php">Entrar</a> | <a href="busca.php">Buscar</a>', 'system');
+                addOutput('<a href="produto.php?id=1">Notebook Dell i7</a>', 'system');
+                addOutput('<form action="comentar.php" method="POST">Comentários de produto</form>', 'system');
+                addOutput('Recursos mapeados: login.php, produto.php, busca.php, comentar.php.', 'info');
+                break;
+            }
+            addOutput('Aplicação não encontrada para este alvo. Use as rotas da Lojinha Online (login.php, produto.php, busca.php, comentar.php).', 'warning');
+            break;
+        }
+        default:
+            addOutput('comando ' + raw.trim() + ': não encontrado. Digite "ajuda" ou "help".', 'error');
+    }
+    checkLevel(raw);
+}
+
+// ===================== LEVEL FLOW =====================
+function checkLevel(raw) {
+    const lvl = levels[state.currentLevel];
+    if (!lvl) return;
+    if (state.levelDone[lvl.id]) {
+        if (lvl.check() && commandWasTrigger(raw, state.currentLevel)) {
+            addOutput('✔ Este nível já foi concluído! Use o botão "Próximo Nível" →', 'warning');
+        }
+        return;
+    }
+    if (lvl.check()) {
+        state.levelDone[lvl.id] = true;
+        if (!state.scorePaid) state.scorePaid = new Set();
+        if (!state.scorePaid.has(lvl.id)) {
+            state.score += 50;
+            state.scorePaid.add(lvl.id);
+        }
+        updateStats();
+        drawScene();
+        renderSvcTable();
+        document.getElementById('successMsg').textContent = lvl.successMsg;
+        document.getElementById('successScore').textContent = '+50 pontos';
+        document.getElementById('btnSuccessPrimary').textContent =
+            state.currentLevel < levels.length - 1 ? 'Próximo Nível →' : '🏆 Concluir Missão';
+        openModal('successModal');
+        updateRobot();
+        save();
+    }
+}
+
+function nextLevel() {
+    closeModal('successModal');
+    const lvl = levels[state.currentLevel];
+    if (lvl && !state.levelDone[lvl.id]) {
+        addOutput('Você ainda não completou este nível. Use as dicas!', 'warning');
+        return;
+    }
+    if (state.currentLevel < levels.length - 1) {
+        state.currentLevel++;
+        renderLevel();
+        addOutput('--- Nível ' + (state.currentLevel + 1) + ' - ' + levels[state.currentLevel].title.replace(/^Nível \d+: /, '') + ' ---', 'system');
+    } else {
+        closeModal('successModal');
+        openGameComplete();
+    }
+}
+
+function skipNotImplemented() {}
+
+function showHint() {
+    const lvl = levels[state.currentLevel];
+    const box = document.getElementById('hintBox');
+    box.innerHTML = lvl.hint;
+    box.style.display = 'block';
+}
+
+function resetLevel() {
+    const lvl = levels[state.currentLevel];
+    (LEVEL_SEC_FLAGS[state.currentLevel] || []).forEach(f => { state.web[f] = false; });
+    state.levelDone[lvl.id] = false;
+    closeModal('successModal');
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    addOutput('Nível reiniciado. Execute os comandos novamente.', 'system');
+    renderLevel();
+    updateStats();
+}
+
+function renderLevel() {
+    const lvl = levels[state.currentLevel];
+    document.getElementById('levelTitle').textContent = lvl.title;
+    document.getElementById('taskDesc').textContent = lvl.desc;
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    const isLast = state.currentLevel === levels.length - 1;
+    document.getElementById('btnProvaFinal').style.display = isLast ? 'inline-block' : 'none';
+    document.getElementById('levelDisplay').textContent = lvl.id;
+    const pct = ((state.currentLevel) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    drawScene();
+    renderSvcTable();
+    updateRobot();
+    save();
+}
+
+function updateStats() {
+    document.getElementById('levelDisplay').textContent = levels[state.currentLevel].id;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('attemptsDisplay').textContent = state.attempts;
+    const pct = ((state.currentLevel) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ===================== CANVAS =====================
+const canvas = document.getElementById('topologyCanvas');
+const ctx = canvas.getContext('2d');
+ctx.roundRect = (x, y, w, h, r) => {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+};
+
+function drawScene() {
+    const W = canvas.width, H = canvas.height;
+    const w = state.web;
+    ctx.clearRect(0, 0, W, H);
+    drawGrid(W, H);
+
+    // Atacante
+    const ax = W * 0.06, ay = H * 0.22, aw = W * 0.2, ah = H * 0.24;
+    ctx.fillStyle = '#2a1014';
+    ctx.strokeStyle = '#ff5f56';
+    ctx.lineWidth = 3;
+    ctx.roundRect(ax, ay, aw, ah, 12); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ff8a80'; ctx.font = 'bold ' + (H * 0.045) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🕵️ ATACANTE', ax + aw / 2, ay - 10);
+    ctx.font = (H * 0.03) + 'px monospace';
+    ctx.fillText('(teste de segurança)', ax + aw / 2, ay + ah / 2 - 8);
+    ctx.fillStyle = w.patchedPS && w.patchedEscape ? '#27c93f' : '#ffbd2e';
+    ctx.fillText(w.patchedPS && w.patchedEscape ? '(relatório entregue)' : '(explorando)', ax + aw / 2, ay + ah / 2 + 20);
+
+    // Servidor web
+    const sx = W * 0.52, sy = H * 0.14, sw = W * 0.42, sh = H * 0.42;
+    ctx.fillStyle = '#0f1a2b';
+    ctx.strokeStyle = '#00d4ff';
+    ctx.lineWidth = 3;
+    ctx.roundRect(sx, sy, sw, sh, 14); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#00d4ff'; ctx.font = 'bold ' + (H * 0.045) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🖥️ SERVIDOR WEB', sx + sw / 2, sy - 12);
+    ctx.font = (H * 0.03) + 'px monospace'; ctx.fillStyle = '#8ab4d8';
+    ctx.fillText('192.168.10.30 · Lojinha Online', sx + sw / 2, sy + 24);
+
+    // Rotas da aplicação
+    const routes = [
+        { lbl: '/login.php', vulnerable: w.loginBypassed && !w.patchedPS },
+        { lbl: '/produto.php?id=1', vulnerable: w.sqliDetected && !w.patchedPS },
+        { lbl: '/busca.php?q=', vulnerable: w.xssRefl && !w.patchedEscape },
+        { lbl: '/comentar.php', vulnerable: w.xssStored && !w.patchedEscape },
+    ];
+    let ry = sy + 46;
+    const rowH = 26;
+    routes.forEach(r => {
+        let color = '#27c93f';
+        if (r.vulnerable) color = '#ff5f56';
+        else if ((r.lbl.indexOf('busca') !== -1 && w.xssRefl) || (r.lbl.indexOf('comentar') !== -1 && w.xssStored)) color = '#27c93f';
+        else if (r.lbl.indexOf('produto') !== -1 && w.sqliDetected) color = w.patchedPS ? '#27c93f' : '#ff5f56';
+        else if (r.lbl.indexOf('login') !== -1 && w.loginBypassed) color = w.patchedPS ? '#27c93f' : '#ff5f56';
+        else if (!w.sqliDetected && !w.loginBypassed && !w.xssRefl && !w.xssStored) color = '#777';
+        ctx.fillStyle = '#101828'; ctx.strokeStyle = color; ctx.lineWidth = 2;
+        ctx.roundRect(sx + 14, ry - 13, sw - 28, 20, 6); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = color; ctx.font = (H * 0.026) + 'px monospace'; ctx.textAlign = 'left';
+        ctx.fillText((color === '#ff5f56' ? '⚠ ' : color === '#27c93f' ? '✔ ' : '· ') + r.lbl, sx + 22, ry + 2);
+        ry += rowH;
+    });
+
+    // Banco de dados
+    const dbX = sx + sw * 0.5, dbY = sy + sh + 18;
+    ctx.strokeStyle = w.patchedPS ? '#27c93f' : '#ffbd2e';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, sw * 0.24, 10, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#101828';
+    ctx.beginPath();
+    ctx.moveTo(dbX - sw * 0.24, dbY);
+    ctx.lineTo(dbX - sw * 0.24, dbY + 34);
+    ctx.quadraticCurveTo(dbX - sw * 0.24, dbY + 48, dbX, dbY + 48);
+    ctx.quadraticCurveTo(dbX + sw * 0.24, dbY + 48, dbX + sw * 0.24, dbY + 34);
+    ctx.lineTo(dbX + sw * 0.24, dbY);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, sw * 0.24, 10, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#101828'; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#8ab4d8'; ctx.font = (H * 0.026) + 'px monospace'; ctx.textAlign = 'center';
+    ctx.fillText('🗄️ MySQL', dbX, dbY + 30);
+    ctx.fillStyle = w.patchedPS ? '#27c93f' : '#ffbd2e';
+    ctx.fillText(w.patchedPS ? 'prepared statements ✔' : 'consultas concatenadas!', dbX, dbY + 48);
+
+    // Seta atacante -> servidor
+    ctx.strokeStyle = w.patchedPS && w.patchedEscape ? '#27c93f' : '#ffbd2e';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(ax + aw, ay + ah / 2);
+    ctx.lineTo(sx - 10, sy + sh / 2);
+    ctx.stroke();
+}
+
+function drawGrid(W, H) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+}
+
+function renderSvcTable() {
+    const w = state.web;
+    const patched = w.patchedPS && w.patchedEscape;
+    const rows = [
+        { svc: 'SQL Injection (produto.php)', status: w.sqliDetected ? (w.patchedPS ? 'Corrigida' : 'Vulnerável') : 'Não testada', cls: w.sqliDetected ? (w.patchedPS ? 'ok' : 'bad') : 'mid' },
+        { svc: 'Login Bypass (login.php)', status: w.loginBypassed ? (w.patchedPS ? 'Corrigido' : 'Explorado') : 'Não testado', cls: w.loginBypassed ? (w.patchedPS ? 'ok' : 'bad') : 'mid' },
+        { svc: 'XSS Refletido (busca.php)', status: w.xssRefl ? (w.patchedEscape ? 'Corrigido' : 'Vulnerável') : 'Não testado', cls: w.xssRefl ? (w.patchedEscape ? 'ok' : 'bad') : 'mid' },
+        { svc: 'XSS Armazenado (comentar.php)', status: w.xssStored ? (w.patchedEscape ? 'Corrigido' : 'Vulnerável') : 'Não testado', cls: w.xssStored ? (w.patchedEscape ? 'ok' : 'bad') : 'mid' },
+        { svc: 'Consultas SQL', status: w.patchedPS ? 'Prepared Statements' : 'Concatenadas', cls: w.patchedPS ? 'ok' : 'mid' },
+        { svc: 'Aplicação', status: patched ? 'Protegida' : 'Em análise', cls: patched ? 'ok' : 'mid' },
+    ];
+    const tbody = document.getElementById('svcTableBody');
+    tbody.innerHTML = '';
+    rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.svc + '</td><td class="' + r.cls + '">' + r.status + '</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// ===================== MODALS =====================
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function openTheory() {
+    const theory = document.getElementById('theoryContent');
+    theory.innerHTML = '';
+    const items = theoryLevels[levels[state.currentLevel].id] || [];
+    items.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'concept-item';
+        div.innerHTML = '<div class="concept-icon">' + t.icon + '</div><div><b>' + t.title + '</b><br>' + t.desc + '</div>';
+        theory.appendChild(div);
+    });
+    openModal('theoryModal');
+}
+
+function openLevelMap() {
+    const grid = document.getElementById('levelMapGrid');
+    grid.innerHTML = '';
+    levels.forEach(lvl => {
+        const div = document.createElement('div');
+        const done = !!state.levelDone[lvl.id];
+        const current = state.currentLevel === lvl.id - 1;
+        div.className = 'level-card' + (done ? ' done' : current ? ' current' : '');
+        div.innerHTML = '<div class="lv-num">' + lvl.id + '</div>' +
+            '<div style="font-size:0.85em; color:#4a4a4a;">' + lvl.title.replace(/^Nível \d+: /, '') + '</div>' +
+            '<div class="lv-status">' + (done ? '✔ Concluído' : current ? '► Atual' : '') + '</div>';
+        if (done || current) div.onclick = () => { state.currentLevel = lvl.id - 1; closeModal('levelMapModal'); renderLevel(); };
+        grid.appendChild(div);
+    });
+    openModal('levelMapModal');
+}
+
+// ===================== QUIZ =====================
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function openQuiz(force) {
+    quizIndex = 0;
+    quizScore = 0;
+    quizAnswered = false;
+    document.getElementById('quizFeedback').textContent = '';
+    showQuizQuestion();
+    openModal('quizModal');
+}
+
+function showQuizQuestion() {
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    const q = quizQuestions[quizIndex];
+    document.getElementById('quizQuestion').textContent = '(' + (quizIndex + 1) + '/' + quizQuestions.length + ') ' + q.q;
+    const opts = document.getElementById('quizOptions');
+    opts.innerHTML = '';
+    quizAnswered = false;
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerQuiz(i);
+        opts.appendChild(btn);
+    });
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizNextBtn').style.display = 'none';
+}
+
+function answerQuiz(i) {
+    if (quizAnswered) return;
+    quizAnswered = true;
+    const q = quizQuestions[quizIndex];
+    const btns = document.querySelectorAll('#quizOptions .quiz-option');
+    btns.forEach((b, bIdx) => {
+        b.disabled = true;
+        if (bIdx === q.correct) b.classList.add('correct');
+        else if (bIdx === i) b.classList.add('wrong');
+    });
+    if (i === q.correct) { quizScore += 100; document.getElementById('quizFeedback').textContent = '✅ ' + q.explain; }
+    else document.getElementById('quizFeedback').textContent = '❌ ' + q.explain;
+    document.getElementById('quizNextBtn').style.display = 'inline-block';
+    document.getElementById('quizNextBtn').textContent = quizIndex + 1 < quizQuestions.length ? 'Próxima ▶' : 'Ver Resultado';
+}
+
+function quizNext() {
+    if (!quizAnswered) return;
+    quizIndex++;
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    showQuizQuestion();
+}
+
+function finishQuiz() {
+    state.score += quizScore;
+    state.quizDone = true;
+    updateStats();
+    document.getElementById('quizQuestion').textContent = '🏁 Resultado da Prova Final';
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizFeedback').textContent = '';
+    const container = document.getElementById('quizOptions');
+    const box = document.createElement('div');
+    box.className = 'score';
+    box.textContent = 'Você acertou ' + (quizScore / 100) + ' de ' + quizQuestions.length + ' perguntas';
+    box.style.fontSize = '1.3em';
+    container.appendChild(box);
+    if (quizScore >= quizQuestions.length * 50) {
+        const p = document.createElement('p');
+        p.style.color = '#27c93f'; p.style.fontWeight = 'bold';
+        p.textContent = '🎓 Aprovado! Procure seu certificado na tela final.';
+        container.appendChild(p);
+    } else {
+        const p = document.createElement('p');
+        p.style.color = '#ff8c00';
+        p.textContent = '💪 Você pode refazer a prova quando quiser!';
+        container.appendChild(p);
+    }
+    document.getElementById('quizNextBtn').style.display = 'none';
+    const approved = quizScore >= quizQuestions.length * 50;
+    const footer = document.getElementById('quizFooter');
+    footer.innerHTML = '';
+    if (approved) {
+        const btnCert = document.createElement('button');
+        btnCert.className = 'btn btn-success';
+        btnCert.textContent = '🎓 Ver Certificado';
+        btnCert.onclick = () => { closeModal('quizModal'); showCertificate(); };
+        footer.appendChild(btnCert);
+    }
+    const btnAgain = document.createElement('button');
+    btnAgain.className = 'btn btn-ghost';
+    btnAgain.textContent = '🔁 Refazer Prova';
+    btnAgain.onclick = () => openQuiz();
+    footer.appendChild(btnAgain);
+    const btnClose = document.createElement('button');
+    btnClose.className = 'btn btn-primary';
+    btnClose.textContent = 'Fechar';
+    btnClose.onclick = () => closeModal('quizModal');
+    footer.appendChild(btnClose);
+    save();
+}
+
+// ===================== GAME FLOW =====================
+function confirmAction(kind) {
+    document.getElementById('confirmText').textContent =
+        kind === 'reset' ? 'Todo o progresso e a pontuação serão reiniciados. Continuar?' : '';
+    document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); resetGame(); };
+    openModal('confirmModal');
+}
+
+function resetGame() {
+    state.currentLevel = 0;
+    state.score = 0;
+    state.attempts = 0;
+    state.quizDone = false;
+    state.levelDone = {};
+    state.scorePaid = new Set();
+    Object.keys(state.web).forEach(k => state.web[k] = false);
+    term.querySelectorAll('.output').forEach(o => o.remove());
+    addOutput('Jogo reiniciado. Boa sorte!', 'system');
+    renderLevel();
+    updateStats();
+    updateRobot();
+    save();
+}
+
+function openGameComplete() {
+    document.getElementById('finalScore').textContent = 'Pontuação Final: ' + state.score;
+    document.getElementById('btnProvaFinal').style.display = 'none';
+    openModal('gameCompleteModal');
+}
+
+function showCertificate() {
+    const name = state.studentName || 'Aluno(a)';
+    document.getElementById('certStudentName').textContent = name;
+    document.getElementById('certScore').textContent = state.score + ' pts';
+    document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
+    closeModal('gameCompleteModal');
+    closeModal('successModal');
+    openModal('certificateModal');
+}
+
+function downloadCertificate() {
+    const node = document.getElementById('certificatePrint');
+    if (window.htmlToImage) {
+        htmlToImage.toPng(node, { pixelRatio: 2, backgroundColor: '#f3f7fa' })
+            .then(dataUrl => {
+                const a = document.createElement('a');
+                a.download = 'certificado-sfcyber-web-' + (state.studentName || 'aluno').toLowerCase().replace(/\s+/g, '-') + '.png';
+                a.href = dataUrl;
+                a.click();
+            })
+            .catch(() => window.print());
+    } else {
+        window.print();
+    }
+}
+
+// ===================== WELCOME / STORAGE =====================
+function closeWelcome() {
+    const nameInput = document.getElementById('studentNameInput');
+    const name = (nameInput.value || '').trim();
+    state.studentName = name || 'Aluno(a)';
+    closeModal('welcomeModal');
+    input.focus();
+    startIfNew();
+    robotIntro();
+    save();
+}
+
+function startIfNew() {
+    state.web.homeSeen = false;
+    renderLevel();
+    updateStats();
+}
+
+function resumeGame() {
+    closeModal('welcomeModal');
+    input.focus();
+    renderLevel();
+    updateStats();
+    robotIntro('De volta!');
+}
+
+function save() {
+    try {
+        const data = {
+            currentLevel: state.currentLevel,
+            score: state.score,
+            attempts: state.attempts,
+            studentName: state.studentName,
+            web: state.web,
+            levelDone: state.levelDone,
+            quizDone: state.quizDone,
+        };
+        localStorage.setItem('sfcyber-web-v1', JSON.stringify(data));
+    } catch (e) {}
+}
+
+function load() {
+    try {
+        const raw = localStorage.getItem('sfcyber-web-v1');
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        state.currentLevel = data.currentLevel || 0;
+        state.score = data.score || 0;
+        state.attempts = data.attempts || 0;
+        state.studentName = data.studentName || '';
+        state.quizDone = data.quizDone || false;
+        state.web = Object.assign(state.web, data.web || {});
+        state.levelDone = data.levelDone || {};
+        state.scorePaid = new Set(Object.keys(state.levelDone).map(Number));
+        return true;
+    } catch (e) { return false; }
+}
+
+// ===================== INIT =====================
+function resizeCanvas() {
+    const cssH = 400;
+    canvas.width = Math.max(canvas.clientWidth, 50) * 2;
+    canvas.height = cssH * 2;
+    drawScene();
+}
+window.addEventListener('resize', resizeCanvas);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const had = load();
+    document.getElementById('studentNameInput').value = state.studentName || '';
+    if (had && state.studentName) document.getElementById('resumeBtn').style.display = 'inline-block';
+    resizeCanvas();
+    if (!had || !state.studentName) {
+        openModal('welcomeModal');
+        document.getElementById('studentNameInput').focus();
+    } else {
+        closeModal('welcomeModal');
+        robotIntro('De volta!');
+    }
+    renderLevel();
+    updateStats();
+    renderSvcTable();
+    input.focus();
+});
+</script>
+</body>
+</html>

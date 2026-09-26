@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Network, ShieldHalf, ArrowRight } from "lucide-react";
+import { X, Network, ShieldHalf, Bug, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 interface SimulatorChoiceModalProps {
@@ -12,7 +12,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4">
-      <div className="relative w-full max-w-lg p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
           aria-label="Fechar"
@@ -28,11 +28,11 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
 
         <h2 className="text-2xl font-extrabold font-mono text-white mb-3">Escolha seu simulador</h2>
         <p className="text-sm text-slate-300 leading-relaxed mb-6">
-          Comece a praticar agora mesmo. Os dois simuladores são{" "}
+          Comece a praticar agora mesmo. Os três simuladores são{" "}
           <strong className="text-cyan-400">grátis</strong>, com 8 níveis e certificado de conclusão.
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-3 gap-4">
           <Link
             href="/simulador-vlan"
             onClick={onClose}
@@ -59,9 +59,27 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <div className="w-12 h-12 mb-4 rounded-xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
               <ShieldHalf className="w-6 h-6" />
             </div>
-            <h3 className="font-extrabold font-mono text-white mb-2">Simulador de Segurança</h3>
+            <h3 className="font-extrabold font-mono text-white mb-2">Simulador SOC</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Seja um Analista SOC: escaneie, proteja o firewall e bloqueie o atacante.
+            </p>
+            <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-cyan-400">
+              Acessar
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+
+          <Link
+            href="/simulador-web"
+            onClick={onClose}
+            className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+          >
+            <div className="w-12 h-12 mb-4 rounded-xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+              <Bug className="w-6 h-6" />
+            </div>
+            <h3 className="font-extrabold font-mono text-white mb-2">Simulador de Segurança Web</h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-4">
+              Descubra SQL Injection e XSS numa aplicação web e depois corrija a falha.
             </p>
             <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-cyan-400">
               Acessar
