@@ -49,7 +49,10 @@ export function AudienceSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* For You */}
-          <div className="p-8 rounded-3xl bg-slate-950 border border-cyan-500/30 shadow-xl shadow-cyan-500/5">
+          <div
+            style={{ "--neon": "#22d3ee" } as React.CSSProperties}
+            className="sf-neon-card p-8 rounded-3xl bg-slate-950 border border-cyan-500/30"
+          >
             <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800">
               <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
                 <Check className="w-6 h-6" />
@@ -73,7 +76,10 @@ export function AudienceSection() {
           </div>
 
           {/* Not For You */}
-          <div className="p-8 rounded-3xl bg-slate-950 border border-rose-500/30 shadow-xl shadow-rose-500/5">
+          <div
+            style={{ "--neon": "#f43f5e" } as React.CSSProperties}
+            className="sf-neon-card p-8 rounded-3xl bg-slate-950 border border-rose-500/30"
+          >
             <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800">
               <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400">
                 <X className="w-6 h-6" />
