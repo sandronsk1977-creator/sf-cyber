@@ -86,7 +86,7 @@ export function CryptoAnimationHero() {
       <div className="absolute inset-0 pointer-events-none">
         <video
           className="w-full h-full object-cover object-center"
-          src="/images/cyber-soc.mp4"
+          src="/images/cyber-soc-team.mp4"
           autoPlay
           muted
           loop
