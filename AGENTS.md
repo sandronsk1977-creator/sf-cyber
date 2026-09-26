@@ -2,7 +2,7 @@
 
 ## Diretrizes do projeto (sf-cyber)
 
-Portal SF Cyber — landing dark com quatro simuladores (Redes: VLANs e Servidor DNS; Cibersegurança: SOC e Segurança Web), planos de pré-lançamento e deploy automático via GitHub Pages.
+Portal SF Cyber — landing dark com 4 laboratórios (Redes: VLANs e Servidor DNS; Cibersegurança: SOC e Segurança Web), planos de pré-lançamento e deploy automático via GitHub Pages.
 
 ### Regras fixas de desenvolvimento
 
