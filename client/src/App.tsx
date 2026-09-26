@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Router as WouterRouter, Switch } from "wouter";
+import { Route, Router as WouterRouter, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { ContactRail } from "./components/ContactRail";
@@ -10,21 +11,46 @@ import { SimulatorPage } from "./pages/SimulatorPage";
 import { SimulatorSecurityPage } from "./pages/SimulatorSecurityPage";
 import { SimulatorWebPage } from "./pages/SimulatorWebPage";
 
+const FALLBACK_ROUTE_KEY = "sfcyberRoute";
+
+function AppRoutes() {
+  const [location, navigate] = useLocation();
+  const [pending] = useState<string | null>(() => {
+    if (typeof sessionStorage === "undefined") return null;
+    const stored = sessionStorage.getItem(FALLBACK_ROUTE_KEY);
+    if (stored && stored !== location) {
+      sessionStorage.removeItem(FALLBACK_ROUTE_KEY);
+      return stored;
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    if (pending) navigate(pending, { replace: true });
+  }, [pending, navigate]);
+
+  if (pending) return null;
+
+  return (
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/simulador-vlan" component={SimulatorPage} />
+      <Route path="/simulador-seguranca" component={SimulatorSecurityPage} />
+      <Route path="/simulador-web" component={SimulatorWebPage} />
+      <Route path="/404" component={NotFound} />
+
+      {/* Final fallback route */}
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
+
 function Router() {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
   return (
     <WouterRouter base={base}>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/simulador-vlan" component={SimulatorPage} />
-        <Route path="/simulador-seguranca" component={SimulatorSecurityPage} />
-        <Route path="/simulador-web" component={SimulatorWebPage} />
-        <Route path="/404" component={NotFound} />
-
-        {/* Final fallback route */}
-        <Route component={NotFound} />
-      </Switch>
+      <AppRoutes />
     </WouterRouter>
   );
 }
