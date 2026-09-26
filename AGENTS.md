@@ -20,4 +20,5 @@ Portal SF Cyber — landing dark com dois simuladores (VLANs e Segurança/Analis
 - `client/public/vlans/index.html` — Simulador de VLANs (estático, SF Bot).
 - `client/public/seguranca/index.html` — Simulador de Segurança SOC (estático, SF Bot). Teste automatizado de fluxo completo: `C:\Users\Family\AppData\Local\Temp\opencode\soc_test.cjs` (8 níveis → prova → certificado).
 - `client/public/web/index.html` — Simulador de Segurança Web SQLi/XSS (estático, SF Bot). Teste automatizado de fluxo completo: `C:\Users\Family\AppData\Local\Temp\opencode\web_test.cjs` (8 níveis → prova → certificado).
+- `client/public/404.html` — Fallback SPA do GitHub Pages: guarda a rota em `sessionStorage["sfcyberRoute"]` e redireciona para `/`; `App.tsx` restaura a rota via `useLocation`. Necessário para acesso direto aos `/simulador-*`.
 - `client/src/` — React + wouter; páginas: Home, SimuladorVlan, SimuladorSecurity, SimuladorWeb; componentes: PricingSection, SponsorSection, SimulatorChoiceModal, PortalCardsSection, ContactRail, PreLaunchModal.
