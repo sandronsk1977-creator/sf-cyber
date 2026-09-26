@@ -28,7 +28,6 @@ export function PricingSection() {
         "Progresso salvo automaticamente",
       ],
       cta: "Começar Grátis",
-      to: "/simulador-vlan",
     },
     {
       name: "MEMBROS",
@@ -83,7 +82,7 @@ export function PricingSection() {
               Plano FREE... comece agora
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
-              Acesso imediato. Simulador de Criação de VLan
+              Acesso imediato aos quatro simuladores: VLANs, SOC, Segurança Web e Servidor DNS
             </p>
           </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ShoppingCart, Shield, Menu, X } from "lucide-react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { CartModal } from "./CartModal";
 import { PreLaunchModal } from "./PreLaunchModal";
@@ -14,7 +15,7 @@ export function Navbar() {
       <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
-            <a href="#" className="flex items-center gap-2.5 group">
+            <Link href="/" className="flex items-center gap-2.5 group">
               {/* Escudo SF Cyber */}
               <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-indigo-700 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform border border-cyan-300/40">
                 <Shield className="absolute inset-0 w-full h-full text-cyan-400/20 fill-cyan-500/10" />
@@ -30,7 +31,7 @@ export function Navbar() {
                   Segurança Digital & Redes
                 </span>
               </div>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Nav Items */}

@@ -11,13 +11,14 @@ export function CryptoAnimationHero() {
 
   useEffect(() => {
     let iteration = 0;
-    let timer: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval> | null = null;
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
     const runDecryptAnimation = () => {
       iteration = 0;
       setPhase("decrypting");
 
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setDisplayText(
           TARGET_TITLE.split("")
             .map((char, index) => {
@@ -31,26 +32,23 @@ export function CryptoAnimationHero() {
         );
 
         if (iteration >= TARGET_TITLE.length) {
-          clearInterval(interval);
+          if (interval) clearInterval(interval);
           setPhase("holding");
 
-          // Hold for 5 seconds, then encrypt back
           timer = setTimeout(() => {
             runEncryptAnimation();
           }, 5000);
         }
 
-        iteration += 1 / 2; // speed factor
+        iteration += 1 / 2;
       }, 40);
-
-      return () => clearInterval(interval);
     };
 
     const runEncryptAnimation = () => {
       iteration = TARGET_TITLE.length;
       setPhase("encrypting");
 
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setDisplayText(
           TARGET_TITLE.split("")
             .map((char, index) => {
@@ -64,7 +62,7 @@ export function CryptoAnimationHero() {
         );
 
         if (iteration <= 0) {
-          clearInterval(interval);
+          if (interval) clearInterval(interval);
           timer = setTimeout(() => {
             runDecryptAnimation();
           }, 500);
@@ -72,14 +70,12 @@ export function CryptoAnimationHero() {
 
         iteration -= 1 / 2;
       }, 30);
-
-      return () => clearInterval(interval);
     };
 
-    const cleanup = runDecryptAnimation();
+    runDecryptAnimation();
 
     return () => {
-      if (cleanup) clearInterval(cleanup as any);
+      if (interval) clearInterval(interval);
       if (timer) clearTimeout(timer);
     };
   }, []);
@@ -99,7 +95,8 @@ export function CryptoAnimationHero() {
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
+        <h1 className="sr-only">Simuladores para o aprendizado prático em Redes e Cibersegurança</h1>
+        <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 drop-shadow-[0_0_30px_rgba(6,182,212,0.4)]">
             {displayText || "SIMULADORES PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA"}
           </span>
@@ -129,14 +126,10 @@ export function CryptoAnimationHero() {
             variant="outline"
             className="w-full sm:w-auto border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-200 font-semibold px-8 py-6 rounded-xl text-base"
             onClick={() => {
-              const el = document.getElementById("portal");
-              if (el) {
-                el.classList.remove("hidden");
-                setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 60);
-              }
+              document.getElementById("portal")?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            Ver os cursos →
+            Ver os simuladores →
           </Button>
         </div>
 

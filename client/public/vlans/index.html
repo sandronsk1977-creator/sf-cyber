@@ -842,7 +842,6 @@
             <button class="btn btn-ghost" onclick="openTheory()">📚 Revisão</button>
             <button class="btn btn-ghost" onclick="openLevelMap()">🗺️ Níveis</button>
             <button class="btn btn-warning" onclick="resetLevel()">🔄 Resetar Nível</button>
-            <button class="btn btn-success" onclick="skipLevel()">⏭ Próximo Nível</button>
             <button class="btn btn-danger" onclick="confirmAction('reset')">🏠 Reiniciar Jogo</button>
             <button class="btn btn-warning" id="btnProvaFinal" style="display:none;" onclick="openQuiz(true)">📝 Prova Final</button>
         </div>
@@ -1148,6 +1147,7 @@ const state = {
     pingPackets: [],
     quizDone: false,
     level6Done: false,
+    scorePaid: new Set(),
     studentName: '',
 };
 
@@ -1901,7 +1901,7 @@ function addOutput(text, className = '') {
     const inputLine = terminalBody.querySelector('.input-line');
     const div = document.createElement('div');
     div.className = `output console-line ${className}`;
-    div.innerHTML = text;
+    div.textContent = text;
     terminalBody.insertBefore(div, inputLine);
     terminalBody.scrollTop = terminalBody.scrollHeight;
 }
@@ -2299,7 +2299,7 @@ function updateUI() {
     document.getElementById('hintBox').innerHTML = level.hint;
     document.getElementById('levelDisplay').textContent = state.currentLevel + 1;
     document.getElementById('scoreDisplay').textContent = state.score;
-    document.getElementById('progressFill').style.width = `${((state.currentLevel) / levels.length) * 100}%`;
+    document.getElementById('progressFill').style.width = `${((state.currentLevel + 1) / levels.length) * 100}%`;
     updateVlanTable();
     updateLegend();
     drawTopology();
@@ -2315,12 +2315,19 @@ function updateVlanTable() {
     tbody.innerHTML = '';
     for (const [id, vlan] of Object.entries(vlans)) {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><span style="color:${getVlanColor(parseInt(id))}">${id}</span></td>
-            <td>${vlan.name || '(sem nome)'}</td>
-            <td>${(vlan.ports || []).join(', ') || '-'}</td>
-            <td style="color:#27c93f">active</td>
-        `;
+        const tdId = document.createElement('td');
+        tdId.innerHTML = `<span style="color:${getVlanColor(parseInt(id))}">${id}</span>`;
+        const tdName = document.createElement('td');
+        tdName.textContent = vlan.name || '(sem nome)';
+        const tdPorts = document.createElement('td');
+        tdPorts.textContent = (vlan.ports || []).join(', ') || '-';
+        const tdStatus = document.createElement('td');
+        tdStatus.style.color = '#27c93f';
+        tdStatus.textContent = 'active';
+        row.appendChild(tdId);
+        row.appendChild(tdName);
+        row.appendChild(tdPorts);
+        row.appendChild(tdStatus);
         tbody.appendChild(row);
     }
 }
@@ -2328,29 +2335,51 @@ function updateVlanTable() {
 function updateLegend() {
     const legend = document.getElementById('vlanLegend');
     const vlans = state.vlanConfig.vlans;
-    let html = '';
+    legend.innerHTML = '';
     for (const [id, vlan] of Object.entries(vlans)) {
-        html += `<div class="legend-item"><div class="legend-color" style="background:${getVlanColor(parseInt(id))}"></div>VLAN ${id} ${vlan.name ? '('+vlan.name+')' : ''}</div>`;
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        const color = document.createElement('div');
+        color.className = 'legend-color';
+        color.style.background = getVlanColor(parseInt(id));
+        item.appendChild(color);
+        const text = document.createElement('span');
+        text.textContent = `VLAN ${id}${vlan.name ? ' (' + vlan.name + ')' : ''}`;
+        item.appendChild(text);
+        legend.appendChild(item);
     }
     if (Object.keys(state.vlanConfig.interfaces).length > 0) {
         const hasTrunk = Object.values(state.vlanConfig.interfaces).some(i => i.mode === 'trunk');
         if (hasTrunk) {
-            html += `<div class="legend-item"><div class="legend-color" style="background:#ffd700"></div>Trunk</div>`;
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            const color = document.createElement('div');
+            color.className = 'legend-color';
+            color.style.background = '#ffd700';
+            item.appendChild(color);
+            const text = document.createElement('span');
+            text.textContent = 'Trunk';
+            item.appendChild(text);
+            legend.appendChild(item);
         }
     }
-    legend.innerHTML = html;
 }
 
 function checkLevelComplete() {
     const level = levels[state.currentLevel];
     if (level.check(state.vlanConfig)) {
         setTimeout(() => {
-            const points = Math.max(100 - (state.attempts - 1) * 10, 20);
-            state.score += points;
-            document.getElementById('scoreDisplay').textContent = state.score;
-            
+            const firstTime = !state.scorePaid.has(level.id);
+            if (firstTime) {
+                const points = Math.max(100 - (state.attempts - 1) * 10, 20);
+                state.score += points;
+                state.scorePaid.add(level.id);
+                document.getElementById('scoreDisplay').textContent = state.score;
+                document.getElementById('successScore').textContent = `+${points} pontos`;
+            } else {
+                document.getElementById('successScore').textContent = 'Nível concluído (pontos já contados)';
+            }
             document.getElementById('successMsg').textContent = level.successMsg;
-            document.getElementById('successScore').textContent = `+${points} pontos`;
             
             if (state.currentLevel >= levels.length - 1) {
                 state.level6Done = true;
@@ -2432,6 +2461,7 @@ function resetGame() {
     state.commandHistory = [];
     state.historyIndex = -1;
     state.pingPackets = [];
+    state.scorePaid = new Set();
     state.quizDone = false;
     state.level6Done = false;
     
@@ -2452,28 +2482,6 @@ function resetGame() {
     robotStepKey = '';
     updateRobot();
     terminalInput.focus();
-}
-
-function skipLevel() {
-    if (state.currentLevel < levels.length - 1) {
-        state.currentLevel++;
-        state.attempts = 0;
-        state.vlanConfig = JSON.parse(JSON.stringify(levels[state.currentLevel].initialConfig));
-        state.mode = 'user';
-        state.currentInterface = null;
-        state._currentVlan = null;
-        state.pingPackets = [];
-
-        const inputLine = terminalBody.querySelector('.input-line');
-        terminalBody.innerHTML = '';
-        terminalBody.appendChild(inputLine);
-
-        addOutput(`--- Nível ${state.currentLevel + 1} (pulado) ---`, 'system');
-        updatePrompt();
-        updateUI();
-        updateRobot();
-        saveProgress();
-    }
 }
 
 function showHint() {
@@ -2777,6 +2785,10 @@ function populatePingSelects() {
 // PCs×portas
 const PC_PORTS = { PC1: 'fa0/1', PC2: 'fa0/2', PC3: 'fa0/3', PC4: 'fa0/4' };
 
+function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 function pcAssignOptions(port) {
     const intf = state.vlanConfig.interfaces[port];
     const current = (intf && intf.mode === 'access' && intf.vlan) ? String(intf.vlan) : '1';
@@ -2784,7 +2796,7 @@ function pcAssignOptions(port) {
     let html = `<option value="1">VLAN 1 (padrão)</option>`;
     vlans.forEach(id => {
         const v = state.vlanConfig.vlans[id];
-        html += `<option value="${id}" ${id === current ? 'selected' : ''}>VLAN ${id}${v.name ? ' (' + v.name + ')' : ''}</option>`;
+        html += `<option value="${id}" ${id === current ? 'selected' : ''}>VLAN ${id}${v.name ? ' (' + escapeHtml(v.name) + ')' : ''}</option>`;
     });
     return html;
 }
