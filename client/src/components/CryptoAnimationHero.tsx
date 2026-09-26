@@ -104,7 +104,7 @@ export function CryptoAnimationHero() {
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mb-12 leading-relaxed">
-          Trilhas de aprendizagem estruturadas, laboratórios práticos e simulações para ajudar você a obter sua primeira certificação, mesmo sem experiência prévia.
+          Aprenda, pratique e prepare-se para as avaliações com trilhas, laboratórios e simuladores de Redes e Cibersegurança.
         </p>
 
         {/* CTA Buttons */}

@@ -40,8 +40,8 @@ export function PricingSection() {
       features: [
         "Todos os cursos e trilhas sem restrições",
         "Todos os laboratórios práticos",
-        "Simulados de exames de certificação",
-        "Certificados verificáveis por curso",
+        "Simulados e testes de avaliação",
+        "Certificado de conclusão por curso",
         "SF Cyber AI (assistente inteligente)",
         "Novos cursos e simuladores incluídos",
         "Suporte humano dedicado",
@@ -59,8 +59,8 @@ export function PricingSection() {
       features: [
         "Acesso vitalício a todos os cursos",
         "Todos os simuladores e laboratórios",
-        "Simulados de exames de certificação",
-        "Certificados verificáveis por curso",
+        "Simulados e testes de avaliação",
+        "Certificado de conclusão por curso",
         "Novos cursos e simuladores inclusos",
         "Suporte prioritário vitalício",
       ],

@@ -94,7 +94,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             <p className="text-sm text-slate-300 leading-relaxed mb-4">
               Vamos te avisar em{" "}
               <strong className="text-cyan-400 break-all">{subscribedEmail}</strong> quando a
-              área de membros (cursos, laboratórios e certificações) abrir.
+              área de membros (cursos, laboratórios e avaliações) abrir.
             </p>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Enquanto isso, já pode praticar nos simuladores grátis com 8 níveis e certificado
@@ -141,7 +141,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
           <>
             <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
             <p className="text-sm text-slate-300 leading-relaxed mb-5">
-              A área de membros (cursos, laboratórios e certificações) estará disponível em
+              A área de membros (cursos, laboratórios e avaliações) estará disponível em
               breve. Enquanto isso, aproveite o{" "}
               <strong className="text-cyan-400">Simulador de VLANs Switch Cisco</strong> grátis,
               com 8 níveis e certificado de conclusão.
