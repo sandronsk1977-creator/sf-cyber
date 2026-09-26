@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 function getSections() {
-  const nodes = Array.from(
-    document.querySelectorAll("main section, main footer")
+  const sections = Array.from(
+    document.querySelectorAll("section")
   ) as HTMLElement[];
-  return nodes;
+  const inMain = sections.filter((s) => s.closest("main") !== null);
+  const footer = document.querySelector("footer") as HTMLElement | null;
+  if (footer) inMain.push(footer);
+  return inMain;
 }
 
 function currentIndex(sections: HTMLElement[]) {
