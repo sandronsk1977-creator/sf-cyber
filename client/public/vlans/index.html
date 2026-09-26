@@ -2639,6 +2639,8 @@ const QUIZ = [
     { q: 'Qual é a função de uma porta trunk?', opts: ['Conectar um PC à rede', 'Transportar várias VLANs entre switches', 'Aumentar a velocidade da porta', 'Configurar o IP do switch'], ans: 1, why: 'Portas trunk carregam múltiplas VLANs com tags 802.1Q entre switches.' },
     { q: 'Dois PCs em VLANs diferentes podem se comunicar diretamente pelo mesmo switch?', opts: ['Sim, sempre', 'Não, precisam de roteamento (ex.: roteador ou SVI)', 'Sim, se usarem trunk', 'Somente com cabo cruzado'], ans: 1, why: 'VLANs isolam o domínio de broadcast; para inter-VLAN, é preciso um dispositivo de camada 3.' },
     { q: 'Depois de configurar tudo, qual comando salva a configuração?', opts: ['save config', 'copy running-config startup-config', 'write all', 'commit config'], ans: 1, why: 'O comando copia a configuração em execução (RAM) para a NVRAM.' },
+    { q: 'Qual a finalidade de uma Management VLAN?', opts: ['Isolar o acesso administrativo ao switch', 'Acelerar o tráfego de dados', 'Salvar automaticamente a configuração', 'Criar domínios de colisão menores'], ans: 0, why: 'A VLAN de gerência reserva um segmento isolado para configurar e gerenciar o equipamento.' },
+    { q: 'Em uma porta access, o que o switch faz com o tráfego sem tag do PC?', opts: ['Enquadra os quadros na VLAN configurada na porta', 'Aplica tags 802.1Q em todos os quadros', 'Exige a mesma VLAN de gerência', 'Descarta o tráfego sem tag'], ans: 0, why: 'Em access, os quadros sem tag são associados à única VLAN definida na porta.' },
 ];
 let quizIdx = 0, quizScore = 0, quizAnswered = false, quizFinal = false;
 
@@ -2732,9 +2734,11 @@ function quizNext() {
     if (!quizAnswered) { return; }
     quizIdx++;
     if (quizIdx < QUIZ.length) { renderQuizQuestion(); return; }
-    const grade = quizScore >= 4 ? '🏆 Excelente!' : (quizScore >= 3 ? '✅ Muito bom!' : '📚 Bom, mas revise!');
+    const half = Math.ceil(QUIZ.length / 2);
+    const excellent = Math.ceil(QUIZ.length * 0.75);
+    const grade = quizScore >= excellent ? '🏆 Excelente!' : (quizScore >= half ? '✅ Muito bom!' : '📚 Bom, mas revise!');
     let bonus = 0;
-    if (!state.quizDone && quizScore >= 3) {
+    if (!state.quizDone && quizScore >= half) {
         bonus = quizScore * 20;
         state.score += bonus;
         state.quizDone = true;
