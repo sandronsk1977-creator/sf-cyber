@@ -76,7 +76,7 @@ export function PortalCardsSection() {
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-rose-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-500/30 z-10">
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
               Cibersegurança
             </span>
             <div className="flex items-start justify-between mb-4">
@@ -104,7 +104,7 @@ export function PortalCardsSection() {
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
           >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-rose-500 text-slate-950 text-xs font-bold uppercase tracking-wider shadow-lg shadow-rose-500/30 z-10">
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
               Cibersegurança
             </span>
             <div className="flex items-start justify-between mb-4">
