@@ -35,22 +35,25 @@ export function CyberBackground() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.font = `${fontSize}px monospace`;
       for (let i = 0; i < cols; i++) {
+        drops[i] += 1;
         const y = drops[i];
-        if (y <= 0) continue;
         const x = i * fontSize;
         const char = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
         ctx.fillStyle = "rgba(190, 242, 255, 0.9)";
         ctx.fillText(char(), x, y * fontSize);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.5)";
-        ctx.fillText(char(), x, (y - 1) * fontSize);
-        ctx.fillStyle = "rgba(34, 211, 238, 0.22)";
-        ctx.fillText(char(), x, (y - 2) * fontSize);
+        if (y > 1) {
+          ctx.fillStyle = "rgba(34, 211, 238, 0.5)";
+          ctx.fillText(char(), x, (y - 1) * fontSize);
+        }
+        if (y > 2) {
+          ctx.fillStyle = "rgba(34, 211, 238, 0.22)";
+          ctx.fillText(char(), x, (y - 2) * fontSize);
+        }
 
         if (y * fontSize > window.innerHeight && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        drops[i] += 1;
       }
       raf = requestAnimationFrame(drawFrame);
     };
@@ -92,7 +95,7 @@ export function CyberBackground() {
     <div className="fixed inset-0 z-[25] pointer-events-none select-none" aria-hidden="true">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full mix-blend-screen"
+        className="absolute inset-0 w-full h-full"
       />
       <div className="absolute inset-0 cyber-scanlines" />
       <div className="absolute inset-0 cyber-vignette" />
