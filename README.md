@@ -30,8 +30,9 @@ Abra http://localhost:3000
 - **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (8 níveis, testes de ping e certificado de conclusão).
 - **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (8 níveis: nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH; certificado de conclusão).
 - **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (8 níveis: descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação; certificado de conclusão).
-- **SF Bot**: assistente robô nos três simuladores para guiar o aluno etapa por etapa.
-- Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos três simuladores.
+- **Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)** em `/simulador-dns` (8 níveis: registros A/MX/NS, subdomínio exposto, transferência de zona, envenenamento de cache e proteção com AXFR restrito + DNSSEC; certificado de conclusão).
+- **SF Bot**: assistente robô nos quatro simuladores para guiar o aluno etapa por etapa.
+- Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos quatro simuladores.
 - Planos de pré-lançamento: **FREE** (grátis), **MEMBROS** (R$ 39,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00, pagamento único).
 - Modal de escolha de simulador ao clicar em "Começar Grátis" (plano FREE).
 - Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos pagos, com captura de e-mail (visual).
@@ -53,9 +54,10 @@ client/
   public/vlans/       # Simulador de VLANs (página estática embutida)
   public/seguranca/   # Simulador de Segurança SOC (página estática embutida)
   public/web/         # Simulador de Segurança Web SQLi/XSS (página estática embutida)
+  public/dns/         # Simulador de Servidor DNS (página estática embutida)
   src/
     App.tsx           # Rotas e providers globais
-    pages/            # Home, SimuladorVlan, SimuladorSeguranca, SimuladorWeb, NotFound
+    pages/            # Home, SimuladorVlan, SimuladorSeguranca, SimuladorWeb, SimuladorDns, NotFound
     components/       # Navbar, Hero, Pricing, SponsorSection, Modais, ContactRail, etc.
     components/ui/    # Componentes shadcn/ui
     index.css         # Tema, animações e utilitários custom

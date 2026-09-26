@@ -1,5 +1,5 @@
 import React from "react";
-import { Network, ShieldHalf, Bug, ArrowRight } from "lucide-react";
+import { Network, ShieldHalf, Bug, Globe, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 export function PortalCardsSection() {
@@ -18,7 +18,7 @@ export function PortalCardsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <Link
             href="/simulador-vlan"
@@ -98,6 +98,36 @@ export function PortalCardsSection() {
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-8">
               Analise a Lojinha Online como um pentester: descubra parâmetros dinâmicos, detete SQL Injection, extraia dados via UNION, teste XSS refletido e armazenado e corrija a aplicação. 8 níveis progressivos e certificado de conclusão.
+            </p>
+
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-3 rounded-xl shadow-xl shadow-cyan-500/25 transition-colors">
+                Acessar Simulador
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <span className="text-xs text-slate-500 font-mono">8 níveis · Certificado</span>
+            </div>
+          </Link>
+
+          {/* Card 04 - Redes | Simulador de DNS */}
+          <Link
+            href="/simulador-dns"
+            className="group relative p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/40 shadow-2xl shadow-cyan-500/10 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+          >
+            <div className="flex items-start justify-between mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
+                <Globe className="w-7 h-7" />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                Disponível
+              </span>
+            </div>
+
+            <h3 className="font-extrabold text-2xl mb-3 text-white font-mono">
+              Redes · Simulador de Servidor DNS
+            </h3>
+            <p className="text-slate-400 text-sm leading-relaxed mb-8">
+              Audite o servidor DNS da empresa como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) aberta, detecte envenenamento de cache e proteja a zona com DNSSEC. 8 níveis progressivos e certificado de conclusão.
             </p>
 
             <div className="flex items-center justify-between">
