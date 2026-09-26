@@ -37,7 +37,7 @@ export function PortalCardsSection() {
             Escolha sua área e comece agora
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Laboratórios para aprendizagem em Cibersegurança e Redes, construídas para colocar você em ação.
+            Laboratórios para aprendizagem em Cibersegurança e Redes, feitos para colocar você em ação.
           </p>
         </div>
 
