@@ -11,7 +11,12 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="simulator-choice-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4"
+    >
       <div className="relative w-full max-w-3xl p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
@@ -26,7 +31,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
           Plano FREE · Grátis
         </div>
 
-        <h2 className="text-2xl font-extrabold font-mono text-white mb-3">Escolha seu simulador</h2>
+        <h2 id="simulator-choice-title" className="text-2xl font-extrabold font-mono text-white mb-3">Escolha seu simulador</h2>
         <p className="text-sm text-slate-300 leading-relaxed mb-6">
           Comece a praticar agora mesmo. Os quatro simuladores são{" "}
           <strong className="text-cyan-400">grátis</strong>, com 8 níveis e certificado de conclusão.

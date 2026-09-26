@@ -5,6 +5,7 @@ import { AudienceSection } from "@/components/AudienceSection";
 import { PricingSection } from "@/components/PricingSection";
 import { SponsorSection } from "@/components/SponsorSection";
 import { PortalCardsSection } from "@/components/PortalCardsSection";
+import { ContactRail } from "@/components/ContactRail";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <SponsorSection />
         <PricingSection />
       </main>
+      <ContactRail />
     </div>
   );
 }

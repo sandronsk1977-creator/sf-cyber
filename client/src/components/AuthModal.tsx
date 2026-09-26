@@ -30,17 +30,23 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+    >
       <div className="relative w-full max-w-md p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100">
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-cyan-400" />
-            <h3 className="font-bold text-lg">
+            <h3 id="auth-title" className="font-bold text-lg">
               {mode === "login" ? "Acesso SF Cyber" : "Registro SF Cyber"}
             </h3>
           </div>
           <button
             onClick={onClose}
+            aria-label="Fechar"
             className="p-1 text-slate-400 hover:text-white transition-colors"
           >
             <X className="w-5 h-5" />

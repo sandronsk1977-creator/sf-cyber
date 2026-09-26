@@ -572,7 +572,7 @@
                 <span class="terminal-dot green"></span>
                 <span class="terminal-title">admin-redes@ns1: ~</span>
             </div>
-            <div class="terminal-body" id="terminalBody">
+            <div class="terminal-body" id="terminalBody" aria-live="polite">
                 <div class="input-line" id="inputLine">
                     <span class="prompt">admin-redes@ns1:~$</span>
                     <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal de comandos">
@@ -629,9 +629,9 @@
 <button class="robot-reopen" id="robotReopenBtn" onclick="openRobot()" aria-label="Abrir assistente SF Bot" title="SF Bot">🤖</button>
 
 <!-- Theory Modal -->
-<div class="modal-overlay" id="theoryModal">
+<div class="modal-overlay" id="theoryModal" role="dialog" aria-modal="true" aria-labelledby="theoryTitle">
     <div class="modal" style="max-width:640px; text-align:left;">
-        <h2 style="text-align:center;">📚 Teoria do Nível</h2>
+        <h2 id="theoryTitle" style="text-align:center;">📚 Teoria do Nível</h2>
         <div class="concepts-list" id="theoryContent"></div>
         <div class="modal-footer" style="display:flex; justify-content:center; margin-top:16px;">
             <button class="btn btn-primary" onclick="closeModal('theoryModal')">Entendi, voltar ▶</button>
@@ -640,9 +640,9 @@
 </div>
 
 <!-- Level Map Modal -->
-<div class="modal-overlay" id="levelMapModal">
+<div class="modal-overlay" id="levelMapModal" role="dialog" aria-modal="true" aria-labelledby="levelMapTitle">
     <div class="modal" style="max-width:680px;">
-        <h2>🗺️ Mapa de Níveis</h2>
+        <h2 id="levelMapTitle">🗺️ Mapa de Níveis</h2>
         <div class="level-map-grid" id="levelMapGrid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;"></div>
         <div class="modal-footer" style="display:flex; justify-content:center; margin-top:16px;">
             <button class="btn btn-primary" onclick="closeModal('levelMapModal')">Fechar</button>
@@ -755,7 +755,7 @@
             ✓ Assinar a zona com DNSSEC e limpar o cache
         </div>
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-            <button class="btn btn-success" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
+            <button class="btn btn-success" id="btnGameCert" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
                 🎓 Ver Certificado
             </button>
             <button class="btn btn-warning" onclick="openQuiz()" style="font-size:1.05em; padding: 15px 30px;">
@@ -826,6 +826,7 @@ const state = {
     score: 0,
     attempts: 0,
     quizDone: false,
+    quizApproved: false,
     studentName: '',
     dns: {
         baseResolved: false,
@@ -1345,7 +1346,8 @@ function checkLevel(raw) {
     if (lvl.check()) {
         state.levelDone[lvl.id] = true;
         if (!state.scorePaid) state.scorePaid = new Set();
-        if (!state.scorePaid.has(lvl.id)) {
+        const firstTime = !state.scorePaid.has(lvl.id);
+        if (firstTime) {
             state.score += 50;
             state.scorePaid.add(lvl.id);
         }
@@ -1353,7 +1355,7 @@ function checkLevel(raw) {
         drawScene();
         renderSvcTable();
         document.getElementById('successMsg').textContent = lvl.successMsg;
-        document.getElementById('successScore').textContent = '+50 pontos';
+        document.getElementById('successScore').textContent = firstTime ? '+50 pontos' : 'Nível concluído (pontos já contados)';
         document.getElementById('btnSuccessPrimary').textContent =
             state.currentLevel < levels.length - 1 ? 'Próximo Nível →' : '🏆 Concluir Missão';
         openModal('successModal');
@@ -1411,7 +1413,7 @@ function renderLevel() {
     const isLast = state.currentLevel === levels.length - 1;
     document.getElementById('btnProvaFinal').style.display = isLast ? 'inline-block' : 'none';
     document.getElementById('levelDisplay').textContent = lvl.id;
-    const pct = ((state.currentLevel) / levels.length) * 100;
+    const pct = ((state.currentLevel + 1) / levels.length) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
     drawScene();
     renderSvcTable();
@@ -1423,7 +1425,7 @@ function updateStats() {
     document.getElementById('levelDisplay').textContent = levels[state.currentLevel].id;
     document.getElementById('scoreDisplay').textContent = state.score;
     document.getElementById('attemptsDisplay').textContent = state.attempts;
-    const pct = ((state.currentLevel) / levels.length) * 100;
+    const pct = ((state.currentLevel + 1) / levels.length) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
 }
 
@@ -1720,8 +1722,10 @@ function quizNext() {
 }
 
 function finishQuiz() {
-    state.score += quizScore;
-    state.quizDone = true;
+    if (!state.quizDone) {
+        state.score += quizScore;
+        state.quizDone = true;
+    }
     updateStats();
     document.getElementById('quizQuestion').textContent = '🏁 Resultado da Prova Final';
     document.getElementById('quizOptions').innerHTML = '';
@@ -1745,6 +1749,9 @@ function finishQuiz() {
     }
     document.getElementById('quizNextBtn').style.display = 'none';
     const approved = quizScore >= quizQuestions.length * 50;
+    state.quizApproved = approved;
+    const gameCert = document.getElementById('btnGameCert');
+    if (gameCert) gameCert.style.display = approved ? '' : 'none';
     const footer = document.getElementById('quizFooter');
     footer.innerHTML = '';
     if (approved) {
@@ -1780,6 +1787,7 @@ function resetGame() {
     state.score = 0;
     state.attempts = 0;
     state.quizDone = false;
+    state.quizApproved = false;
     state.levelDone = {};
     state.scorePaid = new Set();
     Object.keys(state.dns).forEach(k => state.dns[k] = false);
@@ -1794,10 +1802,17 @@ function resetGame() {
 function openGameComplete() {
     document.getElementById('finalScore').textContent = 'Pontuação Final: ' + state.score;
     document.getElementById('btnProvaFinal').style.display = 'none';
+    const gameCert = document.getElementById('btnGameCert');
+    if (gameCert) gameCert.style.display = (state.quizDone && state.quizApproved) ? '' : 'none';
     openModal('gameCompleteModal');
 }
 
 function showCertificate() {
+    if (!state.quizDone || !state.quizApproved) {
+        document.getElementById('quizFeedback').textContent = '🔒 Você precisa ser aprovado na prova final (50%+) para obter o certificado.';
+        openQuiz();
+        return;
+    }
     const name = state.studentName || 'Aluno(a)';
     document.getElementById('certStudentName').textContent = name;
     document.getElementById('certScore').textContent = state.score + ' pts';
@@ -1859,6 +1874,7 @@ function save() {
             dns: state.dns,
             levelDone: state.levelDone,
             quizDone: state.quizDone,
+            quizApproved: state.quizApproved,
         };
         localStorage.setItem('sfcyber-dns-v1', JSON.stringify(data));
     } catch (e) {}
@@ -1874,6 +1890,7 @@ function load() {
         state.attempts = data.attempts || 0;
         state.studentName = data.studentName || '';
         state.quizDone = data.quizDone || false;
+        state.quizApproved = data.quizApproved || false;
         state.dns = Object.assign(state.dns, data.dns || {});
         state.levelDone = data.levelDone || {};
         state.scorePaid = new Set(Object.keys(state.levelDone).map(Number));

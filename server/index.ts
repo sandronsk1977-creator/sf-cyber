@@ -1,5 +1,6 @@
 import express from "express";
 import { createServer } from "http";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,11 +11,11 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // Serve static files from dist/public in production
-  const staticPath =
-    process.env.NODE_ENV === "production"
-      ? path.resolve(__dirname, "public")
-      : path.resolve(__dirname, "..", "dist", "public");
+  // Servir os arquivos estáticos do build (vite gera em dist/ e o server é emitido em dist/index.js).
+  // Em dev (npx tsx server/index.ts) __dirname aponta para server/, então usamos a raiz.
+  const staticPath = fs.existsSync(path.resolve(__dirname, "index.html"))
+    ? __dirname
+    : path.resolve(__dirname, "..", "dist");
 
   app.use(express.static(staticPath));
 

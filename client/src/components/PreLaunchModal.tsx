@@ -63,7 +63,12 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="prelaunch-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4"
+    >
       <div className="relative w-full max-w-md p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
@@ -82,7 +87,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
           <div className="animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3 mb-4">
               <CheckCircle2 className="w-10 h-10 text-cyan-400 shrink-0" />
-              <h2 className="text-2xl font-extrabold font-mono text-white leading-tight">
+              <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white leading-tight">
                 Você está na lista!
               </h2>
             </div>
@@ -134,7 +139,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
+            <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
             <p className="text-sm text-slate-300 leading-relaxed mb-5">
               A área de membros (cursos, laboratórios e certificações) estará disponível em
               breve. Enquanto isso, aproveite o{" "}
@@ -143,12 +148,15 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             </p>
 
             <div className="mb-5">
-              <label className="block text-xs text-slate-400 mb-2">
+              <label htmlFor="waitlist-email" className="block text-xs text-slate-400 mb-2">
                 Quer saber quando abrir? Deixe seu e-mail:
               </label>
               <div className="flex gap-2">
                 <input
+                  id="waitlist-email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={(e) => {

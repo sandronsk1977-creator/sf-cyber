@@ -9,28 +9,30 @@ Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.c
 Pré-requisitos: Node.js 24+ e pnpm 10+.
 
 ```bash
-pnpm install
-pnpm dev
+corepack pnpm install
+corepack pnpm dev
 ```
 
 Abra http://localhost:3000
 
 ## Scripts
 
-| Comando         | Descrição                               |
-| --------------- | --------------------------------------- |
-| `pnpm dev`      | Servidor de desenvolvimento (Vite).      |
-| `pnpm build`    | Build de produção (saída em `dist/`)     |
-| `pnpm check`    | Typecheck com `tsc --noEmit`             |
-| `pnpm preview`  | Pré-visualização do build                |
+| Comando         | Descrição                                    |
+| --------------- | -------------------------------------------- |
+| `pnpm dev`      | Servidor de desenvolvimento (Vite, porta 3000) |
+| `pnpm build`    | Build de produção (saída em `dist/`)          |
+| `pnpm check`    | Typecheck com `tsc --noEmit`                   |
+| `pnpm preview`  | Pré-visualização do build                     |
+| `pnpm start`    | Serve o build em `dist/` via Express (porta 5000) |
 
 ## Funcionalidades
 
 - Landing page em tema dark com animação de "destrinchamento" de título e trilha de contatos flutuante (LinkedIn, Projetos Disruptivos e WhatsApp) com pulsação.
-- **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (8 níveis, testes de ping e certificado de conclusão).
-- **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (8 níveis: nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH; certificado de conclusão).
-- **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (8 níveis: descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação; certificado de conclusão).
-- **Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)** em `/simulador-dns` (8 níveis: registros A/MX/NS, subdomínio exposto, transferência de zona, envenenamento de cache e proteção com AXFR restrito + DNSSEC; certificado de conclusão).
+- Todos os simuladores seguem o mesmo fluxo: **8 níveis**, prova final de 8 perguntas (aprovação exige 50%+) e **certificado de conclusão**. O progresso fica salvo no `localStorage`.
+- **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (VLANs, trunk/access, teste de ping e certificado).
+- **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH).
+- **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação).
+- **Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)** em `/simulador-dns` (registros A/MX/NS, subdomínio exposto, transferência de zona, envenenamento de cache e proteção com AXFR restrito + DNSSEC).
 - **SF Bot**: assistente robô nos quatro simuladores para guiar o aluno etapa por etapa.
 - Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos quatro simuladores.
 - Planos de pré-lançamento: **FREE** (grátis), **MEMBROS** (R$ 39,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00, pagamento único).
@@ -45,12 +47,14 @@ Abra http://localhost:3000
 - Tailwind CSS v4 + shadcn/ui (Radix)
 - wouter (roteamento SPA)
 - sonner (toasts)
+- Express (servidor estático opcional, `pnpm start`)
 
 ## Estrutura
 
 ```
 client/
-  index.html          # Entrada da aplicação
+  index.html          # Entrada da aplicação (SEO/OG tags)
+  public/404.html     # Fallback SPA do GitHub Pages (restaura rota via sessionStorage)
   public/vlans/       # Simulador de VLANs (página estática embutida)
   public/seguranca/   # Simulador de Segurança SOC (página estática embutida)
   public/web/         # Simulador de Segurança Web SQLi/XSS (página estática embutida)
@@ -61,8 +65,23 @@ client/
     components/       # Navbar, Hero, Pricing, SponsorSection, Modais, ContactRail, etc.
     components/ui/    # Componentes shadcn/ui
     index.css         # Tema, animações e utilitários custom
+server/index.ts       # Servidor Express opcional (serve dist/)
+vite.config.ts        # Config do Vite (plugins dev-only: manus runtime/debug)
 .github/workflows/    # Deploy para GitHub Pages
 ```
+
+## Testes
+
+Os quatro simuladores possuem testes automatizados de fluxo completo (8 níveis -> prova final -> certificado), executados com Node no jogo emulado:
+
+```text
+C:\Users\Family\AppData\Local\Temp\opencode\soc_test.cjs    (fluxo SOC)
+C:\Users\Family\AppData\Local\Temp\opencode\web_test.cjs    (fluxo Segurança Web)
+C:\Users\Family\AppData\Local\Temp\opencode\dns_test.cjs    (fluxo DNS)
+C:\Users\Family\AppData\Local\Temp\opencode\vlan_test.cjs   (fluxo VLAN, inclui XSS e pay-once)
+```
+
+Os testes garantem score determinístico (400 nos níveis + 800 na prova = 1200 nos simuladores SOC/Web/DNS; 580 + 160 = 740 no VLAN), que o certificado só sai após aprovação na prova e que payloads XSS não executam no terminal do VLAN. Validação em browser real é feita com Chrome headless via CDP contra o `dist/`.
 
 ## Deploy
 
