@@ -84,11 +84,14 @@ export function CryptoAnimationHero() {
     <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-slate-950 text-slate-100">
       {/* Person at computer - cinematic SOC video background */}
       <div className="absolute inset-0 pointer-events-none">
-        <img
-          src="/images/cyber-hero.jpg"
-          alt=""
+        <video
           className="w-full h-full object-cover object-center"
-          loading="eager"
+          src="/images/lab-sfcyber.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/lab-sfcyber-poster.jpg"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60" />
         <div className="absolute inset-0 bg-slate-950/40" />
