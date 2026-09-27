@@ -87,12 +87,12 @@ export function PricingSection() {
           </div>
 
           {/* Pricing Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {plans.map((p, idx) => (
               <div
                 key={idx}
                 style={p.highlight ? ({ "--neon": "#22d3ee" } as React.CSSProperties) : undefined}
-                className={`relative p-6 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all ${
+                className={`relative p-5 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all ${
                   p.highlight
                     ? "sf-neon-card border-cyan-500 lg:-translate-y-2"
                     : "border-slate-800 hover:border-slate-700"
@@ -104,23 +104,23 @@ export function PricingSection() {
                   </div>
                 )}
 
+<div>
+<div className="flex items-center gap-3 mb-2">
+                <span className="text-xl">{p.icon}</span>
                 <div>
-<div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">{p.icon}</span>
-                <div>
-                  <h3 className="font-extrabold text-lg text-white font-mono">{p.name}</h3>
-                  <p className="text-xs text-slate-400">{p.subtitle}</p>
+                  <h3 className="font-extrabold text-base text-white font-mono">{p.name}</h3>
+                  <p className="text-[11px] text-slate-400">{p.subtitle}</p>
                 </div>
               </div>
 
-              <div className="my-4 pb-4 border-b border-slate-800 flex items-baseline gap-1">
-                <span className="text-2xl sm:text-3xl font-black text-white font-mono">{p.price}</span>
-                {p.period && <span className="text-slate-400 text-sm">{p.period}</span>}
+              <div className="my-3 pb-3 border-b border-slate-800 flex items-baseline gap-1">
+                <span className="text-xl sm:text-2xl font-black text-white font-mono">{p.price}</span>
+                {p.period && <span className="text-slate-400 text-xs">{p.period}</span>}
               </div>
 
-              <ul className="space-y-2.5 mb-6">
+              <ul className="space-y-1.5 mb-4">
                     {p.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                      <li key={i} className="flex items-start gap-2.5 text-[13px] text-slate-300">
                         <Check className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                         <span>{f}</span>
                       </li>
@@ -130,7 +130,7 @@ export function PricingSection() {
 
                 <Button
                   onClick={() => (p.simulator ? setChoiceOpen(true) : setPreLaunchOpen(true))}
-                  className={`w-full font-bold py-4 rounded-xl transition-all shadow-lg ${
+                  className={`w-full font-bold py-3 rounded-xl transition-all shadow-lg ${
                     p.highlight
                       ? "bg-cyan-500 hover:bg-cyan-600 text-slate-950 shadow-cyan-900/30"
                       : "bg-slate-800 hover:bg-slate-700 text-white"
