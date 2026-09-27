@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "LABORATÓRIOS PARA APRENDER REDES E CIBERSEGURANÇA NA PRÁTICA";
+const TARGET_TITLE = "LABORATÓRIOS GRATUITOS PARA APRENDER REDES E CIBERSEGURANÇA NA PRÁTICA";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -109,7 +109,7 @@ export function CryptoAnimationHero() {
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
-        <h1 className="sr-only">Laboratórios para aprender Redes e Cibersegurança na prática</h1>
+        <h1 className="sr-only">Laboratórios gratuitos para aprender Redes e Cibersegurança na prática</h1>
         <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
           <span className="text-sky-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
             {displayText || TARGET_TITLE}
@@ -118,7 +118,7 @@ export function CryptoAnimationHero() {
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mb-12 leading-relaxed">
-          Aprenda na prática com os Laboratórios Virtuais de Redes e Cibersegurança.
+          Pratique. Experimente. Desenvolva habilidades reais.
         </p>
 
         {/* CTA Buttons */}
