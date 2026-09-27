@@ -13,17 +13,20 @@ const PARTNERS = [
   {
     icon: Building2,
     title: "Empresas",
-    desc: "Trilhas práticas em redes e Cibersegurança para capacitar sua equipe. Selo de patrocinador no portal.",
+    subtitle: "Capacite sua equipe",
+    desc: "Trilhas práticas de Redes e Cibersegurança para desenvolver habilidades aplicáveis ao dia a dia.",
   },
   {
     icon: Briefcase,
-    title: "Consultores Comerciais",
-    desc: "Ofereça a plataforma aos seus clientes com condições especiais e convênio comercial.",
+    title: "Consultores e Parceiros",
+    subtitle: "Amplie sua oferta",
+    desc: "Leve laboratórios práticos aos seus clientes e agregue uma nova solução ao seu portfólio.",
   },
   {
     icon: GraduationCap,
     title: "Faculdades e IES",
-    desc: "Laboratório pronto para seus alunos praticarem, com relatório de progresso e certificado de conclusão.",
+    subtitle: "Coloque seus alunos para praticar",
+    desc: "Laboratórios interativos para complementar as aulas, acompanhar o progresso e reconhecer a conclusão.",
   },
 ];
 
@@ -39,15 +42,15 @@ export function SponsorSection() {
             Patrocínio · Parcerias
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white font-mono mb-4">
-            Leve a SF Cyber para seus alunos, clientes e equipe
+            LEVE A SF CYBER PARA QUEM PRECISA APRENDER NA PRÁTICA
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Empresas, Consultores, Professores, Escolas Técnicas e IES... Investir no futuro começa agora
+            Laboratórios interativos de Redes e Cibersegurança para transformar conhecimento em experiência.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-10">
-          {PARTNERS.map(({ icon: Icon, title, desc }) => (
+          {PARTNERS.map(({ icon: Icon, title, subtitle, desc }) => (
             <div
               key={title}
               className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition-colors"
@@ -55,7 +58,8 @@ export function SponsorSection() {
               <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
                 <Icon className="w-6 h-6" />
               </div>
-              <h3 className="font-extrabold text-lg text-white font-mono mb-2">{title}</h3>
+              <h3 className="font-extrabold text-lg text-white font-mono mb-1">{title}</h3>
+              <p className="text-cyan-400 text-sm font-bold mb-2">{subtitle}</p>
               <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
             </div>
           ))}
