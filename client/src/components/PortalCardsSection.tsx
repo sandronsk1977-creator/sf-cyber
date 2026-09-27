@@ -60,7 +60,7 @@ export function PortalCardsSection() {
               </span>
             </div>
 
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
               Laboratório de VLANs
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
@@ -88,7 +88,7 @@ export function PortalCardsSection() {
               </span>
             </div>
 
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
               Laboratório SOC
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
@@ -116,7 +116,7 @@ export function PortalCardsSection() {
               </span>
             </div>
 
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
               Segurança Web (SQLi | XSS)
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
@@ -144,7 +144,7 @@ export function PortalCardsSection() {
               </span>
             </div>
 
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono">
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
               Laboratório de Servidor DNS
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
