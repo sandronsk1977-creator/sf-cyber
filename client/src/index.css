@@ -90,6 +90,26 @@
   animation: logo-text-pulse 1.8s ease-in-out infinite;
 }
 
+/* Pulso neon azul no escudo do logo */
+@keyframes logo-shield-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(59, 130, 246, 0.55),
+      0 0 24px rgba(37, 99, 235, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(59, 130, 246, 1),
+      0 0 42px rgba(37, 99, 235, 0.75),
+      0 0 70px rgba(29, 78, 216, 0.5);
+  }
+}
+
+.animate-logo-shield-pulse {
+  animation: logo-shield-pulse 1.8s ease-in-out infinite;
+}
+
 :root {
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
