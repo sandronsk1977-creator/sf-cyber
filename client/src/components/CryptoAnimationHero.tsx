@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "LABORATÓRIOS PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA";
+const TARGET_TITLE = "SF CYBER - APRENDA REDES E CIBERSEGURANÇA NA PRÁTICA";
+const BRAND = "SF CYBER";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -109,10 +110,15 @@ export function CryptoAnimationHero() {
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
-        <h1 className="sr-only">Laboratórios para o aprendizado prático em Redes e Cibersegurança</h1>
+        <h1 className="sr-only">SF Cyber - Aprenda Redes e Cibersegurança na prática</h1>
         <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 drop-shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-            {displayText || "LABORATÓRIOS PARA O APRENDIZADO PRÁTICO EM REDES E CIBERSEGURANÇA"}
+          <span className="whitespace-pre-wrap">
+            <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.7)]">
+              {(displayText || TARGET_TITLE).slice(0, BRAND.length)}
+            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 drop-shadow-[0_0_30px_rgba(6,182,212,0.4)]">
+              {(displayText || TARGET_TITLE).slice(BRAND.length)}
+            </span>
           </span>
         </h1>
 
