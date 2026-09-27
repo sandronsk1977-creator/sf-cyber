@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "LABORATÓRIOS GRATUITOS PARA APRENDER REDES E CIBERSEGURANÇA NA PRÁTICA";
+const FIXED_TITLE = "LABORATÓRIOS GRATUITOS ";
+const ANIM_TITLE = "PARA APRENDER REDES E CIBERSEGURANÇA NA PRÁTICA";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -20,18 +21,18 @@ export function CryptoAnimationHero() {
 
       interval = setInterval(() => {
         setDisplayText(
-          TARGET_TITLE.split("")
+          ANIM_TITLE.split("")
             .map((char, index) => {
               if (char === " ") return " ";
               if (index < iteration) {
-                return TARGET_TITLE[index];
+                return ANIM_TITLE[index];
               }
               return CIPHER_CHARS[Math.floor(Math.random() * CIPHER_CHARS.length)];
             })
             .join("")
         );
 
-        if (iteration >= TARGET_TITLE.length) {
+        if (iteration >= ANIM_TITLE.length) {
           if (interval) clearInterval(interval);
           setPhase("holding");
 
@@ -45,12 +46,12 @@ export function CryptoAnimationHero() {
     };
 
     const runEncryptAnimation = () => {
-      iteration = TARGET_TITLE.length;
+      iteration = ANIM_TITLE.length;
       setPhase("encrypting");
 
       interval = setInterval(() => {
         setDisplayText(
-          TARGET_TITLE.split("")
+          ANIM_TITLE.split("")
             .map((char, index) => {
               if (char === " ") return " ";
               if (index < iteration) {
@@ -108,15 +109,17 @@ export function CryptoAnimationHero() {
           <span>Aprenda com Laboratório de Redes e CiberSegurança</span>
         </div>
 
-        {/* Main Headline with Cryptographic Effect */}
+        {/* Main Headline */}
         <h1 className="sr-only">Laboratórios gratuitos para aprender Redes e Cibersegurança na prática</h1>
         <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
-          <span className="text-sky-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
-            {(displayText || TARGET_TITLE).slice(0, 13)}
-            <span className="text-white animate-hero-white-pulse">
-              {(displayText || TARGET_TITLE).slice(13, 22)}
+          <span className="text-cyan-400">
+            <span className="animate-hero-white-pulse text-white">
+              {FIXED_TITLE.trim()}
             </span>
-            {(displayText || TARGET_TITLE).slice(22)}
+            <span className="text-sky-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
+              {" "}
+              {displayText}
+            </span>
           </span>
         </h1>
 
