@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { ShoppingCart, Shield, Menu, X } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { CartModal } from "./CartModal";
 import { PreLaunchModal } from "./PreLaunchModal";
+import { SFCyberLogo } from "./SFCyberLogo";
 
 export function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -15,22 +16,8 @@ export function Navbar() {
       <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              {/* Escudo SF Cyber */}
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-indigo-700 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform border border-cyan-300/40">
-                <Shield className="absolute inset-0 w-full h-full text-cyan-400/20 fill-cyan-500/10" />
-                <span className="relative z-10 text-white font-mono text-base font-extrabold tracking-tighter">
-                  SF
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight text-white font-mono leading-none">
-                <span className="text-cyan-400">Academy Cibersegurança</span>
-                </span>
-                <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
-                  Segurança Digital & Redes
-                </span>
-              </div>
+            <Link href="/" className="group">
+              <SFCyberLogo />
             </Link>
           </div>
 
