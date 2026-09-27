@@ -93,8 +93,8 @@ export function CryptoAnimationHero() {
           playsInline
           poster="/images/cyber-hero.jpg"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/50 to-slate-950/45" />
-        <div className="absolute inset-0 bg-slate-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/75 to-slate-950/65" />
+        <div className="absolute inset-0 bg-slate-950/50" />
       </div>
       {/* Background glow effects - Neon Blue */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-cyan-500/15 blur-[130px] rounded-full pointer-events-none" />
