@@ -32,6 +32,14 @@ export function SFCyberLogo() {
           style={{ clipPath: "polygon(50% 0%, 100% 17%, 97% 55%, 78% 86%, 50% 100%, 22% 86%, 3% 55%, 0% 17%)" }}
         />
 
+        {/* Neon branco pulsante */}
+        <div
+          className="absolute inset-0 pointer-events-none animate-shield-white-pulse"
+          style={{ clipPath: "polygon(50% 0%, 100% 17%, 97% 55%, 78% 86%, 50% 100%, 22% 86%, 3% 55%, 0% 17%)" }}
+        >
+          <div className="absolute inset-0 border-2 border-white/80" />
+        </div>
+
         {/* SF */}
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="relative font-mono font-extrabold text-base tracking-tighter text-white drop-shadow-[0_0_8px_rgba(103,232,249,0.9)]">
