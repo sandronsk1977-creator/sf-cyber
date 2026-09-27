@@ -1,6 +1,6 @@
 # SF Cyber Academia Digital
 
-Portal de pré-lançamento da **SF Cyber** - formação prática em Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e avaliações.
+Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e avaliações.
 
 Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.com.br)
 
@@ -12,8 +12,6 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 corepack pnpm install
 corepack pnpm dev
 ```
-
-Abra http://localhost:3000
 
 ## Scripts
 
@@ -48,27 +46,6 @@ Abra http://localhost:3000
 - wouter (roteamento SPA)
 - sonner (toasts)
 - Express (servidor estático opcional, `pnpm start`)
-
-## Estrutura
-
-```
-client/
-  index.html          # Entrada da aplicação (SEO/OG tags)
-  public/404.html     # Fallback SPA do GitHub Pages (restaura rota via sessionStorage)
-  public/vlans/       # Simulador de VLANs (página estática embutida)
-  public/seguranca/   # Simulador de Segurança SOC (página estática embutida)
-  public/web/         # Simulador de Segurança Web SQLi/XSS (página estática embutida)
-  public/dns/         # Simulador de Servidor DNS (página estática embutida)
-  src/
-    App.tsx           # Rotas e providers globais
-    pages/            # Home, SimuladorVlan, SimuladorSeguranca, SimuladorWeb, SimuladorDns, NotFound
-    components/       # Navbar, Hero, Pricing, SponsorSection, Modais, ContactRail, etc.
-    components/ui/    # Componentes shadcn/ui
-    index.css         # Tema, animações e utilitários custom
-server/index.ts       # Servidor Express opcional (serve dist/)
-vite.config.ts        # Config do Vite (plugins dev-only: manus runtime/debug)
-.github/workflows/    # Deploy para GitHub Pages
-```
 
 ## Testes
 
