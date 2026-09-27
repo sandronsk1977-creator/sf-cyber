@@ -110,6 +110,25 @@
   animation: logo-shield-pulse 1.8s ease-in-out infinite;
 }
 
+/* Neon branco pulsante no hero (GRATUITOS) */
+@keyframes hero-white-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 8px rgba(255, 255, 255, 0.55),
+      0 0 20px rgba(255, 255, 255, 0.28);
+  }
+  50% {
+    text-shadow:
+      0 0 18px rgba(255, 255, 255, 1),
+      0 0 40px rgba(255, 255, 255, 0.7);
+  }
+}
+
+.animate-hero-white-pulse {
+  animation: hero-white-pulse 1.8s ease-in-out infinite;
+}
+
 :root {
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
