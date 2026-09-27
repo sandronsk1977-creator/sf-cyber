@@ -2,7 +2,7 @@ import React from "react";
 
 export function SFCyberLogo() {
   return (
-    <div className="flex items-center gap-2.5 group">
+    <div className="flex items-center gap-3 group">
       {/* Escudo SF Cyber - vidro neon */}
       <div className="relative w-11 h-11 shrink-0">
         {/* Brilho externo do escudo */}
@@ -40,11 +40,11 @@ export function SFCyberLogo() {
         </div>
       </div>
 
-      <div className="flex flex-col">
-        <span className="text-lg font-bold tracking-tight text-white font-mono leading-none">
-          <span className="text-cyan-400">SF</span> Cyber
+      <div className="flex flex-col justify-center">
+        <span className="text-[22px] font-black tracking-[0.06em] text-white font-mono leading-none animate-logo-text-pulse">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400">SF Cyber</span>
         </span>
-        <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
+        <span className="text-[10px] text-slate-400 tracking-[0.28em] uppercase font-mono mt-1.5">
           Academia Digital
         </span>
       </div>

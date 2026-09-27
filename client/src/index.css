@@ -70,6 +70,26 @@
   animation: neon-badge 2s ease-in-out infinite;
 }
 
+/* Neon pulsante no texto SF Cyber do logo */
+@keyframes logo-text-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 8px rgba(103, 232, 249, 0.65),
+      0 0 20px rgba(34, 211, 238, 0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 16px rgba(103, 232, 249, 1),
+      0 0 38px rgba(34, 211, 238, 0.8),
+      0 0 60px rgba(59, 130, 246, 0.5);
+  }
+}
+
+.animate-logo-text-pulse {
+  animation: logo-text-pulse 1.8s ease-in-out infinite;
+}
+
 :root {
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
