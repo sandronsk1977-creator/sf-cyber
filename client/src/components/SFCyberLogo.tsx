@@ -42,8 +42,7 @@ export function SFCyberLogo() {
 
       <div className="flex flex-col justify-center">
         <span className="text-[24px] leading-none font-mono tracking-[0.04em] animate-logo-text-pulse">
-          <span className="font-black text-white drop-shadow-[0_0_10px_rgba(103,232,249,1)]">SF</span>{" "}
-          <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400">
+          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400">
             Cyber
           </span>
         </span>
