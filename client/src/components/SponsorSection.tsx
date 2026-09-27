@@ -37,7 +37,7 @@ export function SponsorSection() {
             LEVE A SF CYBER PARA QUEM PRECISA APRENDER NA PRÁTICA
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
-            Laboratórios interativos de Redes e Cibersegurança para transformar conhecimento em experiência.
+            Laboratórios de Redes e Cibersegurança para transformar conhecimento em experiência.
           </p>
         </div>
 
