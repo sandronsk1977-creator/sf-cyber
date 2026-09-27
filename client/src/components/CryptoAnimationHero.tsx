@@ -83,7 +83,7 @@ export function CryptoAnimationHero() {
   return (
     <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-slate-950 text-slate-100">
       {/* Person at computer - cinematic SOC video background */}
-      <div className="absolute inset-0 pointer-events-none">
+<div className="absolute inset-0 pointer-events-none">
         <video
           className="w-full h-full object-cover object-center"
           src="/images/lab-sfcyber.mp4"
@@ -91,10 +91,10 @@ export function CryptoAnimationHero() {
           muted
           loop
           playsInline
-          poster="/images/lab-sfcyber-poster.jpg"
+          poster="/images/cyber-hero.jpg"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60" />
-        <div className="absolute inset-0 bg-slate-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/50 to-slate-950/45" />
+        <div className="absolute inset-0 bg-slate-950/30" />
       </div>
       {/* Background glow effects - Neon Blue */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-cyan-500/15 blur-[130px] rounded-full pointer-events-none" />
