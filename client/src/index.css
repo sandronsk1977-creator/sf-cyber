@@ -129,26 +129,6 @@
   animation: hero-white-pulse 1.8s ease-in-out infinite;
 }
 
-/* Neon azul pulsante no hero (LABORATÓRIOS) */
-@keyframes hero-blue-pulse {
-  0%,
-  100% {
-    text-shadow:
-      0 0 8px rgba(59, 130, 246, 0.6),
-      0 0 20px rgba(37, 99, 235, 0.35);
-  }
-  50% {
-    text-shadow:
-      0 0 18px rgba(59, 130, 246, 1),
-      0 0 40px rgba(37, 99, 235, 0.8),
-      0 0 60px rgba(29, 78, 216, 0.5);
-  }
-}
-
-.animate-hero-blue-pulse {
-  animation: hero-blue-pulse 1.8s ease-in-out infinite;
-}
-
 :root {
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
