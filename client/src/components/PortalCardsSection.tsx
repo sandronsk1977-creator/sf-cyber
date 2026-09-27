@@ -117,7 +117,7 @@ export function PortalCardsSection() {
             </div>
 
             <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
-              Segurança Web (SQLi | XSS)
+              Segurança Web
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Analise a Lojinha Online como um pentester: SQL Injection, extração de dados via UNION, XSS refletido e armazenado e correção da aplicação.
