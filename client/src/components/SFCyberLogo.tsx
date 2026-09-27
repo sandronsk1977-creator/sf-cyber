@@ -45,7 +45,7 @@ export function SFCyberLogo() {
           <span className="text-cyan-400">SF</span> Cyber
         </span>
         <span className="text-[10px] text-slate-400 tracking-widest uppercase font-mono mt-0.5">
-          Academy Cibersegurança
+          Academia Digital
         </span>
       </div>
     </div>
