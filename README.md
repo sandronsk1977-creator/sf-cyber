@@ -1,4 +1,4 @@
-# SF Cyber Academy
+# SF Cyber Academia Digital
 
 Portal de pré-lançamento da **SF Cyber** - formação prática em Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e avaliações.
 
