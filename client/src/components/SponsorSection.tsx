@@ -27,21 +27,21 @@ const SPONSOR_WHATSAPP =
 
 export function SponsorSection() {
   return (
-    <section className="py-20 px-6">
+    <section className="py-20 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-1 mb-4 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider font-mono">
+          <span className="inline-block px-4 py-1 mb-4 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 text-xs font-bold uppercase tracking-wider font-mono">
             Patrocínio · Parcerias
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-white font-mono mb-4">
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 font-mono mb-4">
             LEVE A SF CYBER PARA QUEM PRECISA APRENDER NA PRÁTICA
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-600 max-w-2xl mx-auto">
             Laboratórios de Redes e Cibersegurança para transformar conhecimento em experiência.
           </p>
         </div>
 
-        <p className="text-center text-lg text-cyan-400 font-bold font-mono mb-10">
+        <p className="text-center text-lg text-cyan-700 font-bold font-mono mb-10">
           Não entregue apenas conteúdo. Entregue experiência.
         </p>
 
@@ -49,14 +49,14 @@ export function SponsorSection() {
           {PARTNERS.map(({ icon: Icon, title, subtitle, desc }) => (
             <div
               key={title}
-              className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition-colors"
+              className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-cyan-500/40 transition-colors"
             >
-              <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+              <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600">
                 <Icon className="w-6 h-6" />
               </div>
-              <h3 className="font-extrabold text-lg text-white font-mono mb-1">{title}</h3>
-              <p className="text-cyan-400 text-sm font-bold mb-2">{subtitle}</p>
-              <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
+              <h3 className="font-extrabold text-lg text-slate-900 font-mono mb-1">{title}</h3>
+              <p className="text-cyan-700 text-sm font-bold mb-2">{subtitle}</p>
+              <p className="text-sm text-slate-600 leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
@@ -66,7 +66,7 @@ export function SponsorSection() {
             href={SPONSOR_WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-500 text-slate-950 font-bold font-mono uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 transition-all"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-cyan-500 text-white font-bold font-mono uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:bg-cyan-400 transition-all"
           >
             <Handshake className="w-5 h-5" />
             Quero ser parceiro

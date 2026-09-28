@@ -38,7 +38,7 @@ export function ContactRail() {
           rel="noopener noreferrer"
           aria-label={label}
           title={label}
-          className="flex items-center justify-center w-12 h-12 md:w-11 md:h-11 rounded-full bg-slate-900/90 border border-cyan-500/40 text-cyan-400 shadow-lg shadow-cyan-500/10 backdrop-blur transition-all duration-300 animate-seal-pulse hover:bg-cyan-500 hover:text-slate-950 hover:scale-110 hover:border-cyan-400"
+          className="flex items-center justify-center w-12 h-12 md:w-11 md:h-11 rounded-full bg-white/90 border border-cyan-500/40 text-cyan-600 shadow-lg shadow-cyan-500/10 backdrop-blur transition-all duration-300 animate-seal-pulse hover:bg-cyan-500 hover:text-white hover:scale-110 hover:border-cyan-400"
         >
           <Icon className="w-5 h-5" />
         </a>

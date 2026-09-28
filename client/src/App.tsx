@@ -64,12 +64,11 @@ function Router() {
 }
 
 // NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), then change color palette in index.css
-//   to keep consistent foreground/background across components
+// - The site currently uses a light theme by design (defaultTheme="light").
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="light">
       <ErrorBoundary>
         <TooltipProvider>
           <Router />
