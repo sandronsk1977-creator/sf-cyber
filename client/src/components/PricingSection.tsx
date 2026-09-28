@@ -8,11 +8,11 @@ export function PricingSection() {
   const [preLaunchOpen, setPreLaunchOpen] = useState(false);
   const [choiceOpen, setChoiceOpen] = useState(false);
 
-  const plans = [
+const plans = [
     {
-      name: "FREE",
+      name: "GRÁTIS",
       icon: "🛡️",
-      subtitle: "Para começar a praticar agora mesmo.",
+      subtitle: "Comece a praticar agora mesmo.",
       price: "Grátis",
       period: "",
       badge: null,
@@ -30,41 +30,21 @@ export function PricingSection() {
       cta: "Começar Grátis",
     },
     {
-      name: "MEMBROS",
+      name: "MEMBRO ANUAL",
       icon: "👑",
-      subtitle: "Acesso total a tudo. Um único investimento.",
-      price: "R$ 39,90",
-      period: "/mês",
+      subtitle: "Acesso completo por 12 meses, um único pagamento.",
+      price: "R$ 149,90",
+      period: "12 meses",
       badge: null,
       highlight: false,
       features: [
-        "Todos os cursos e trilhas sem restrições",
         "Todos os laboratórios práticos",
-        "Simulados e testes de avaliação",
-        "Certificado de conclusão por curso",
-        "SF Cyber AI (assistente inteligente)",
-        "Novos cursos e laboratórios incluídos",
-        "Suporte humano dedicado",
+        "Teste de conectividade",
+        "Progresso salvo automaticamente",
+        "Certificado de Conclusão",
+        "Suporte WhatsApp",
       ],
-      cta: "Seja Membro",
-    },
-    {
-      name: "MEMBROS VITALÍCIO",
-      icon: "💎",
-      subtitle: "Pague uma vez, use para sempre.",
-      price: "R$ 499,00",
-      period: "/pagamento único",
-      badge: "Mais escolhido",
-      highlight: true,
-      features: [
-        "Acesso vitalício a todos os cursos",
-        "Todos os laboratórios",
-        "Simulados e testes de avaliação",
-        "Certificado de conclusão por curso",
-        "Novos cursos e laboratórios inclusos",
-        "Suporte prioritário vitalício",
-      ],
-      cta: "Seja Membro Vitalício",
+      cta: "QUERO SER MEMBRO",
     },
   ];
 
