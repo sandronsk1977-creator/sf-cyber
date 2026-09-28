@@ -32,9 +32,9 @@ const plans = [
     {
       name: "MEMBRO ANUAL",
       icon: "👑",
-      subtitle: "Acesso completo por 12 meses, um único pagamento.",
-      price: "R$ 149,90",
-      period: "06 meses",
+      subtitle: "Acesso completo por 12 meses, 01 único pagamento.",
+      price: "R$ 149,90/",
+      period: "12 meses",
       badge: null,
       highlight: false,
       features: [
