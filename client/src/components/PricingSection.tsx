@@ -123,7 +123,7 @@ const plans = [
           </div>
 
           <div className="mt-12 text-center text-sm text-slate-400">
-            Sem compromisso · Cancele quando quiser · Acesso imediato
+            Acesso imediato
           </div>
 
         </div>
