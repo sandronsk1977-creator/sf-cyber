@@ -160,11 +160,6 @@ export function CryptoAnimationHero() {
           <span className="hidden sm:inline text-slate-700">·</span>
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-            Cancele quando quiser
-          </span>
-          <span className="hidden sm:inline text-slate-700">·</span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
             Acesso imediato
           </span>
         </div>
