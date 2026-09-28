@@ -123,7 +123,6 @@ const plans = [
           </div>
 
           <div className="mt-12 text-center text-sm text-slate-400">
-            Acesso imediato
           </div>
 
         </div>
