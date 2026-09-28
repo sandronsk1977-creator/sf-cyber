@@ -36,7 +36,7 @@ const plans = [
       price: "R$ 149,90/",
       period: "12 meses",
       badge: null,
-      highlight: false,
+      highlight: true,
       features: [
         "Todos os laboratórios práticos",
         "Teste de conectividade",
@@ -71,10 +71,10 @@ const plans = [
             {plans.map((p, idx) => (
               <div
                 key={idx}
-                style={p.highlight ? ({ "--neon": "#22d3ee" } as React.CSSProperties) : undefined}
+                style={p.highlight ? ({ "--neon": "#3b82f6" } as React.CSSProperties) : undefined}
                 className={`relative p-5 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all ${
                   p.highlight
-                    ? "sf-neon-card border-cyan-500 lg:-translate-y-2"
+                    ? "sf-neon-card border-blue-500 lg:-translate-y-2"
                     : "border-slate-800 hover:border-slate-700"
                 }`}
               >
@@ -112,7 +112,7 @@ const plans = [
                   onClick={() => (p.simulator ? setChoiceOpen(true) : setPreLaunchOpen(true))}
                   className={`w-full font-bold py-3 rounded-xl transition-all shadow-lg ${
                     p.highlight
-                      ? "bg-cyan-500 hover:bg-cyan-600 text-slate-950 shadow-cyan-900/30"
+                      ? "bg-blue-500 hover:bg-blue-600 text-white shadow-blue-900/30"
                       : "bg-slate-800 hover:bg-slate-700 text-white"
                   } ${p.simulator ? "animate-seal-pulse" : ""}`}
                 >
