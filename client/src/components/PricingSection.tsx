@@ -34,7 +34,7 @@ const plans = [
       icon: "👑",
       subtitle: "Acesso completo por 12 meses, um único pagamento.",
       price: "R$ 149,90",
-      period: "12 meses",
+      period: "06 meses",
       badge: null,
       highlight: false,
       features: [
@@ -72,7 +72,7 @@ const plans = [
               <div
                 key={idx}
                 style={p.highlight ? ({ "--neon": "#22d3ee" } as React.CSSProperties) : undefined}
-                className={`relative p-5 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all ${
+                className={`relative p-5 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all text-center ${
                   p.highlight
                     ? "sf-neon-card border-cyan-500 lg:-translate-y-2"
                     : "border-slate-800 hover:border-slate-700"
