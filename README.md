@@ -1,4 +1,4 @@
-# SF Cyber Academia Digital
+# 🛡️ SF Cyber Academia Digital
 
 Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança (ofensiva e defensiva) por meio de simuladores, trilhas e avaliações.
 
