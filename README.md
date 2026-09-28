@@ -1,6 +1,6 @@
 # 🛡️ SF Cyber Academia Digital
 
-Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança (ofensiva e defensiva) por meio de laboratórios virtuaise curadoria inteligente que acompanha e orienta a jornada do aluno.
+Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança (ofensiva e defensiva) por meio de laboratórios virtuais, curadoria inteligente "SF Bot" que acompanha e orienta a jornada do aluno.
 
 Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.com.br)
 
