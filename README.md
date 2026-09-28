@@ -8,11 +8,6 @@ Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.c
 
 Pré-requisitos: Node.js 24+ e pnpm 10+.
 
-```bash
-corepack pnpm install
-corepack pnpm dev
-```
-
 ## Scripts
 
 | Comando         | Descrição                                    |
@@ -21,7 +16,6 @@ corepack pnpm dev
 | `pnpm build`    | Build de produção (saída em `dist/`)          |
 | `pnpm check`    | Typecheck com `tsc --noEmit`                   |
 | `pnpm preview`  | Pré-visualização do build                     |
-| `pnpm start`    | Serve o build em `dist/` via Express (porta 5000) |
 
 ## Funcionalidades
 
@@ -62,12 +56,7 @@ Os testes garantem score determinístico (400 nos níveis + 800 na prova = 1200 
 
 ## Deploy
 
-O deploy é automático via **GitHub Actions** (`.github/workflows/deploy.yml`) a cada push para `main`:
-
-1. `pnpm install --frozen-lockfile`
-2. `pnpm build`
-3. `cp CNAME dist/CNAME` (mantém o domínio customizado)
-4. Publica `dist/` em GitHub Pages (`upload-pages-artifact` + `deploy-pages`)
+O deploy é automático via **GitHub Actions** (`.github/../..`) a cada push para `main`:
 
 Domínio customizado: `sfcyber.projetosdisruptivos.com.br` (via `CNAME` no repositório).
 
