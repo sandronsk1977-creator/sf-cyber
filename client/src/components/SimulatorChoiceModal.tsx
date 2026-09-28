@@ -42,6 +42,8 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             href="/simulador-vlan"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <div className="w-12 h-12 mb-4 rounded-xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
               <Network className="w-6 h-6" />
@@ -60,6 +62,8 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             href="/simulador-seguranca"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <div className="w-12 h-12 mb-4 rounded-xl bg-blue-600/15 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
               <ShieldHalf className="w-6 h-6" />
@@ -78,6 +82,8 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             href="/simulador-web"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <div className="w-12 h-12 mb-4 rounded-xl bg-emerald-600/15 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
               <Bug className="w-6 h-6" />
@@ -96,6 +102,8 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             href="/simulador-dns"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <div className="w-12 h-12 mb-4 rounded-xl bg-violet-600/15 flex items-center justify-center text-violet-400 group-hover:scale-110 transition-transform">
               <Globe className="w-6 h-6" />

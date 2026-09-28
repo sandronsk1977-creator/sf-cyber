@@ -47,6 +47,8 @@ export function PortalCardsSection() {
             href="/simulador-vlan"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-wider border border-cyan-400/50 animate-neon-badge z-10">
               Redes
@@ -75,6 +77,8 @@ export function PortalCardsSection() {
             href="/simulador-seguranca"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
               Cibersegurança
@@ -103,6 +107,8 @@ export function PortalCardsSection() {
             href="/simulador-web"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
               Cibersegurança
@@ -131,6 +137,8 @@ export function PortalCardsSection() {
             href="/simulador-dns"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-wider border border-cyan-400/50 animate-neon-badge z-10">
               Redes

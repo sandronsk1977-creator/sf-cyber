@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "wouter";
 import { X, Rocket, CheckCircle2, Bot, Boxes, Bug, Globe } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,6 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
   const [subscribedEmail, setSubscribedEmail] = useState<string | null>(() =>
     readSubscribedEmail()
   );
-  const [, navigate] = useLocation();
 
   useEffect(() => {
     if (isOpen) setSubscribedEmail(readSubscribedEmail());
@@ -37,7 +35,11 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
 
   const goToSimulator = (path: string) => {
     onClose();
-    navigate(path);
+    window.open(
+      new URL(path, window.location.origin).href,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   const notifyMe = () => {
