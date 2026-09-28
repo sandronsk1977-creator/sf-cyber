@@ -32,7 +32,7 @@ const plans = [
     {
       name: "MEMBRO ANUAL",
       icon: "👑",
-      subtitle: "Acesso completo por 12 meses, 01 único pagamento.",
+      subtitle: "Acesso completo por 12 meses, um único pagamento.",
       price: "R$ 149,90/",
       period: "12 meses",
       badge: null,
@@ -67,7 +67,7 @@ const plans = [
           </div>
 
           {/* Pricing Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {plans.map((p, idx) => (
               <div
                 key={idx}
