@@ -15,7 +15,7 @@ const plans = [
       subtitle: "Comece a praticar agora mesmo.",
       price: "Grátis",
       period: "",
-      badge: null,
+      badge: "Disponível",
       highlight: false,
       simulator: true,
       features: [
