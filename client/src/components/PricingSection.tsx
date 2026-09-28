@@ -10,7 +10,7 @@ export function PricingSection() {
 
 const plans = [
     {
-      name: "GRÁTIS",
+      name: "FREEMIUM",
       icon: "🛡️",
       subtitle: "Comece a praticar agora mesmo.",
       price: "Grátis",
