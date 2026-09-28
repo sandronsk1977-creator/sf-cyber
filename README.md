@@ -6,7 +6,7 @@ Site: [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.c
 
 ## Início rápido
 
-Pré-requisitos: Node.js 24+ e pnpm 10+.
+Pré-requisitos: Node.js 24+ e pnpm 10+.-
 
 ## Scripts
 
