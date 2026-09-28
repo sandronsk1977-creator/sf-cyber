@@ -72,7 +72,7 @@ export function ScrollNav() {
         onClick={goPrev}
         aria-label="Seção anterior"
         title="Seção anterior"
-        className="flex items-center justify-center w-11 h-11 rounded-full bg-white/90 border border-cyan-500/50 text-cyan-600 shadow-lg shadow-cyan-500/20 backdrop-blur transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 hover:border-cyan-400"
+        className="flex items-center justify-center w-11 h-11 rounded-full bg-slate-900/90 border border-cyan-500/50 text-cyan-400 shadow-lg shadow-cyan-500/20 backdrop-blur transition-all duration-300 hover:bg-cyan-500 hover:text-slate-950 hover:scale-110 hover:border-cyan-400"
       >
         <ChevronUp className="w-5 h-5" />
       </button>
@@ -80,7 +80,7 @@ export function ScrollNav() {
         onClick={goNext}
         aria-label="Próxima seção"
         title="Próxima seção"
-        className="flex items-center justify-center w-11 h-11 rounded-full bg-white/90 border border-cyan-500/50 text-cyan-600 shadow-lg shadow-cyan-500/20 backdrop-blur transition-all duration-300 hover:bg-cyan-500 hover:text-white hover:scale-110 hover:border-cyan-400"
+        className="flex items-center justify-center w-11 h-11 rounded-full bg-slate-900/90 border border-cyan-500/50 text-cyan-400 shadow-lg shadow-cyan-500/20 backdrop-blur transition-all duration-300 hover:bg-cyan-500 hover:text-slate-950 hover:scale-110 hover:border-cyan-400"
       >
         <ChevronDown className="w-5 h-5" />
       </button>

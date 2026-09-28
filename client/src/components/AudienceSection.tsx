@@ -29,18 +29,18 @@ export function AudienceSection() {
   ];
 
   return (
-    <section className="py-20 bg-white border-t border-b border-slate-200 text-slate-900">
+    <section className="py-20 bg-slate-900/60 border-t border-b border-slate-800 text-slate-100">
       <div className="container">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-widest text-cyan-600 font-mono font-semibold">
+          <span className="text-xs uppercase tracking-widest text-cyan-400 font-mono font-semibold">
             Encontre seu lugar
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2 mb-4">
             Isso é para você?
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg">
+          <p className="text-slate-400 text-base sm:text-lg">
             SF Cyber recomenda... Se você se identifica com os perfis abaixo, este é o seu lugar.
           </p>
         </div>
@@ -51,24 +51,24 @@ export function AudienceSection() {
           {/* For You */}
           <div
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card p-8 rounded-3xl bg-white border border-cyan-500/30"
+            className="sf-neon-card p-8 rounded-3xl bg-slate-950 border border-cyan-500/30"
           >
-            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200">
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-600">
+            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800">
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
                 <Check className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900">A SF Cyber é para você se...</h3>
+              <h3 className="text-2xl font-bold text-white">A SF Cyber é para você se...</h3>
             </div>
 
             <div className="space-y-6">
               {pros.map((p, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-600 flex items-center justify-center shrink-0">
+                  <div className="mt-1 w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-base text-slate-900 mb-1">{p.title}</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">{p.desc}</p>
+                    <h4 className="font-bold text-base text-white mb-1">{p.title}</h4>
+                    <p className="text-sm text-slate-400 leading-relaxed">{p.desc}</p>
                   </div>
                 </div>
               ))}
@@ -78,24 +78,24 @@ export function AudienceSection() {
           {/* Not For You */}
           <div
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
-            className="sf-neon-card p-8 rounded-3xl bg-white border border-rose-500/30"
+            className="sf-neon-card p-8 rounded-3xl bg-slate-950 border border-rose-500/30"
           >
-            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200">
-              <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-600">
+            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-800">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400">
                 <X className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900">A SF Cyber NÃO é para você se...</h3>
+              <h3 className="text-2xl font-bold text-white">A SF Cyber NÃO é para você se...</h3>
             </div>
 
             <div className="space-y-6">
               {cons.map((c, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-rose-500/20 text-rose-600 flex items-center justify-center shrink-0">
+                  <div className="mt-1 w-5 h-5 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
                     <X className="w-3.5 h-3.5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-base text-slate-900 mb-1">{c.title}</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed">{c.desc}</p>
+                    <h4 className="font-bold text-base text-white mb-1">{c.title}</h4>
+                    <p className="text-sm text-slate-400 leading-relaxed">{c.desc}</p>
                   </div>
                 </div>
               ))}

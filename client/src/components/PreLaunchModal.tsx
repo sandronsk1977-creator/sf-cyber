@@ -69,16 +69,16 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
       aria-labelledby="prelaunch-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 p-4"
     >
-      <div className="relative w-full max-w-md p-6 bg-white border border-slate-200 rounded-2xl shadow-2xl text-slate-900 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-md p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 duration-200">
         <button
           onClick={onClose}
           aria-label="Fechar"
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-500 hover:text-slate-950 hover:bg-slate-100 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 text-xs font-semibold mb-4 uppercase tracking-widest font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-4 uppercase tracking-widest font-mono">
           <Rocket className="w-3.5 h-3.5" />
           Pré-lançamento
         </div>
@@ -86,45 +86,45 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
         {subscribedEmail ? (
           <div className="animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3 mb-4">
-              <CheckCircle2 className="w-10 h-10 text-cyan-600 shrink-0" />
-              <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-slate-950 leading-tight">
+              <CheckCircle2 className="w-10 h-10 text-cyan-400 shrink-0" />
+              <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white leading-tight">
                 Você está na lista!
               </h2>
             </div>
-            <p className="text-sm text-slate-700 leading-relaxed mb-4">
+            <p className="text-sm text-slate-300 leading-relaxed mb-4">
               Vamos te avisar em{" "}
-              <strong className="text-cyan-700 break-all">{subscribedEmail}</strong> quando a
+              <strong className="text-cyan-400 break-all">{subscribedEmail}</strong> quando a
               área de membros (cursos, laboratórios e avaliações) abrir.
             </p>
-            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+            <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Enquanto isso, já pode praticar nos laboratórios grátis com 8 níveis e certificado
               de conclusão.
             </p>
             <div className="grid gap-3 mb-5">
               <Button
                 onClick={() => goToSimulator("/simulador-seguranca")}
-                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-5 rounded-xl shadow-xl shadow-cyan-500/25"
+                className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-5 rounded-xl shadow-xl shadow-cyan-500/25"
               >
                 <Bot className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Segurança (SOC)
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-vlan")}
-                className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold py-5 rounded-xl"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Boxes className="w-5 h-5 mr-2" />
                 Testar o Laboratório de VLANs
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-web")}
-                className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold py-5 rounded-xl"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Bug className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Segurança Web
               </Button>
               <Button
                 onClick={() => goToSimulator("/simulador-dns")}
-                className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold py-5 rounded-xl"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Globe className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Servidor DNS
@@ -132,22 +132,22 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-full text-center text-xs text-slate-500 hover:text-slate-800 transition-colors"
+              className="w-full text-center text-xs text-slate-500 hover:text-slate-300 transition-colors"
             >
               Fechar
             </button>
           </div>
         ) : (
           <>
-            <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-slate-950 mb-3">Em breve!</h2>
-            <p className="text-sm text-slate-700 leading-relaxed mb-5">
+            <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
+            <p className="text-sm text-slate-300 leading-relaxed mb-5">
               A área de membros (cursos, laboratórios e avaliações) estará disponível em
               breve. Enquanto isso, aproveite os Laboratórios grátis, com 8 níveis e
               certificado de conclusão.
             </p>
 
             <div className="mb-5">
-              <label htmlFor="waitlist-email" className="block text-xs text-slate-600 mb-2">
+              <label htmlFor="waitlist-email" className="block text-xs text-slate-400 mb-2">
                 Quer saber quando abrir? Deixe seu e-mail:
               </label>
               <div className="flex gap-2">
@@ -162,11 +162,11 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
                     if (e.key === "Enter") notifyMe();
                   }}
                   placeholder="seu@email.com"
-                  className="w-full px-3 py-2.5 rounded-lg bg-slate-50 border border-slate-300 focus:border-cyan-500 outline-none text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-cyan-500 outline-none text-sm"
                 />
                 <Button
                   onClick={notifyMe}
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold shrink-0"
+                  className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold shrink-0"
                 >
                   Avise-me
                 </Button>
@@ -175,14 +175,14 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
 
             <Button
               onClick={() => goToSimulator("/simulador-vlan")}
-              className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold py-6 rounded-xl"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-6 rounded-xl"
             >
               Aproveitar os Laboratórios Grátis
             </Button>
 
             <button
               onClick={onClose}
-              className="mt-4 w-full text-center text-xs text-slate-500 hover:text-slate-800 transition-colors"
+              className="mt-4 w-full text-center text-xs text-slate-500 hover:text-slate-300 transition-colors"
             >
               Agora não
             </button>

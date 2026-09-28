@@ -81,9 +81,9 @@ export function CryptoAnimationHero() {
   }, []);
 
   return (
-<section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-white text-slate-900">
+    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-slate-950 text-slate-100">
       {/* Person at computer - cinematic SOC video background */}
-      <div className="absolute inset-0 pointer-events-none">
+<div className="absolute inset-0 pointer-events-none">
         <video
           className="w-full h-full object-cover object-center"
           src="/images/lab-sfcyber.mp4"
@@ -93,27 +93,27 @@ export function CryptoAnimationHero() {
           playsInline
           poster="/images/cyber-hero.jpg"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/85 to-white/80" />
-        <div className="absolute inset-0 bg-white/70" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/85 to-slate-950/80" />
+        <div className="absolute inset-0 bg-slate-950/70" />
       </div>
       {/* Background glow effects - Neon Blue */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-cyan-400/20 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/3 right-10 w-[350px] h-[350px] bg-blue-400/20 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-cyan-500/15 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/3 right-10 w-[350px] h-[350px] bg-blue-600/15 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container relative z-10 flex flex-col items-center text-center">
         
         {/* Badge tag */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 text-xs font-semibold mb-8 shadow-lg shadow-cyan-500/10">
-          <ShieldCheck className="w-4 h-4 text-cyan-600" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-8 shadow-lg shadow-cyan-500/10">
+          <ShieldCheck className="w-4 h-4 text-cyan-400" />
           <span>Aprenda com Laboratório de Redes e CiberSegurança</span>
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
         <h1 className="sr-only">Laboratórios gratuitos para aprender Redes e Cibersegurança na prática</h1>
         <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
-          <span className="text-sky-700 drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]">
+          <span className="text-sky-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
             {(displayText || TARGET_TITLE).slice(0, 13)}
-            <span className="text-slate-800 animate-hero-dark-pulse">
+            <span className="text-white animate-hero-white-pulse">
               {(displayText || TARGET_TITLE).slice(13, 22)}
             </span>
             {(displayText || TARGET_TITLE).slice(22)}
@@ -121,7 +121,7 @@ export function CryptoAnimationHero() {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mb-12 leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mb-12 leading-relaxed">
           Pratique. Experimente. Desenvolva habilidades reais.
         </p>
 
@@ -129,7 +129,7 @@ export function CryptoAnimationHero() {
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-10">
           <Button
             size="lg"
-            className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-600 text-white font-bold px-8 py-6 rounded-xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-[1.02] text-base group"
+            className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-6 rounded-xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-[1.02] text-base group"
             onClick={() => {
               const el = document.getElementById("planos");
               el?.scrollIntoView({ behavior: "smooth" });
@@ -142,7 +142,7 @@ export function CryptoAnimationHero() {
           <Button
             size="lg"
             variant="outline"
-            className="w-full sm:w-auto border-slate-300 bg-white/70 hover:bg-slate-100 text-slate-800 font-semibold px-8 py-6 rounded-xl text-base"
+            className="w-full sm:w-auto border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-200 font-semibold px-8 py-6 rounded-xl text-base"
             onClick={() => {
               document.getElementById("portal")?.scrollIntoView({ behavior: "smooth" });
             }}
@@ -152,19 +152,19 @@ export function CryptoAnimationHero() {
         </div>
 
         {/* Trust Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-600">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-400">
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-cyan-600" />
+            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
             Sem cartão de crédito
           </span>
-          <span className="hidden sm:inline text-slate-300">·</span>
+          <span className="hidden sm:inline text-slate-700">·</span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-cyan-600" />
+            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
             Cancele quando quiser
           </span>
-          <span className="hidden sm:inline text-slate-300">·</span>
+          <span className="hidden sm:inline text-slate-700">·</span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-cyan-600" />
+            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
             Acesso imediato
           </span>
         </div>
