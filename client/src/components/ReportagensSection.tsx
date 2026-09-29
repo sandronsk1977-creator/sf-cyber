@@ -7,35 +7,50 @@ declare global {
   }
 }
 
-const MATERIAS = [
+type Materia = {
+  icon: typeof ShieldCheck;
+  tag: string;
+  title: string;
+  desc: string;
+  origem: "Instagram" | "YouTube";
+  url: string;
+  youtubeId?: string;
+  instagram?: boolean;
+};
+
+const MATERIAS: Materia[] = [
   {
     icon: ShieldCheck,
     tag: "SF Cyber",
     title: "Guardião Cibernético",
-    desc: "Apresentação do Guardião Cibernético do SF Cyber.",
-    permalink: "https://www.instagram.com/reel/DduclrSADBX/",
+    desc: "Apresentação do Guardião Cibernético",
+    origem: "YouTube",
+    url: "https://www.youtube.com/shorts/_ZUjgzaSP2g?t=27&feature=share",
+    youtubeId: "_ZUjgzaSP2g",
   },
   {
     icon: Terminal,
     tag: "Reportagem",
     title: "A ferramenta nmap",
     desc: "Reportagem sobre a ferramenta nmap.",
-    permalink: "https://www.instagram.com/reel/Dd2egTVjDs3/",
+    origem: "Instagram",
+    url: "https://www.instagram.com/reel/Dd2egTVjDs3/",
+    instagram: true,
   },
 ];
 
 export function ReportagensSection() {
   const [aberta, setAberta] = React.useState<string | null>(null);
-  const materia = MATERIAS.find((m) => m.permalink === aberta);
+  const materia = MATERIAS.find((m) => m.url === aberta);
 
   // O embed do Instagram processa blockquotes dinamicos apos a insercao no DOM
   useEffect(() => {
-    if (!aberta) return;
+    if (!materia?.instagram) return;
     const timer = window.setTimeout(() => {
       window.instgrm?.Embeds?.process();
     }, 150);
     return () => window.clearTimeout(timer);
-  }, [aberta]);
+  }, [materia]);
 
   useEffect(() => {
     document.body.style.overflow = aberta ? "hidden" : "";
@@ -44,16 +59,16 @@ export function ReportagensSection() {
     };
   }, [aberta]);
 
-  const fechar = () => setAberta(null);
-
   useEffect(() => {
     if (!aberta) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") fechar();
+      if (e.key === "Escape") setAberta(null);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [aberta]);
+
+  const fechar = () => setAberta(null);
 
   return (
     <section id="reportagens" className="py-20 bg-slate-950 text-slate-100 relative">
@@ -66,14 +81,15 @@ export function ReportagensSection() {
             Reportagens
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Conteúdo publicado abaixo, são vídeos oficiais do Instagram, com os devidos créditos aos autores da publicação.
+            Conteúdo publicado abaixo, são vídeos oficiais do Instagram e do YouTube, com os
+            devidos créditos aos autores da publicação.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {MATERIAS.map(({ icon: Icon, tag, title, desc, permalink }) => (
+          {MATERIAS.map(({ icon: Icon, tag, title, desc, url, origem }) => (
             <div
-              key={permalink}
+              key={url}
               style={{ "--neon": "#22d3ee" } as React.CSSProperties}
               className="sf-neon-card relative rounded-3xl border border-cyan-500/40 bg-slate-900/60 p-6 pt-8 transition-all hover:-translate-y-1"
             >
@@ -94,19 +110,19 @@ export function ReportagensSection() {
               <div className="flex flex-col gap-3">
                 <button
                   type="button"
-                  onClick={() => setAberta(permalink)}
+                  onClick={() => setAberta(url)}
                   className="inline-flex items-center justify-center gap-2 font-bold bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/25 transition-colors w-full"
                 >
                   <Play className="w-4 h-4 fill-current" />
-                  Assistir no Instagram
+                  Assistir no {origem}
                 </button>
                 <a
-                  href={permalink}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 text-xs font-medium text-slate-400 hover:text-cyan-400 transition-colors"
                 >
-                  Abrir publicação original
+                  Abrir vídeo original
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -115,7 +131,7 @@ export function ReportagensSection() {
         </div>
       </div>
 
-      {/* Modal com o embed oficial do Instagram */}
+      {/* Modal com o embed oficial (Instagram) ou player nativo (YouTube) */}
       {materia && (
         <div
           role="dialog"
@@ -123,19 +139,27 @@ export function ReportagensSection() {
           aria-label={materia.title}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 p-4"
         >
-          <div
-            role="presentation"
-            onClick={fechar}
-            className="absolute inset-0"
-          />
+          <div role="presentation" onClick={fechar} className="absolute inset-0" />
 
           <div className="relative w-full max-w-md">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
-              <blockquote
-                className="instagram-media"
-                data-instgrm-permalink={materia.permalink}
-                data-instgrm-version="14"
-              />
+              {materia.instagram ? (
+                <blockquote
+                  className="instagram-media"
+                  data-instgrm-permalink={materia.url}
+                  data-instgrm-version="14"
+                />
+              ) : (
+                <div className="aspect-video w-full bg-black">
+                  <iframe
+                    className="w-full h-full"
+                    src={`https://www.youtube.com/embed/${materia.youtubeId}?autoplay=1&rel=0`}
+                    title={materia.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              )}
             </div>
 
             <button
@@ -148,12 +172,12 @@ export function ReportagensSection() {
             </button>
 
             <a
-              href={materia.permalink}
+              href={materia.url}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400 hover:text-cyan-400 transition-colors"
             >
-              Ver no Instagram
+              Ver no {materia.origem}
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
