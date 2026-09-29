@@ -31,8 +31,8 @@ const MATERIAS: Materia[] = [
   {
     icon: Terminal,
     tag: "Reportagem",
-    title: "A ferramenta nmap",
-    desc: "Reportagem sobre a ferramenta nmap.",
+    title: "Especialista em Segurança Cibernética",
+    desc: "O que faz e quanto ganha?",
     origem: "Instagram",
     url: "https://www.instagram.com/reel/Dd2egTVjDs3/",
     instagram: true,
