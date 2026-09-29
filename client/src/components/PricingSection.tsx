@@ -33,7 +33,7 @@ const plans = [
     {
       name: "MEMBRO PARCEIRO",
       icon: "👑",
-      subtitle: "Projeto aguardando parcerias",
+      subtitle: "Projeto em parceria",
       price: "Em breve",
       period: "",
       badge: null,
