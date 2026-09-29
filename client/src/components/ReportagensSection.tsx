@@ -76,8 +76,8 @@ export function ReportagensSection() {
               style={{ "--neon": "#22d3ee" } as React.CSSProperties}
               className="sf-neon-card relative rounded-3xl border border-cyan-500/40 bg-slate-900/60 p-6 pt-8 transition-all hover:-translate-y-1"
             >
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#FF0000]/15 border border-[#FF0000]/50 text-[#FF0000] text-xs font-bold uppercase tracking-wider font-mono z-10">
-                {tag}
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-950 border border-[#FF0000] text-[#FF0000] text-xs font-bold tracking-wider font-mono flex items-center z-20 animate-youtube-neon">
+                &gt;<span className="animate-caret-blink">_</span>YouTUBE
               </span>
 
               <div className="w-12 h-12 mb-4 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400">
