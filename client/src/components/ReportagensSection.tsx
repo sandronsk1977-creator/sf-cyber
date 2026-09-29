@@ -24,7 +24,7 @@ const MATERIAS: Materia[] = [
   {
     icon: Terminal,
     tag: "Reportagem",
-    title: "Especialista em Segurança Cibernética",
+    title: "Segurança Cibernética",
     desc: "O que faz e quanto ganha?",
     origem: "YouTube",
     url: "https://www.youtube.com/shorts/Ba140yMIZcE?feature=share",
