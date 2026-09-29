@@ -26,7 +26,7 @@ const plans = [
         "Laboratório de Segurança Web (SQL Injection | XSS)",
         "Laboratório de Servidor DNS (Resolução | AXFR | DNSSEC)",
         "Teste de conectividade",
-        "Certificado de conclusão",
+        "Certificado de conclusão (período de avaliação)",
         "Progresso salvo automaticamente",
       ],
       cta: "Começar Grátis",
