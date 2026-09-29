@@ -43,7 +43,7 @@ const plans = [
         "Todos os laboratórios práticos",
         "Teste de conectividade",
         "Progresso salvo automaticamente",
-        "Certificado de Conclusão",
+        "Prova + Certificado de conclusão",
       ],
       cta: "QUERO SER PARCEIRO",
       whatsapp: "Olá, gostaria de mais informações, QUERO SER PARCEIRO",
