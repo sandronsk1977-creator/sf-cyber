@@ -14,7 +14,7 @@ type Materia = {
 const MATERIAS: Materia[] = [
   {
     icon: ShieldCheck,
-    tag: "SF Cyber",
+    tag: "YOUTUBE",
     title: "Guardião Cibernético",
     desc: "Apresentação do Guardião Cibernético",
     origem: "YouTube",
@@ -23,7 +23,7 @@ const MATERIAS: Materia[] = [
   },
   {
     icon: Terminal,
-    tag: "Reportagem",
+    tag: "YOUTUBE",
     title: "Segurança Cibernética",
     desc: "O que faz e quanto ganha?",
     origem: "YouTube",
@@ -70,14 +70,13 @@ export function ReportagensSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {MATERIAS.map(({ icon: Icon, tag, title, desc, url, origem }) => (
+          {MATERIAS.map(({ tag, title, desc, url, origem }) => (
             <div
               key={url}
               style={{ "--neon": "#22d3ee" } as React.CSSProperties}
               className="sf-neon-card relative rounded-3xl border border-cyan-500/40 bg-slate-900/60 p-6 pt-8 transition-all hover:-translate-y-1"
             >
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/40 text-cyan-300 text-xs font-bold uppercase tracking-wider font-mono flex items-center gap-1.5 z-10">
-                <Icon className="w-3.5 h-3.5" />
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#FF0000]/15 border border-[#FF0000]/50 text-[#FF0000] text-xs font-bold uppercase tracking-wider font-mono z-10">
                 {tag}
               </span>
 
