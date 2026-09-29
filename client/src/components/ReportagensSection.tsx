@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import { Newspaper, Play, X, ExternalLink, ShieldCheck, Terminal } from "lucide-react";
 
-declare global {
-  interface Window {
-    instgrm?: { Embeds?: { process: () => void } };
-  }
-}
-
 type Materia = {
   icon: typeof ShieldCheck;
   tag: string;
@@ -15,7 +9,6 @@ type Materia = {
   origem: "Instagram" | "YouTube";
   url: string;
   youtubeId?: string;
-  instagram?: boolean;
 };
 
 const MATERIAS: Materia[] = [
@@ -33,24 +26,15 @@ const MATERIAS: Materia[] = [
     tag: "Reportagem",
     title: "Especialista em Segurança Cibernética",
     desc: "O que faz e quanto ganha?",
-    origem: "Instagram",
-    url: "https://www.instagram.com/reel/Dd2egTVjDs3/",
-    instagram: true,
+    origem: "YouTube",
+    url: "https://www.youtube.com/shorts/Ba140yMIZcE?feature=share",
+    youtubeId: "Ba140yMIZcE",
   },
 ];
 
 export function ReportagensSection() {
   const [aberta, setAberta] = React.useState<string | null>(null);
   const materia = MATERIAS.find((m) => m.url === aberta);
-
-  // O embed do Instagram processa blockquotes dinamicos apos a insercao no DOM
-  useEffect(() => {
-    if (!materia?.instagram) return;
-    const timer = window.setTimeout(() => {
-      window.instgrm?.Embeds?.process();
-    }, 150);
-    return () => window.clearTimeout(timer);
-  }, [materia]);
 
   useEffect(() => {
     document.body.style.overflow = aberta ? "hidden" : "";
@@ -81,8 +65,8 @@ export function ReportagensSection() {
             Reportagens
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Conteúdo publicado abaixo, são vídeos oficiais do Instagram e do YouTube, com os
-            devidos créditos aos autores da publicação.
+    Conteúdo publicado abaixo, são vídeos oficiais do YouTube, com os devidos créditos aos
+    autores da publicação.
           </p>
         </div>
 
@@ -143,23 +127,15 @@ export function ReportagensSection() {
 
           <div className="relative w-full max-w-md">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
-              {materia.instagram ? (
-                <blockquote
-                  className="instagram-media"
-                  data-instgrm-permalink={materia.url}
-                  data-instgrm-version="14"
+              <div className="aspect-video w-full bg-black">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${materia.youtubeId}?autoplay=1&rel=0`}
+                  title={materia.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
                 />
-              ) : (
-                <div className="aspect-video w-full bg-black">
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://www.youtube.com/embed/${materia.youtubeId}?autoplay=1&rel=0`}
-                    title={materia.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                </div>
-              )}
+              </div>
             </div>
 
             <button
