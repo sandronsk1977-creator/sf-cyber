@@ -65,8 +65,7 @@ export function ReportagensSection() {
             Reportagens
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-    Conteúdo publicado abaixo, são vídeos oficiais do YouTube, com os devidos créditos aos
-    autores da publicação.
+            Conteúdo publicado abaixo são vídeos oficiais do YouTube.
           </p>
         </div>
 
