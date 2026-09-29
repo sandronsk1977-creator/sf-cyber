@@ -46,6 +46,15 @@ export function ReportagensSection() {
 
   const fechar = () => setAberta(null);
 
+  useEffect(() => {
+    if (!aberta) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") fechar();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [aberta]);
+
   return (
     <section id="reportagens" className="py-20 bg-slate-950 text-slate-100 relative">
       <div className="container">
@@ -114,16 +123,13 @@ export function ReportagensSection() {
           aria-label={materia.title}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 p-4"
         >
-          <div className="relative w-full max-w-md">
-            <button
-              type="button"
-              onClick={fechar}
-              aria-label="Fechar"
-              className="absolute -top-11 right-0 p-2 rounded-lg text-slate-300 hover:text-white transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
+          <div
+            role="presentation"
+            onClick={fechar}
+            className="absolute inset-0"
+          />
 
+          <div className="relative w-full max-w-md">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
               <blockquote
                 className="instagram-media"
@@ -131,6 +137,15 @@ export function ReportagensSection() {
                 data-instgrm-version="14"
               />
             </div>
+
+            <button
+              type="button"
+              onClick={fechar}
+              aria-label="Fechar vídeo"
+              className="absolute -top-3 -right-3 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-slate-900 border-2 border-cyan-400 text-cyan-300 hover:bg-cyan-500 hover:text-slate-950 hover:border-cyan-300 shadow-lg shadow-black/50 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
 
             <a
               href={materia.permalink}
