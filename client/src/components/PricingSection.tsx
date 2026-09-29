@@ -8,6 +8,8 @@ export function PricingSection() {
   const [preLaunchOpen, setPreLaunchOpen] = useState(false);
   const [choiceOpen, setChoiceOpen] = useState(false);
 
+  const WHATSAPP_NUMBER = "5562999693469";
+
 const plans = [
     {
       name: "FREEMIUM",
@@ -44,7 +46,8 @@ const plans = [
         "Certificado de Conclusão",
         "Suporte WhatsApp",
       ],
-      cta: "QUERO SER MEMBRO",
+      cta: "QUERO SER PARCEIRO",
+      whatsapp: "Olá, gostaria de mais informações, QUERO SER PARCEIRO",
     },
   ];
 
@@ -110,16 +113,31 @@ const plans = [
                   </ul>
                 </div>
 
-                <Button
-                  onClick={() => (p.simulator ? setChoiceOpen(true) : setPreLaunchOpen(true))}
-                  className={`w-full font-bold py-3 rounded-xl transition-all shadow-lg ${
-                    p.highlight
-                      ? "bg-blue-500 hover:bg-blue-600 text-white shadow-blue-900/30"
-                      : "bg-slate-800 hover:bg-slate-700 text-white"
-                  } ${p.simulator ? "animate-seal-pulse" : ""}`}
-                >
-                  {p.cta}
-                </Button>
+                {p.whatsapp ? (
+                  <a
+                    href={`https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(p.whatsapp)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-full inline-flex items-center justify-center font-bold py-3 rounded-xl transition-all shadow-lg ${
+                      p.highlight
+                        ? "bg-blue-500 hover:bg-blue-600 text-white shadow-blue-900/30"
+                        : "bg-slate-800 hover:bg-slate-700 text-white"
+                    }`}
+                  >
+                    {p.cta}
+                  </a>
+                ) : (
+                  <Button
+                    onClick={() => (p.simulator ? setChoiceOpen(true) : setPreLaunchOpen(true))}
+                    className={`w-full font-bold py-3 rounded-xl transition-all shadow-lg ${
+                      p.highlight
+                        ? "bg-blue-500 hover:bg-blue-600 text-white shadow-blue-900/30"
+                        : "bg-slate-800 hover:bg-slate-700 text-white"
+                    } ${p.simulator ? "animate-seal-pulse" : ""}`}
+                  >
+                    {p.cta}
+                  </Button>
+                )}
               </div>
             ))}
           </div>
