@@ -30,11 +30,11 @@ const plans = [
       cta: "Começar Grátis",
     },
     {
-      name: "MEMBRO ANUAL",
+      name: "MEMBRO PARCEIRO",
       icon: "👑",
-      subtitle: "Acesso completo por 12 meses, um único pagamento.",
-      price: "R$ 149,90/",
-      period: "12 meses",
+      subtitle: "Projeto aguardando parcerias",
+      price: "",
+      period: "",
       badge: null,
       highlight: true,
       features: [
@@ -93,10 +93,12 @@ const plans = [
                 </div>
               </div>
 
-              <div className="my-3 pb-3 border-b border-slate-800 flex items-baseline gap-1">
-                <span className="text-xl sm:text-2xl font-black text-white font-mono">{p.price}</span>
-                {p.period && <span className="text-slate-400 text-xs">{p.period}</span>}
-              </div>
+              {p.price && (
+                <div className="my-3 pb-3 border-b border-slate-800 flex items-baseline gap-1">
+                  <span className="text-xl sm:text-2xl font-black text-white font-mono">{p.price}</span>
+                  {p.period && <span className="text-slate-400 text-xs">{p.period}</span>}
+                </div>
+              )}
 
               <ul className="space-y-1.5 mb-4">
                     {p.features.map((f, i) => (
