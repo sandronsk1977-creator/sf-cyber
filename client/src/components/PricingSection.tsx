@@ -27,7 +27,6 @@ const plans = [
         "Laboratório de Servidor DNS (Resolução | AXFR | DNSSEC)",
         "Teste de conectividade",
         "Certificado de conclusão (período de avaliação)",
-        "Progresso salvo automaticamente",
       ],
       cta: "Começar Grátis",
     },
