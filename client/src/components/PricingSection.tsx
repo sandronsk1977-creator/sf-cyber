@@ -35,7 +35,7 @@ const plans = [
       name: "MEMBRO PARCEIRO",
       icon: "👑",
       subtitle: "Projeto aguardando parcerias",
-      price: "",
+      price: "Em breve",
       period: "",
       badge: null,
       highlight: true,
@@ -44,7 +44,6 @@ const plans = [
         "Teste de conectividade",
         "Progresso salvo automaticamente",
         "Certificado de Conclusão",
-        "Suporte WhatsApp",
       ],
       cta: "QUERO SER PARCEIRO",
       whatsapp: "Olá, gostaria de mais informações, QUERO SER PARCEIRO",
@@ -77,7 +76,7 @@ const plans = [
                 style={p.highlight ? ({ "--neon": "#3b82f6" } as React.CSSProperties) : undefined}
                 className={`relative p-5 rounded-3xl bg-slate-900/60 border flex flex-col justify-between transition-all ${
                   p.highlight
-                    ? "sf-neon-card border-blue-500 lg:-translate-y-2"
+                    ? "sf-neon-card border-blue-500"
                     : "border-slate-800 hover:border-slate-700"
                 }`}
               >
