@@ -59,7 +59,7 @@ export function ReportagensSection() {
       <div className="container">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs uppercase tracking-widest text-cyan-400 font-mono font-semibold">
-            Reportagens
+            Real Case
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2 mb-4">
             Reportagens
