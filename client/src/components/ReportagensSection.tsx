@@ -18,8 +18,8 @@ const MATERIAS: Materia[] = [
     title: "Guardião Cibernético",
     desc: "Apresentação do Guardião Cibernético",
     origem: "YouTube",
-    url: "https://www.youtube.com/shorts/_ZUjgzaSP2g?t=27&feature=share",
-    youtubeId: "_ZUjgzaSP2g",
+    url: "https://youtu.be/9QY-cz9jUaI",
+    youtubeId: "9QY-cz9jUaI",
   },
   {
     icon: Terminal,
