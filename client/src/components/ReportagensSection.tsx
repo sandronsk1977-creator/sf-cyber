@@ -57,8 +57,7 @@ export function ReportagensSection() {
             Reportagens
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Conteúdo publicado sobre o projeto. O player abaixo é o embed oficial do Instagram,
-            com os devidos créditos ao autor da publicação.
+            Conteúdo publicado abaixo, são vídeos oficiais do Instagram, com os devidos créditos aos autores da publicação.
           </p>
         </div>
 
