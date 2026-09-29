@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { CryptoAnimationHero } from "@/components/CryptoAnimationHero";
 import { AudienceSection } from "@/components/AudienceSection";
+import { ReportagensSection } from "@/components/ReportagensSection";
 import { PricingSection } from "@/components/PricingSection";
 import { SponsorSection } from "@/components/SponsorSection";
 import { PortalCardsSection } from "@/components/PortalCardsSection";
@@ -16,6 +17,7 @@ export default function Home() {
         <CryptoAnimationHero />
         <PortalCardsSection />
         <AudienceSection />
+        <ReportagensSection />
         <SponsorSection />
         <PricingSection />
       </main>
