@@ -1,6 +1,5 @@
 import React from "react";
 import { X, Network, ShieldHalf, Bug, Globe, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
 
 interface SimulatorChoiceModalProps {
   isOpen: boolean;
@@ -38,7 +37,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
         </p>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          <Link
+          <a
             href="/vlans/index.html"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
@@ -56,9 +55,9 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
               Acessar
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </a>
 
-          <Link
+          <a
             href="/seguranca/index.html"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
@@ -76,9 +75,9 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
               Acessar
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </a>
 
-          <Link
+          <a
             href="/web/index.html"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
@@ -96,9 +95,9 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
               Acessar
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </a>
 
-          <Link
+          <a
             href="/dns/index.html"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
@@ -116,7 +115,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
               Acessar
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
-          </Link>
+          </a>
         </div>
 
         <button

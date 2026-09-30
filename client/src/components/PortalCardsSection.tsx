@@ -1,6 +1,5 @@
 import React from "react";
 import { Network, ShieldHalf, Bug, Globe, ArrowRight, Layers, Award } from "lucide-react";
-import { Link } from "wouter";
 
 const metaChips = (
   <>
@@ -43,7 +42,7 @@ export function PortalCardsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
-          <Link
+          <a
             href="/vlans/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
@@ -70,10 +69,10 @@ export function PortalCardsSection() {
             </p>
 
             {cardFooter}
-          </Link>
+          </a>
 
           {/* Card 02 - Cibersegurança | Simulador de Segurança */}
-          <Link
+          <a
             href="/seguranca/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
@@ -100,10 +99,10 @@ export function PortalCardsSection() {
             </p>
 
             {cardFooter}
-          </Link>
+          </a>
 
-          {/* Card 03 - Segurança Web | SQL Injection | XSS */}
-          <Link
+          {/* Card 03 - Cibersegurança | Simulador de Segurança Web */}
+          <a
             href="/web/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
@@ -130,10 +129,10 @@ export function PortalCardsSection() {
             </p>
 
             {cardFooter}
-          </Link>
+          </a>
 
           {/* Card 04 - Redes | Simulador de DNS */}
-          <Link
+          <a
             href="/dns/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
@@ -160,7 +159,7 @@ export function PortalCardsSection() {
             </p>
 
             {cardFooter}
-          </Link>
+          </a>
         </div>
       </div>
     </section>
