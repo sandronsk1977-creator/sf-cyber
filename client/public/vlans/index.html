@@ -988,11 +988,12 @@
         </h2>
         <p>Aprenda a configurar VLANs em um simulador interativo de switch!</p>
         <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
-            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (obrigatório, para o certificado):</label>
             <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
-                   maxlength="42" autocomplete="off"
+                   maxlength="42" autocomplete="off" oninput="clearNameError()"
                    style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
                           background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+            <div id="nameError" style="display:none; margin-top:8px; color:#c50f1f; font-size:0.85em; font-weight:600;">Informe seu nome para acessar o laboratório e emitir o certificado.</div>
         </div>
         <div class="features">
             <div class="feature-item">
@@ -2492,12 +2493,34 @@ function showHint() {
     addOutput('💡 ' + level.hint.replace(/<[^>]+>/g, ''), 'warning');
 }
 
+function showNameError() {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) err.style.display = 'block';
+    if (ni) { ni.style.borderColor = '#c50f1f'; ni.focus(); }
+}
+
+function clearNameError() {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) err.style.display = 'none';
+    if (ni) ni.style.borderColor = 'rgba(0,120,212,0.45)';
+}
+
+function requireStudentName() {
+    const ni = document.getElementById('studentNameInput');
+    let saved = '';
+    try { saved = localStorage.getItem(SAVE_KEY + '_name') || ''; } catch (e) {}
+    const name = ((ni && ni.value) || state.studentName || saved).trim();
+    if (!name) { showNameError(); return ''; }
+    state.studentName = name;
+    try { localStorage.setItem(SAVE_KEY + '_name', name); } catch (e) {}
+    clearNameError();
+    return name;
+}
+
 function closeWelcome() {
-    const nameInput = document.getElementById('studentNameInput');
-    if (nameInput && nameInput.value.trim()) {
-        state.studentName = nameInput.value.trim();
-        try { localStorage.setItem(SAVE_KEY + '_name', state.studentName); } catch (e) {}
-    }
+    if (!requireStudentName()) return;
     document.getElementById('welcomeModal').classList.remove('active');
     // Se o usuário escolheu "Começar do Zero", reinicia o estado (e limpa o save antigo)
     if (loadProgress()) {
@@ -2995,6 +3018,8 @@ function clearProgress() {
 }
 
 function resumeGame() {
+    if (!requireStudentName()) return;
+    const savedName = state.studentName;
     document.getElementById('welcomeModal').classList.remove('active');
     const prog = loadProgress();
     if (prog && typeof prog.currentLevel === 'number' && prog.currentLevel > 0 && prog.currentLevel < levels.length) {
@@ -3002,7 +3027,7 @@ function resumeGame() {
         state.score = prog.score || 0;
         state.quizDone = !!prog.quizDone;
         state.level6Done = !!prog.level6Done;
-        state.studentName = prog.studentName || '';
+        state.studentName = prog.studentName || savedName;
         state.vlanConfig = JSON.parse(JSON.stringify(levels[state.currentLevel].initialConfig));
         if (state.level6Done) {
             document.getElementById('btnProvaFinal').style.display = '';

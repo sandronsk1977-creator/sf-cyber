@@ -712,11 +712,12 @@
         </h2>
         <p>Assuma o papel de um Analista de Segurança Web e teste a aplicação <b>Lojinha Online</b> (http://192.168.10.30/lojinha) contra SQL Injection e XSS, como faria em um pentest.</p>
         <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
-            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (obrigatório, para o certificado):</label>
             <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
-                   maxlength="42" autocomplete="off"
+                   maxlength="42" autocomplete="off" oninput="clearNameError()"
                    style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
                           background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+            <div id="nameError" style="display:none; margin-top:8px; color:#c50f1f; font-size:0.85em; font-weight:600;">Informe seu nome para acessar o laboratório e emitir o certificado.</div>
         </div>
         <div class="features">
             <div class="feature-item"><div class="icon">1</div><span>Acessar a aplicação com <b>curl</b></span></div>
@@ -1856,10 +1857,31 @@ function downloadCertificate() {
 }
 
 // ===================== WELCOME / STORAGE =====================
+function showNameError() {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) err.style.display = 'block';
+    if (ni) { ni.style.borderColor = '#c50f1f'; ni.focus(); }
+}
+
+function clearNameError() {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) err.style.display = 'none';
+    if (ni) ni.style.borderColor = 'rgba(0,120,212,0.45)';
+}
+
+function requireStudentName() {
+    const ni = document.getElementById('studentNameInput');
+    const name = ((ni && ni.value) || state.studentName || '').trim();
+    if (!name) { showNameError(); return ''; }
+    state.studentName = name;
+    clearNameError();
+    return name;
+}
+
 function closeWelcome() {
-    const nameInput = document.getElementById('studentNameInput');
-    const name = (nameInput.value || '').trim();
-    state.studentName = name || 'Aluno(a)';
+    if (!requireStudentName()) return;
     closeModal('welcomeModal');
     input.focus();
     startIfNew();
@@ -1874,6 +1896,7 @@ function startIfNew() {
 }
 
 function resumeGame() {
+    if (!requireStudentName()) return;
     closeModal('welcomeModal');
     input.focus();
     renderLevel();
