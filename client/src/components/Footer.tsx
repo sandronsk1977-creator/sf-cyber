@@ -3,9 +3,11 @@ export function Footer() {
     <footer className="py-6 bg-slate-950 border-t border-slate-800 text-slate-400">
       <div className="container flex flex-col items-center justify-center gap-1 text-center">
         <span className="text-xs sm:text-sm font-medium">
-          Developed by <span className="text-cyan-400 font-bold">Sandro Ferreira</span>
+          Developed by <span className="text-cyan-400 font-bold">SF</span>
           <span className="text-slate-600"> + </span>
-          Automação com <span className="text-cyan-400 font-bold">@Open Code</span>
+          <span className="text-cyan-400 font-bold" title="Automação Sofisticada">AS</span>
+          <span className="text-slate-600"> com </span>
+          <span className="text-cyan-400 font-bold">Open Code</span>
         </span>
         <span className="text-xs text-slate-600">
           © {new Date().getFullYear()} SF Cyber · Laboratórios de Redes e Cibersegurança
