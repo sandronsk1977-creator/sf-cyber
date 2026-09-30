@@ -435,3 +435,16 @@
     scrollbar-width: thin;
   }
 }
+
+/* Crédito do rodapé: neon pulsante ao passar o mouse */
+.sf-credit {
+  --neon: #22d3ee;
+  display: inline-block;
+  border-radius: 9999px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.sf-credit:hover {
+  animation: neon-glow 1.6s ease-in-out infinite;
+  color: #67e8f9;
+}
