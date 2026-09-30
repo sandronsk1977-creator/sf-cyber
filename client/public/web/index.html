@@ -1857,10 +1857,12 @@ function downloadCertificate() {
 }
 
 // ===================== WELCOME / STORAGE =====================
-function showNameError() {
+const NAME_BLOCK_WORDS = ['teste', 'test', 'fulano', 'fulana', 'aluno', 'aluna', 'anonimo', 'anonima', 'exemplo', 'sample', 'nome', 'aqui', 'blabla', 'asdf', 'asdasd', 'qwe', 'qwerty', 'xxx', 'aaa', 'zzz'];
+
+function showNameError(msg) {
     const err = document.getElementById('nameError');
     const ni = document.getElementById('studentNameInput');
-    if (err) err.style.display = 'block';
+    if (err) { if (msg) err.textContent = msg; err.style.display = 'block'; }
     if (ni) { ni.style.borderColor = '#c50f1f'; ni.focus(); }
 }
 
@@ -1871,13 +1873,35 @@ function clearNameError() {
     if (ni) ni.style.borderColor = 'rgba(0,120,212,0.45)';
 }
 
+function validateStudentName(raw) {
+    const value = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!value) return { ok: false, msg: 'Informe seu nome para acessar o laboratório e emitir o certificado.' };
+    if (!/^[\p{L}\p{M}]+(?:[ '\-][\p{L}\p{M}]+)*$/u.test(value)) {
+        return { ok: false, msg: 'Use apenas letras no nome. Não use números, e-mails ou links.' };
+    }
+    const words = value.split(' ');
+    if (words.length < 2) return { ok: false, msg: 'Digite nome e sobrenome para emitir o certificado.' };
+    if (words.some(function (w) { return w.replace(/[ '\-]/g, '').length < 2; })) {
+        return { ok: false, msg: 'Cada parte do nome precisa ter pelo menos 2 letras.' };
+    }
+    if (value.length < 6) return { ok: false, msg: 'O nome completo precisa ter pelo menos 6 caracteres.' };
+    const flatWords = words.map(function (w) {
+        return w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[ '\-]/g, '');
+    });
+    if (flatWords.some(function (w) { return /^([a-z])\1+$/.test(w) || NAME_BLOCK_WORDS.indexOf(w) !== -1; })) {
+        return { ok: false, msg: 'Informe um nome válido para o certificado.' };
+    }
+    return { ok: true, value: value };
+}
+
 function requireStudentName() {
     const ni = document.getElementById('studentNameInput');
-    const name = ((ni && ni.value) || state.studentName || '').trim();
-    if (!name) { showNameError(); return ''; }
-    state.studentName = name;
+    const res = validateStudentName((ni && ni.value) || state.studentName || '');
+    if (!res.ok) { showNameError(res.msg); return ''; }
+    state.studentName = res.value;
+    if (ni && ni.value !== res.value) ni.value = res.value;
     clearNameError();
-    return name;
+    return res.value;
 }
 
 function closeWelcome() {
