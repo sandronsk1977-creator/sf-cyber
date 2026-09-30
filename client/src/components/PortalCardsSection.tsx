@@ -44,7 +44,7 @@ export function PortalCardsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <Link
-            href="/simulador-vlan"
+            href="/vlans/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
@@ -74,7 +74,7 @@ export function PortalCardsSection() {
 
           {/* Card 02 - Cibersegurança | Simulador de Segurança */}
           <Link
-            href="/simulador-seguranca"
+            href="/seguranca/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
@@ -104,7 +104,7 @@ export function PortalCardsSection() {
 
           {/* Card 03 - Segurança Web | SQL Injection | XSS */}
           <Link
-            href="/simulador-web"
+            href="/web/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
@@ -134,7 +134,7 @@ export function PortalCardsSection() {
 
           {/* Card 04 - Redes | Simulador de DNS */}
           <Link
-            href="/simulador-dns"
+            href="/dns/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
             className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"

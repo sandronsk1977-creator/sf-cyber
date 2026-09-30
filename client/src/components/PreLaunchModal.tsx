@@ -104,28 +104,28 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             </p>
             <div className="grid gap-3 mb-5">
               <Button
-                onClick={() => goToSimulator("/simulador-seguranca")}
+                onClick={() => goToSimulator("/seguranca/index.html")}
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-5 rounded-xl shadow-xl shadow-cyan-500/25"
               >
                 <Bot className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Segurança (SOC)
               </Button>
               <Button
-                onClick={() => goToSimulator("/simulador-vlan")}
+                onClick={() => goToSimulator("/vlans/index.html")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Boxes className="w-5 h-5 mr-2" />
                 Testar o Laboratório de VLANs
               </Button>
               <Button
-                onClick={() => goToSimulator("/simulador-web")}
+                onClick={() => goToSimulator("/web/index.html")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Bug className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Segurança Web
               </Button>
               <Button
-                onClick={() => goToSimulator("/simulador-dns")}
+                onClick={() => goToSimulator("/dns/index.html")}
                 className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
               >
                 <Globe className="w-5 h-5 mr-2" />
@@ -176,7 +176,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             </div>
 
             <Button
-              onClick={() => goToSimulator("/simulador-vlan")}
+              onClick={() => goToSimulator("/vlans/index.html")}
               className="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-6 rounded-xl"
             >
               Aproveitar os Laboratórios Grátis
