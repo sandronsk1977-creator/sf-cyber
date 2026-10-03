@@ -14,11 +14,17 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-950">
       <Navbar />
       <main className="flex-1">
-        <CryptoAnimationHero />
-        <PortalCardsSection />
+        <div id="inicio">
+          <CryptoAnimationHero />
+        </div>
+        <div id="competencias">
+          <PortalCardsSection />
+        </div>
         <AudienceSection />
-        <ReportagensSection />
-        <SponsorSection />
+        <div id="parcerias">
+          <ReportagensSection />
+          <SponsorSection />
+        </div>
         <PricingSection />
       </main>
       <ContactRail />
