@@ -1,5 +1,5 @@
 import React from "react";
-import { Github } from "lucide-react";
+import { Linkedin, Globe } from "lucide-react";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -11,9 +11,14 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 const CONTACTS = [
   {
-    label: "GitHub",
-    href: "https://github.com/sandronsk1977-creator/",
-    icon: Github,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/sandro-ferreira-5816b4284/",
+    icon: Linkedin,
+  },
+  {
+    label: "Projetos Disruptivos",
+    href: "https://projetosdisruptivos.com.br/",
+    icon: Globe,
   },
   {
     label: "WhatsApp",
