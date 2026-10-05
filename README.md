@@ -46,10 +46,10 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 Os quatro simuladores possuem testes automatizados de fluxo completo (8 níveis -> prova final -> certificado), executados com Node no jogo emulado:
 
 ```text
-C:\Users\Family\AppData\Local\Temp\opencode\soc_test.cjs    (fluxo SOC)
-C:\Users\Family\AppData\Local\Temp\opencode\web_test.cjs    (fluxo Segurança Web)
-C:\Users\Family\AppData\Local\Temp\opencode\dns_test.cjs    (fluxo DNS)
-C:\Users\Family\AppData\Local\Temp\opencode\vlan_test.cjs   (fluxo VLAN, inclui XSS e pay-once)
+C:\Users\Family\AppData\Local\Temp\soc_test.cjs    (fluxo SOC)
+C:\Users\Family\AppData\Local\Temp\web_test.cjs    (fluxo Segurança Web)
+C:\Users\Family\AppData\Local\Temp\dns_test.cjs    (fluxo DNS)
+C:\Users\Family\AppData\Local\Temp\vlan_test.cjs   (fluxo VLAN, inclui XSS e pay-once)
 ```
 
 Os testes garantem score determinístico (400 nos níveis + 800 na prova = 1200 nos simuladores SOC/Web/DNS; 580 + 160 = 740 no VLAN), que o certificado só sai após aprovação na prova e que payloads XSS não executam no terminal do VLAN. Validação em browser real é feita com Chrome headless via CDP contra o `dist/`.
