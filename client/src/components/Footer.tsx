@@ -14,9 +14,7 @@ export function Footer() {
           Developed by <span className="text-cyan-400 font-bold">SF</span>
           <span className="text-slate-600"> + </span>
           <span className="text-cyan-400 font-bold" title="Automação Sofisticada">AS</span>
-          <span className="text-slate-600"> com </span>
-          <span className="text-cyan-400 font-bold">Open Code</span>
-        </a>
+          </a>
         <span className="text-xs text-slate-600">
           © {new Date().getFullYear()} SF Cyber · Laboratórios de Redes e Cibersegurança
         </span>
