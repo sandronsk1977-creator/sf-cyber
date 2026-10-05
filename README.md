@@ -27,7 +27,7 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 - **Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)** em `/simulador-dns` (registros A/MX/NS, subdomínio exposto, transferência de zona, envenenamento de cache e proteção com AXFR restrito + DNSSEC).
 - **SF Bot**: assistente robô nos quatro simuladores para guiar o aluno etapa por etapa.
 - Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos quatro simuladores.
-- Planos de pré-lançamento: **FREE** (grátis), **MEMBROS** (R$ 39,90/mês) e **MEMBROS VITALÍCIO** (R$ 499,00, pagamento único).
+- Planos de pré-lançamento: **FREE** (grátis) e **MEMBROS PARCEIROS** 
 - Modal de escolha de simulador ao clicar em "Começar Grátis" (plano FREE).
 - Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos pagos, com captura de e-mail (visual).
 - Links diretos para as rotas dos simuladores funcionam no GitHub Pages via fallback SPA (`404.html` + restauração de rota com `sessionStorage`).
