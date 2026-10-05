@@ -5,15 +5,15 @@ export function AudienceSection() {
   const pros = [
     {
       title: "Você está começando do zero",
-      desc: "Não é preciso experiência prévia. As trilhas levam você a um aprendizado passo a passo.",
+      desc: "Não é preciso experiência prévia. O SF Bot leva você a um aprendizado passo a passo.",
     },
     {
-      title: "Já tentou estudar antes e ficou perdido",
-      desc: "Cansou de cursos maçantes onde o instrutor só quer aparecer. Você precisa de um método estruturado, não de excesso de teoria.",
+      title: "Já tentou estudar antes e ficou perdido?",
+      desc: "Você precisa de um método estruturado, não de excesso de teoria.",
     },
     {
-      title: "Tem tempo limitado e precisa de eficiência",
-      desc: "As trilhas diretas ao ponto maximizam cada minuto dedicado aos estudos.",
+      title: "Tem tempo limitado e precisa de eficiência?",
+      desc: "O desafio direto ao ponto maximiza cada minuto dedicado aos estudos.",
     },
   ];
 
