@@ -1,0 +1,2650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YFJCPYJWQV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YFJCPYJWQV');
+</script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sandro Ferreira">
+    <meta name="robots" content="index, follow">
+    <title>SF Academia Cibersegurança e Redes - Pentest em E-commerce</title>
+    <link rel="icon" href="favicon-sf-red_blue.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #eef4f9);
+            min-height: 100vh;
+            color: #323130;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.75);
+            border-bottom: 2px solid #0078d4;
+        }
+
+        .header h1 {
+            font-size: 2.1em;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+
+        .header h1 .shield { vertical-align: middle; margin-right: 8px; }
+        .header p { color: #5e5e5e; margin-top: 5px; }
+
+        .progress-bar {
+            width: 80%;
+            max-width: 600px;
+            height: 20px;
+            background: #e0e6ec;
+            border-radius: 10px;
+            margin: 15px auto;
+            overflow: hidden;
+            border: 1px solid #d0d7de;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .stats span { color: #0078d4; font-weight: bold; }
+
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .topology-panel {
+            flex: 1;
+            min-width: 400px;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .topology-panel h2 { text-align: center; margin-bottom: 15px; color: #106ebe; }
+
+        .topology-canvas {
+            width: 100%;
+            height: 400px;
+            background: #0a0a1a;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .terminal-panel {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-panel {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(0,0,0,0.07);
+        }
+
+        .task-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .task-panel .level-title { font-size: 1.15em; color: #106ebe; margin-bottom: 5px; word-break: break-word; }
+        .task-panel .task-desc { color: #4a4a4a; line-height: 1.6; }
+        .task-panel .task-desc code, .hint code { background: rgba(0,120,212,0.08); padding: 1px 5px; border-radius: 4px; color: #0b5d96; font-size: 0.95em; }
+
+        .task-panel .hint {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,120,212,0.08);
+            border-left: 3px solid #0078d4;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #0b5d96;
+        }
+
+        .terminal {
+            background: #0d0d0d;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #333;
+            height: 460px;
+            max-height: 70vh;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        .terminal-title { margin-left: 10px; color: #888; font-size: 0.85em; }
+
+        .terminal-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            line-height: 1.5;
+        }
+
+        .terminal { position: relative; }
+        .autocomplete {
+            display: none;
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 44px;
+            background: #1a1a2e;
+            border: 1px solid #00d4ff;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            z-index: 20;
+            overflow: hidden;
+        }
+        .ac-item {
+            padding: 8px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00d4ff;
+            cursor: pointer;
+        }
+        .ac-item:hover { background: rgba(0,212,255,0.15); }
+
+        .terminal-body .output { margin-bottom: 5px; }
+        .terminal-body .output.user { color: #d2fff0; }
+        .terminal-body .output.success { color: #27c93f; }
+        .terminal-body .output.error { color: #ff5f56; }
+        .terminal-body .output.info { color: #00d4ff; }
+        .terminal-body .output.warning { color: #ffbd2e; }
+        .terminal-body .output.system { color: #888; }
+
+        .input-line { display: flex; align-items: center; margin-top: 5px; }
+
+        .prompt { color: #00d4ff; white-space: nowrap; margin-right: 5px; }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            outline: none;
+            caret-color: #00d4ff;
+        }
+
+        .buttons-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary { background: linear-gradient(135deg, #0078d4, #106ebe); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.35); }
+        .btn-success { background: linear-gradient(135deg, #27c93f, #00a82d); color: #fff; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(39,201,63,0.3); }
+        .btn-warning { background: linear-gradient(135deg, #ffbd2e, #ff8c00); color: #fff; }
+        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,189,46,0.3); }
+        .btn-danger { background: linear-gradient(135deg, #ff5f56, #cc0000); color: #fff; }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,95,86,0.3); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        .svc-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .svc-table th, .svc-table td { padding: 8px 12px; text-align: left; border: 1px solid #d0d7de; }
+        .svc-table th { background: #d7ecff; color: #106ebe; }
+        .svc-table td { background: #f8fafc; }
+        .svc-table .ok { color: #27c93f; font-weight: bold; }
+        .svc-table .bad { color: #cc0000; font-weight: bold; }
+        .svc-table .mid { color: #ff8c00; font-weight: bold; }
+
+        .legend { display: flex; gap: 15px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.85em; }
+        .legend-color { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+        #quizModal { z-index: 1100; }
+
+        .modal {
+            background: #ffffff;
+            color: #323130;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 92vh;
+            overflow-y: auto;
+            text-align: center;
+            border: 2px solid #c7e2f8;
+            animation: modalPop 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 { color: #106ebe; font-size: 1.8em; margin-bottom: 15px; }
+        .modal p { color: #4a4a4a; line-height: 1.6; margin-bottom: 20px; }
+        .modal .score { font-size: 1.5em; color: #0078d4; margin: 15px 0; }
+
+        .welcome-modal { max-width: 620px; }
+        .welcome-modal h2 { line-height: 1.3; margin-bottom: 14px; font-size: 1.3em; }
+        .welcome-modal .shield-m { vertical-align: middle; margin-right: 6px; width: 30px; height: 30px; }
+        .welcome-white { color: #201f1e; -webkit-text-fill-color: #201f1e; }
+        .welcome-grad {
+            background: linear-gradient(90deg, #0078d4, #106ebe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .welcome-modal .features { text-align: left; margin: 14px 0; }
+        .welcome-modal .feature-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; color: #4a4a4a; }
+        .feature-item .icon {
+            width: 30px; height: 30px;
+            background: #d7ecff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #0078d4;
+            flex-shrink: 0;
+        }
+
+        .scope-box {
+            text-align: left;
+            background: #fff8e6;
+            border: 1px solid #ffd479;
+            border-left: 4px solid #ff8c00;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin: 14px 0;
+            font-size: 0.86em;
+            line-height: 1.55;
+            color: #5c4a1a;
+        }
+        .scope-box b { color: #8a5a00; }
+
+        .reference-panel { background: #ffffff; border-radius: 15px; padding: 15px; border: 1px solid rgba(0,0,0,0.07); margin-top: 15px; }
+        .reference-panel h3 { color: #106ebe; margin-bottom: 10px; }
+        .cmd-list { font-family: 'Courier New', monospace; font-size: 0.8em; }
+        .cmd-list div { padding: 3px 0; color: #5e5e5e; word-break: break-all; }
+        .cmd-list span { color: #0078d4; }
+
+        .rb-next {
+            display: block;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #0078d4, #106ebe);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .rb-next:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(0,120,212,0.4); }
+
+        .btn-ghost { background: #ffffff; color: #106ebe; border: 1px solid rgba(0,120,212,0.4); }
+        .btn-ghost:hover { background: #e8f0fa; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,120,212,0.15); }
+
+        .modal-footer { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:20px; flex-wrap:wrap; position:sticky; bottom:0; background:#f3f7fa; border-top:1px solid rgba(0,0,0,0.06); padding:12px 4px; z-index:2; margin-left:-4px; margin-right:-4px; }
+
+        .concepts-list { text-align: left; margin: 15px 0; }
+        .concept-item { display:flex; gap:10px; margin: 12px 0; color:#4a4a4a; line-height:1.6; }
+        .concept-item .concept-icon { flex-shrink:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#e3edf8; color:#0078d4; font-size:1.1em; }
+        .concept-item b { color:#201f1e; }
+
+        /* ===== Guia aprofundado IDOR / 2FA ===== */
+        .guide { text-align:left; font-size:0.94em; line-height:1.65; color:#3a3a3a; }
+        .guide h3 {
+            display:flex; align-items:center; gap:8px;
+            color:#106ebe; font-size:1.15em; margin:22px 0 8px;
+            padding-bottom:6px; border-bottom:2px solid rgba(0,120,212,0.15);
+        }
+        .guide h3:first-child { margin-top:0; }
+        .guide h4 { color:#0b5d96; font-size:1em; margin:14px 0 4px; }
+        .guide p { margin:8px 0; }
+        .guide ul { margin:8px 0 8px 20px; }
+        .guide li { margin:5px 0; }
+        .guide b { color:#201f1e; }
+        .guide code {
+            background:rgba(0,120,212,0.09); border:1px solid rgba(0,120,212,0.15);
+            padding:1px 6px; border-radius:5px; color:#0b5d96;
+            font-family:'Courier New', monospace; font-size:0.9em; word-break:break-all;
+        }
+        .guide .exemplo {
+            background:#f3f7fa; border:1px solid #d7dee6; border-left:4px solid #0078d4;
+            border-radius:8px; padding:12px 14px; margin:10px 0; font-size:0.95em;
+        }
+        .guide .exemplo .rotulo {
+            font-size:0.75em; text-transform:uppercase; letter-spacing:1px;
+            color:#106ebe; font-weight:bold; display:block; margin-bottom:6px;
+        }
+        .guide .problema {
+            background:#fff6f6; border:1px solid #ffb3b3; border-left:4px solid #cc0000;
+            border-radius:8px; padding:10px 14px; margin:10px 0; font-size:0.95em; color:#7a2020;
+        }
+        .guide .problema b { color:#a01010; }
+        .guide .url-antes, .guide .url-depois {
+            display:block; font-family:'Courier New', monospace; font-size:0.88em;
+            padding:6px 10px; border-radius:6px; margin:4px 0; word-break:break-all;
+        }
+        .guide .url-antes { background:#eaf7ea; border:1px solid #a8dda8; color:#1b5e1b; }
+        .guide .url-depois { background:#ffecec; border:1px solid #ffb3b3; color:#a01010; }
+        .guide .seta-mudanca { font-size:1.2em; text-align:center; margin:2px 0; color:#cc0000; }
+
+        .guide .cruzamento {
+            background:linear-gradient(135deg, rgba(0,120,212,0.06), rgba(123,47,247,0.06));
+            border:1px solid rgba(123,47,247,0.3); border-radius:10px;
+            padding:14px 16px; margin:14px 0;
+        }
+        .guide .cruzamento h4 { color:#5b21b6; margin-top:0; }
+
+        .guide .passos { counter-reset: passo; list-style:none; margin-left:0; }
+        .guide .passos li {
+            position:relative; padding-left:34px; margin:12px 0;
+        }
+        .guide .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position:absolute; left:0; top:1px;
+            width:24px; height:24px; border-radius:50%;
+            background:#0078d4; color:#fff;
+            font-size:0.8em; font-weight:bold;
+            display:flex; align-items:center; justify-content:center;
+        }
+
+        .cmp-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:0.9em; }
+        .cmp-table th, .cmp-table td { padding:9px 10px; border:1px solid #d0d7de; text-align:left; vertical-align:top; }
+        .cmp-table thead th { background:#106ebe; color:#fff; font-size:0.95em; }
+        .cmp-table thead th:first-child { background:#0b5d96; }
+        .cmp-table tbody tr:nth-child(even) { background:#f8fafc; }
+        .cmp-table tbody td:first-child { font-weight:bold; color:#0b5d96; background:#eef5fc; }
+        .cmp-table .tag-vuln { color:#cc0000; font-weight:bold; }
+        .cmp-table .tag-def  { color:#0d7a0d; font-weight:bold; }
+
+        .guide .destaque-final {
+            background:#f0fbf2; border:1px solid #a8dda8; border-left:4px solid #27c93f;
+            border-radius:8px; padding:12px 14px; margin-top:16px; font-size:0.95em; color:#1b5e1b;
+        }
+        .guide .destaque-final b { color:#0d5c0d; }
+
+        .guide-tabs { display:flex; gap:8px; margin:14px 0 4px; flex-wrap:wrap; justify-content:center; }
+        .guide-tab {
+            padding:8px 16px; border-radius:20px; cursor:pointer; font-size:0.9em; font-weight:bold;
+            border:2px solid rgba(0,120,212,0.35); background:#fff; color:#106ebe;
+            transition:all 0.2s ease;
+        }
+        .guide-tab:hover { background:#e8f0fa; }
+        .guide-tab.active { background:linear-gradient(135deg,#0078d4,#106ebe); color:#fff; border-color:#106ebe; }
+
+        .level-map-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin:15px 0; }
+        .level-card { background:#ffffff; border:1px solid #d7dee6; border-radius:12px; padding:12px; text-align:center; cursor:pointer; transition:all .2s; }
+        .level-card:hover { transform: translateY(-2px); }
+        .level-card.done { border-color: #27c93f; box-shadow:0 0 14px rgba(39,201,63,0.25); }
+        .level-card.current { border-color:#0078d4; box-shadow:0 0 14px rgba(0,120,212,0.35); }
+        .level-card.locked { opacity:0.5; cursor:default; }
+        .level-card .lv-num { font-size:1.5em; font-weight:bold; color:#0078d4; }
+        .level-card .lv-status { font-size:0.78em; margin-top:4px; color:#8a8a8a; }
+        .level-card.done .lv-status { color:#27c93f; }
+        .level-card.current .lv-status { color:#0078d4; }
+
+        .quiz-option { display:block; width:100%; text-align:left; padding:10px 14px; margin:8px 0; background:#f8fafc; border:1px solid #d7dee6; border-radius:10px; color:#323130; cursor:pointer; font-size:0.95em; transition:all .15s; }
+        .quiz-option:hover:not(:disabled) { border-color:#0078d4; background:rgba(0,120,212,0.08); }
+        .quiz-option.correct { border-color:#27c93f; background:rgba(39,201,63,0.2); }
+        .quiz-option.wrong { border-color:#ff5f56; background:rgba(255,95,86,0.2); }
+        .quiz-option:disabled { cursor:default; }
+        .quiz-feedback { margin-top:12px; font-size:0.9em; color:#4a4a4a; min-height:20px; }
+
+        /* ===== Painel de curadoria ===== */
+        .curation-list { text-align:left; margin: 15px 0; }
+        .curation-block {
+            background: #f3f7fa;
+            border: 1px solid #d7dee6;
+            border-left: 4px solid #0078d4;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin: 12px 0;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #4a4a4a;
+        }
+        .curation-block.warn { background: #fff4f4; border-left-color: #cc0000; }
+        .curation-block.ok { background: #f0fbf2; border-left-color: #27c93f; }
+        .curation-block b { color: #201f1e; }
+        .curation-block a { color: #106ebe; }
+
+        /* ===== Assistente Robô (SF Bot) ===== */
+        .robot {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .robot-bubble {
+            position: relative;
+            max-width: 310px;
+            background: #ffffff;
+            color: #16213e;
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 10px 34px rgba(0,0,0,0.18), 0 0 0 2px #0078d4;
+            font-size: 0.95em;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .robot-bubble.visible { display: block; animation: robotPop 0.35s ease; }
+
+        .robot-bubble::after {
+            content: '';
+            position: absolute;
+            right: 24px;
+            left: auto;
+            bottom: -10px;
+            border: 7px solid transparent;
+            border-top: 11px solid #0078d4;
+        }
+
+        .rb-title { display: block; font-weight: 700; color: #106ebe; margin-bottom: 4px; }
+        .rb-text b { color: #0078d4; }
+
+        @keyframes robotPop {
+            from { transform: scale(0.65) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .robot-figure {
+            width: 92px;
+            height: 92px;
+            animation: floaty 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+        }
+
+        .rb-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            line-height: 1;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.08);
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .rb-close:hover { background: rgba(204,0,0,0.15); color: #c00; }
+        .robot.hidden { display: none !important; }
+
+        .robot-reopen {
+            position: fixed;
+            left: auto;
+            right: 16px;
+            bottom: 14px;
+            z-index: 950;
+            width: 92px;
+            height: 92px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#1f2b3e,#28364d);
+            box-shadow: 0 10px 34px rgba(0,0,0,0.3), 0 0 0 2px #0078d4;
+            font-size: 40px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: floaty 2.6s ease-in-out infinite;
+        }
+
+        .robot-reopen.show { display: flex; }
+        .robot-reopen:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.4), 0 0 0 2px #ffd700; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .antena-led { animation: ledBlink 1.3s steps(2, start) infinite; }
+        @keyframes ledBlink { 0% { opacity: 1; } 50% { opacity: 0.15; } }
+        .eye { transform-box: fill-box; transform-origin: center; animation: blinky 4.5s infinite; }
+        @keyframes blinky { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.12); } }
+        .robot-arm { transform-box: view-box; transform-origin: 80px 101px; animation: pointArm 1.9s ease-in-out infinite; }
+        @keyframes pointArm { 0%, 100% { transform: rotate(2deg); } 50% { transform: rotate(-48deg); } }
+
+        @media (max-width: 760px) {
+            .robot { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen { transform: scale(0.8); right: 6px; bottom: 6px; }
+            .robot-reopen.show { display: flex; transform: scale(0.8); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container { flex-direction: column; }
+            .topology-panel, .terminal-panel { min-width: 100%; }
+            .level-map-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        .console-line { white-space: pre-wrap; word-break: break-all; }
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Impressão: certificado de conclusão idêntico à tela */
+        @page { size: A4 portrait; margin: 0; }
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body * { visibility: hidden; }
+            #certificateModal, #certificateModal * { visibility: visible; }
+            #certificateModal {
+                position: absolute; top: 0; left: 0; width: 100%; min-height: 100%;
+                background: #ffffff !important; display: flex !important;
+                align-items: center; justify-content: center; overflow: visible;
+                margin: 0; padding: 12mm;
+            }
+            #certificateModal .modal {
+                background: #ffffff !important;
+                border: none !important; max-width: 100%; width: 100%;
+                max-height: none; overflow: visible; box-shadow: none; padding: 0;
+                animation: none; border-radius: 0 !important;
+            }
+            #certificateModal .modal-footer { display: none !important; }
+            #certificatePrint > div { border-radius: 2mm !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1><svg class="shield" viewBox="0 0 64 64" width="42" height="42" aria-hidden="true">
+        <defs>
+            <linearGradient id="sfGradH" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff2d55"/>
+                <stop offset="0.5" stop-color="#7b2ff7"/>
+                <stop offset="1" stop-color="#00d4ff"/>
+            </linearGradient>
+        </defs>
+        <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradH)" stroke="#ffffff" stroke-width="3"/>
+        <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+    </svg>SF Academia Cibersegurança e Redes</h1>
+    <p>🛒 Pentest em E-commerce: IDOR, 2FA, segredos no front-end e escalonamento de privilégio</p>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="stats">
+        <div>Nível: <span id="levelDisplay">1</span>/8</div>
+        <div>Pontos: <span id="scoreDisplay">0</span></div>
+        <div>Comandos digitados: <span id="attemptsDisplay">0</span></div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="topology-panel">
+        <h2>🛒 Laboratório API · Loja Aurora (loja fictícia)</h2>
+        <canvas class="topology-canvas" id="topologyCanvas"></canvas>
+        <div class="legend">
+            <div class="legend-item"><span class="legend-color" style="background:#ff5f56"></span> Exposto/vulnerável</div>
+            <div class="legend-item"><span class="legend-color" style="background:#ffbd2e"></span> Sem teste</div>
+            <div class="legend-item"><span class="legend-color" style="background:#27c93f"></span> Corrigido</div>
+        </div>
+        <table class="svc-table" id="svcTable" style="margin-top:15px;">
+            <thead>
+                <tr>
+                    <th>Endpoint / Falha</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="svcTableBody"></tbody>
+        </table>
+        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="openCuration()">⚖️ Curadoria e escopo</button>
+            <button class="btn btn-ghost" onclick="generateReport(true)">📄 Gerar laudo</button>
+        </div>
+    </div>
+
+    <div class="terminal-panel">
+        <div class="task-panel">
+            <div class="level-title" id="levelTitle">Nível 1: Reconhecimento da API</div>
+            <div class="task-desc" id="taskDesc">
+                Você é o Analista de Segurança de Aplicações. A Loja Aurora foi construída do zero e está no ar. Mapeie a API.
+            </div>
+            <div class="hint" id="hintBox" style="display:none"></div>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">analista-api@lab-sfcyber</span>
+            </div>
+            <div class="terminal-body" id="terminalBody" aria-live="polite">
+                <div class="output system">Laboratório SF Cyber inicializado.</div>
+                <div class="output info">Alvo: http://192.168.10.40/aurora (ambiente simulado, nenhuma requisição real sai do navegador).</div>
+                <div class="output system">Digite 'ajuda' para ver os comandos disponíveis.</div>
+                <div class="input-line">
+                    <span class="prompt">analista-api@lab:~$</span>
+                    <input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false" aria-label="Linha de comando">
+                </div>
+            </div>
+            <div class="autocomplete" id="autocomplete"></div>
+        </div>
+
+        <div class="buttons-row">
+            <button class="btn btn-primary" onclick="showHint()">💡 Dica</button>
+            <button class="btn btn-ghost" onclick="openTheory()">📚 Revisão</button>
+            <button class="btn btn-ghost" onclick="openGuide('ambos')">🛡️ Guia IDOR + 2FA</button>
+            <button class="btn btn-ghost" onclick="openLevelMap()">🗺️ Níveis</button>
+            <button class="btn btn-warning" onclick="resetLevel()">🔄 Resetar Nível</button>
+            <button class="btn btn-success" onclick="nextLevel()">⏭ Próximo Nível</button>
+            <button class="btn btn-danger" onclick="confirmAction('reset')">🏠 Reiniciar Jogo</button>
+            <button class="btn btn-warning" id="btnProvaFinal" style="display:none;" onclick="openQuiz(true)">📝 Prova Final</button>
+        </div>
+
+        <div class="reference-panel">
+            <h3>📖 Referência de Comandos</h3>
+            <div class="cmd-list">
+                <div><span>clear / cls</span> - Limpar a tela do terminal</div>
+                <div><span>ajuda / help</span> - Listar comandos disponíveis</div>
+                <div><span>curl http://192.168.10.40/aurora/api/v1</span> - Mapear a API</div>
+                <div><span>curl ".../api/v1/orders/1001"</span> - Ver o seu próprio pedido</div>
+                <div><span>curl ".../api/v1/orders/1002"</span> - Testar IDOR (BOLA) no detalhe do pedido</div>
+                <div><span>curl ".../api/v1/customers?limit=200"</span> - Testar listagem em massa de clientes</div>
+                <div><span>curl -X POST -d "user=...&amp;code=000000" .../auth/2fa/verify</span> - Testar o segundo fator</div>
+                <div><span>curl .../assets/app.js</span> - Baixar o bundle do front-end</div>
+                <div><span>curl -H "Authorization: Bearer &lt;token&gt;" .../api/v1/admin/orders</span> - Testar acesso administrativo</div>
+                <div><span>curl -X PATCH -d "role=admin" .../api/v1/me</span> - Testar mass assignment</div>
+                <div><span>report aurora</span> - Gerar o laudo de Findings (CVSS + OWASP)</div>
+                <div><span>patch aurora --object-authorization</span> - Corrigir IDOR</div>
+                <div><span>patch aurora --bind-2fa-session</span> - Corrigir o 2FA</div>
+                <div><span>patch aurora --rotate-secrets</span> - Remover segredos do front-end</div>
+                <div><span>patch aurora --validate-mass-assignment</span> - Corrigir escalonamento</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Robot Assistant -->
+<div class="robot" id="robot">
+    <div class="robot-bubble" id="robotBubble">
+        <button class="rb-close" id="robotCloseBtn" onclick="closeRobot()" aria-label="Fechar SF Bot">✕</button>
+        <span class="rb-title" id="robotTitle">SF Bot 🤖</span>
+        <span class="rb-text" id="robotText"></span>
+        <button class="rb-next" id="robotContinueBtn" style="display:none;" onclick="robotContinue()">▶ Iniciar Etapa</button>
+    </div>
+    <svg class="robot-figure" id="robotFigure" viewBox="0 0 130 130" aria-hidden="true">
+        <line x1="60" y1="34" x2="46" y2="10" stroke="#00d4ff" stroke-width="4" stroke-linecap="round"/>
+        <circle class="antena-led" cx="46" cy="10" r="5" fill="#ffd700"/>
+        <rect x="8" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="98" y="48" width="14" height="26" rx="6" fill="#1c2638" stroke="#00d4ff" stroke-width="2"/>
+        <rect x="20" y="32" width="80" height="58" rx="18" fill="#232a33" stroke="#00d4ff" stroke-width="3"/>
+        <circle class="eye" cx="47" cy="58" r="7" fill="#00d4ff"/>
+        <circle class="eye" cx="73" cy="58" r="7" fill="#00d4ff"/>
+        <path d="M48 74 Q60 82 72 74" stroke="#00d4ff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <rect x="36" y="94" width="48" height="24" rx="9" fill="#232a33" stroke="#00d4ff" stroke-width="2"/>
+        <circle cx="60" cy="106" r="5" fill="#ff2d55"/>
+        <g class="robot-arm">
+            <rect x="76" y="96" width="28" height="10" rx="5" fill="#00d4ff"/>
+            <path d="M102 92 L122 80 L124 122 L104 108 Z" fill="#ffd700" stroke="#7b2ff7" stroke-width="1.5"/>
+        </g>
+    </svg>
+</div>
+
+<button class="robot-reopen" id="robotReopenBtn" onclick="openRobot()" title="Reabrir SF Bot" aria-label="Reabrir SF Bot">
+    🤖
+</button>
+
+<!-- Theory Modal -->
+<div class="modal-overlay" id="theoryModal" role="dialog" aria-modal="true" aria-labelledby="theoryTitle">
+    <div class="modal">
+        <h2 id="theoryTitle">📚 Revisão de Conceitos</h2>
+        <p>Aqui vai um resumo rápido dos conceitos que você acabou de praticar!</p>
+        <div class="concepts-list" id="theoryContent"></div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeModal('theoryModal')">Entendi! ✅</button>
+        </div>
+    </div>
+</div>
+
+<!-- Guia IDOR + 2FA Modal -->
+<div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="modal" style="max-width:780px; text-align:left;">
+        <button class="rb-close" onclick="closeModal('guideModal')" aria-label="Fechar guia" title="Fechar">✕</button>
+        <h2 id="guideTitle" style="text-align:center;">🛡️ Guia IDOR + 2FA</h2>
+        <div class="guide-tabs">
+            <button class="guide-tab" data-tab="idor" onclick="openGuide('idor')">🛡️ IDOR</button>
+            <button class="guide-tab" data-tab="2fa" onclick="openGuide('2fa')">🔐 2FA</button>
+            <button class="guide-tab" data-tab="ambos" onclick="openGuide('ambos')">🔄 IDOR × 2FA</button>
+        </div>
+
+        <!-- IDOR -->
+        <div class="guide" id="guideIdor">
+            <h3>🛡️ IDOR (Insecure Direct Object Reference)</h3>
+            <p>O IDOR acontece quando uma aplicação fornece acesso direto a objetos (dados em um banco, arquivos, um pedido, um perfil) com base na entrada fornecida pelo usuário, mas <b>não verifica se aquele usuário tem permissão de acessar aquele recurso</b>.</p>
+
+            <h4>Como funciona na prática</h4>
+            <div class="exemplo">
+                <span class="rotulo">Exemplo do dia a dia</span>
+                <p>Imagine que você faz login no banco e abre seu extrato. O endereço é algo como:</p>
+                <span class="url-antes">https://banco.exemplo/extrato?id=55219</span>
+                <p>Se você trocar o número no navegador e conseguir ver o extrato de outra pessoa, o sistema tem IDOR:</p>
+                <span class="url-depois">https://banco.exemplo/extrato?id=55220 &larr; extrato de outra pessoa</span>
+            </div>
+            <p>Na Loja Aurora é exatamente isso, só que em API. O seu pedido é o <code>#1001</code>:</p>
+            <div class="exemplo">
+                <span class="rotulo">Laboratório · Nível 2</span>
+                <span class="url-antes">GET /api/v1/orders/1001 &rarr; seu pedido (Lucas Pereira)</span>
+                <span class="url-depois">GET /api/v1/orders/1002 &rarr; pedido da Marina Alves, com CPF e endereço</span>
+            </div>
+
+            <div class="problema">
+                <b>O problema:</b> o sistema confiou cegamente na identificação (ID) enviada e pulou a validação de controle de acesso. Trocar o número não é "invadir": é só pedir um registro que já existe, e o servidor entrega.
+            </div>
+
+            <h4>Por que IDOR acontece tanto</h4>
+            <ul>
+                <li>A API valida <b>quem é</b> o usuário (login, token), mas não valida <b>o que</b> ele pediu.</li>
+                <li>A consulta ao banco filtra por <code>id</code> e esquece o <code>customer_id</code>: <code>WHERE id = ?</code> em vez de <code>WHERE id = ? AND customer_id = ?</code>.</li>
+                <li>Sequências previsíveis (<code>1001</code>, <code>1002</code>, <code>1003</code>) facilitam a varredura automática.</li>
+                <li>Endpoints administrativos esquecidos na fase de desenho: todo mundo testou o carrinho, ninguém testou <code>/customers</code>.</li>
+            </ul>
+
+            <h4>Como corrigir</h4>
+            <ul>
+                <li>Checar a posse do recurso <b>no servidor</b>, nunca confiar no id que veio do cliente.</li>
+                <li>Responder <b>404</b> (não encontrado) ou <b>403</b> (sem permissão) quando o registro não for seu. Responder 403 para recurso existente ainda confirma a existência dele.</li>
+                <li>UUID ou id aleatório <b>não corrige</b> o IDOR: só desacelera a varredura. A checagem de autorização continua obrigatória.</li>
+                <li>Teste negativo: se eu trocar o id, o servidor tem que recusar. Se responder 200 com o dado alheio, a falha está lá.</li>
+            </ul>
+
+            <div class="destaque-final">
+                <b>Frase para levar:</b> o IDOR é falha de <b>autorização</b> (quem pode ver o quê). O 2FA é mecanismo de <b>autenticação</b> (provar quem você é). Um não substitui o outro, e um não protege o outro.
+            </div>
+        </div>
+
+        <!-- 2FA -->
+        <div class="guide" id="guide2fa" style="display:none;">
+            <h3>🔐 2FA (Two-Factor Authentication)</h3>
+            <p>O 2FA é uma camada extra de segurança usada para garantir que a pessoa que está tentando fazer login é realmente quem ela diz ser.</p>
+
+            <h4>Como funciona na prática</h4>
+            <div class="exemplo">
+                <span class="rotulo">Os dois fatores clássicos</span>
+                <ul>
+                    <li><b>Algo que você sabe:</b> a senha.</li>
+                    <li><b>Algo que você possui:</b> o código enviado por SMS, ou gerado por um aplicativo como Google Authenticator, ou a chave física.</li>
+                </ul>
+                <p>Um fator sozinho é fácil de roubar. Dois fatores exigem as duas coisas ao mesmo tempo: a senha <b>e</b> o dispositivo.</p>
+            </div>
+            <div class="exemplo">
+                <span class="rotulo">Laboratório · Nível 4</span>
+                <p>A sua conta tem 2FA ligado. Ainda assim, a rota de verificação aceitou o código <code>000000</code>:</p>
+                <span class="url-depois">POST /api/v1/auth/2fa/verify {"code":"000000"} &rarr; 200 OK</span>
+            </div>
+
+            <div class="problema">
+                <b>O problema que o 2FA resolve:</b> impede que um invasor acesse a conta só com a senha. <b>E onde ele falha:</b> se a verificação não amarra o código à sessão, não expira rápido e não limita tentativas, ele deixa de ser um segundo fator e vira mais um campo de formulário.
+            </div>
+
+            <h4>O que faz um 2FA realmente forte</h4>
+            <ul>
+                <li><b>Amarração à sessão:</b> o código precisa pertencer à sessão de desafio que acabou de ser iniciada. Sem isso, o código é um valor solto no ar.</li>
+                <li><b>Expiração curta:</b> 30 a 90 segundos. Códigos de SMS podem ficar válidos por minutos e ainda assim dão tempo de sobra.</li>
+                <li><b>Uso único:</b> o mesmo código não vale duas vezes. Reutilização é bug, não detalhe.</li>
+                <li><b>Rate limit:</b> limite por sessão e por conta. Código de 6 dígitos tem 1.000.000 de combinações, mas com 5 tentativas por minuto isso deixa de ser viável.</li>
+                <li><b>Sem fallback frouxo:</b> "não recebi o código, me mande por e-mail" reabre a porta que o 2FA fechou.</li>
+                <li><b>Auditoria:</b> registro de tentativas, de sucesso e de bloqueio.</li>
+            </ul>
+
+            <h4>Como corrigir</h4>
+            <ul>
+                <li>Amarrar o código ao id da sessão de desafio e recusar se a sessão não existir.</li>
+                <li>Expirar, marcar como usado e invalidar tentativas anteriores.</li>
+                <li>Integrar módulo de autenticação multifator em vez de implementar do zero.</li>
+                <li>Cuidar do fluxo de recuperação de conta, que costuma ser mais fraco que o login.</li>
+            </ul>
+
+            <div class="destaque-final">
+                <b>Frase para levar:</b> 2FA protege a <b>porta de entrada</b>. Ele não protege as <b>portas internas</b> da aplicação. Por isso ele convive com IDOR, e não o substitui.
+            </div>
+        </div>
+
+        <!-- Ambos -->
+        <div class="guide" id="guideAmbos" style="display:none;">
+            <h3>🔄 Como o IDOR e o 2FA se relacionam</h3>
+            <p>Embora pareçam distantes (um é falha, o outro é defesa), eles se cruzam o tempo todo em cenários de ataque e defesa.</p>
+
+            <div class="cruzamento">
+                <h4>1. O 2FA não protege contra IDOR</h4>
+                <p>Se a aplicação tem IDOR na API, um atacante <b>autenticado na própria conta</b> (ou seja, passou pelo 2FA dele mesmo, tranquilo) pode só alterar um parâmetro e ler dados de terceiros.</p>
+                <p>O 2FA protege a porta de entrada. O IDOR é uma falha nas portas internas do sistema. Um não anula o outro.</p>
+            </div>
+
+            <div class="cruzamento">
+                <h4>2. IDOR usado para burlar o 2FA</h4>
+                <p>Em alguns casos a falha de IDOR acontece justamente <b>dentro do fluxo de validação do 2FA</b>:</p>
+                <ol class="passos">
+                    <li>Atacante tenta fazer login na conta da vítima e o sistema pede o código de 2FA.</li>
+                    <li>O atacante intercepta a requisição enviada ao servidor.</li>
+                    <li>Ele troca o parâmetro <code>user_id=vítima</code> por <code>user_id=atacante</code>.</li>
+                    <li>O servidor valida o 2FA na conta errada (a do atacante, ou uma conta de teste).</li>
+                    <li>Com a validação feita, a sessão assume o papel da vítima e o atacante acessa a conta alvo.</li>
+                </ol>
+                <p>Ou seja: o segundo fator foi "cumprido", só que sobre o subjects errado. É a mesma raiz do IDOR, aplicada no lugar mais sensível possível.</p>
+            </div>
+
+            <h3>📊 Comparação direta</h3>
+            <table class="cmp-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>🛡️ IDOR</th>
+                        <th>🔐 2FA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Categoria</td>
+                        <td><span class="tag-vuln">Vulnerabilidade</span> de segurança</td>
+                        <td><span class="tag-def">Mecanismo</span> de defesa</td>
+                    </tr>
+                    <tr>
+                        <td>Foco principal</td>
+                        <td>Autorização: quem pode ver o quê</td>
+                        <td>Autenticação: provar quem você é</td>
+                    </tr>
+                    <tr>
+                        <td>Onde atua</td>
+                        <td>No código da aplicação e nas APIs</td>
+                        <td>No momento do login ou de ações críticas</td>
+                    </tr>
+                    <tr>
+                        <td>Escopo</td>
+                        <td>Dados de <b>outras pessoas</b>, expostos por um id trocado</td>
+                        <td>A <b>própria conta</b> do usuário, protegida na entrada</td>
+                    </tr>
+                    <tr>
+                        <td>Como corrigir</td>
+                        <td>Checagem rígida de posse do recurso no servidor (autorização por objeto)</td>
+                        <td>Integrar módulo de autenticação multifator, com amarração à sessão, expiração e rate limit</td>
+                    </tr>
+                    <tr>
+                        <td>Referência</td>
+                        <td>OWASP API1 (BOLA) / API5</td>
+                        <td>OWASP A07 (falha de autenticação)</td>
+                    </tr>
+                    <tr>
+                        <td>Um protege o outro?</td>
+                        <td colspan="2"><b>Não.</b> Precisam ser implementados os dois, porque atacam e defendem pontos diferentes.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="destaque-final">
+                <b>O resumo em uma frase:</b> o 2FA garante que <i>quem logou</i> é quem diz ser; o IDOR garante que <i>o que ele viu</i> era dele. Falhar em qualquer um dos dois já é breach.
+            </div>
+
+            <div class="exemplo">
+                <span class="rotulo">Como isso aparece na Loja Aurora</span>
+                <ul>
+                    <li><b>Nível 2</b> é IDOR puro: você passou pelo seu 2FA normalmente e ainda assim leu o pedido da Marina.</li>
+                    <li><b>Nível 4</b> é 2FA fraco: você entrou sem o código real, porque a verificação não amarrava na sessão.</li>
+                    <li>Juntos, os dois níveis mostram o padrão: <b>autenticação robusta não compensa autorização quebrada</b>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="closeModal('guideModal')">Entendi! ✅</button>
+        </div>
+    </div>
+</div>
+
+<!-- Level Map Modal -->
+<div class="modal-overlay" id="levelMapModal" role="dialog" aria-modal="true" aria-labelledby="levelMapTitle">
+    <div class="modal">
+        <h2 id="levelMapTitle">🗺️ Mapa dos Níveis</h2>
+        <div class="level-map-grid" id="levelMapGrid"></div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('levelMapModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Curation Modal -->
+<div class="modal-overlay" id="curationModal" role="dialog" aria-modal="true" aria-labelledby="curationTitle">
+    <div class="modal" style="max-width:660px;">
+        <h2 id="curationTitle">⚖️ Curadoria e escopo do laboratório</h2>
+        <div class="curation-list">
+            <div class="curation-block ok">
+                <b>Tudo aqui é simulação.</b> A Loja Aurora é fictícia e existe apenas dentro deste arquivo.
+                Nenhuma requisição de rede é feita: o alvo <code>192.168.10.40</code> é um endereço de laboratório
+                que não existe, e todas as respostas são geradas por código local. Nenhum dado real de loja,
+                cliente ou pessoa é usado. Todos os CPFs, telefones, e-mails e tokens são fictícios.
+            </div>
+            <div class="curation-block">
+                <b>Por que este tema?</b> Lojas construídas rápido (low code, plugins de plataforma, contratos com agência)
+                costumam ter falhas de <b>autorização</b> e de <b>gestão de segredos</b>, não de SQL injection.
+                O perfil de falha que você vai praticar (IDOR/BOLA, 2FA não amarrado à sessão, token de
+                administration no JavaScript do navegador, mass assignment) aparece com frequência em
+                e-commerces reais e é o que mais causa vazamento de dado pessoal.
+            </div>
+            <div class="curation-block warn">
+                <b>Regra de ouro do pentest.</b> Só teste o que é seu ou o que você tem autorização por escrito
+                (escopo, janela de teste, contato de emergência). Testar sem autorização é crime no Brasil
+                (Lei 12.737/2012 e Marco Civil da Internet, art. 19-A). "Era só um site pequeno" e
+                "eu só queria mostrar" não são defesa.
+            </div>
+            <div class="curation-block ok">
+                <b>Se você achar uma falha de verdade em algum site:</b> não poste, não compartilhe link público
+                e não use o dado encontrado. Contate a empresa por um canal oficial e siga o processo de
+                <b>divulgação responsável</b> (responsible disclosure): reporte, dê prazo razoável para corrigir
+                (em geral 30 a 90 dias) e só publique depois, sem expor os dados afetados.
+                OBRIGADO por fazer a parte difícil: avisar em vez deumbi ar.
+            </div>
+            <div class="curation-block">
+                <b>Para praticar legally, com alvo planejado para isso:</b>
+                <a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Web Security Academy</a> (gratuito, excellent),
+                <a href="https://owasp.org/www-project-juice-shop/" target="_blank" rel="noopener">OWASP Juice Shop</a> (aplicação vulnerável de propósito),
+                <a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/" target="_blank" rel="noopener">OWASP API Security Top 10</a> e
+                <a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener">OWASP Cheat Sheet Series</a> para as correções.
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="closeModal('curationModal')">Entendi, vou fazer direito ✅</button>
+        </div>
+    </div>
+</div>
+
+<!-- Quiz Modal -->
+<div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="modal" style="position:relative;">
+        <button class="rb-close" onclick="closeModal('quizModal')" aria-label="Fechar prova final" title="Fechar">✕</button>
+        <h2 id="quizTitle">📝 Prova Final</h2>
+        <p id="quizQuestion"></p>
+        <div id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="modal-footer" id="quizFooter">
+            <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()">Próxima Pergunta</button>
+        </div>
+    </div>
+</div>
+
+<!-- Report Modal -->
+<div class="modal-overlay" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+    <div class="modal" style="max-width:760px; text-align:left;">
+        <button class="rb-close" onclick="closeModal('reportModal')" aria-label="Fechar laudo" title="Fechar">✕</button>
+        <h2 id="reportTitle">📄 Laudo de Pentest (CVSS + OWASP)</h2>
+        <p style="margin-bottom:12px;">Documento gerado a partir dos testes que você executou no laboratório. Em um pentest real, este é o entregável que vai para o responsável.</p>
+        <pre id="reportContent" style="background:#0d0d0d; color:#d2fff0; border-radius:10px; padding:16px; overflow-x:auto; max-height:46vh; overflow-y:auto; font-family:'Courier New',monospace; font-size:0.8em; line-height:1.45; white-space:pre-wrap; word-break:break-word; text-align:left;"></pre>
+        <div class="scope-box" style="margin-bottom:0;">
+            ⚖️ <b>Regra do laboratório:</b> laudo serve para <b>consertar</b>, não para expor. Nunca publique dado
+            pessoal encontrado e nunca use um achado para Demonstrate capacidade.
+        </div>
+        <div class="modal-footer" style="justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="closeModal('reportModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal">
+        <h2 id="confirmTitle">Tem certeza?</h2>
+        <p id="confirmText">Esta ação não pode ser desfeita.</p>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="closeModal('confirmModal')">Cancelar</button>
+            <button class="btn btn-danger" id="confirmOkBtn">Sim, continuar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal -->
+<div class="modal-overlay active" id="welcomeModal">
+    <div class="modal welcome-modal">
+        <h2><svg class="shield shield-m" viewBox="0 0 64 64" width="38" height="38" aria-hidden="true">
+                <defs>
+                    <linearGradient id="sfGradM" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff2d55"/>
+                        <stop offset="0.5" stop-color="#7b2ff7"/>
+                        <stop offset="1" stop-color="#00d4ff"/>
+                    </linearGradient>
+                </defs>
+                <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradM)" stroke="#ffffff" stroke-width="3"/>
+                <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+            </svg>
+            <span class="welcome-white">Bem-Vindo à SF Cyber</span><br>
+            <span class="welcome-grad">Academia CiberSegurança e Redes</span>
+        </h2>
+        <p>Assuma o papel de um Analista de Segurança de Aplicações e teste a API da loja fictícia
+           <b>Loja Aurora</b> (http://192.168.10.40/aurora) como em um pentest autorizado: autorização quebrada,
+           segundo fator, segredo no front-end e escalonamento de privilégio.</p>
+        <div class="scope-box">
+            ⚖️ <b>Antes de começar:</b> a Loja Aurora é uma simulação local, sem nenhuma conexão real.
+            Todos os dados são fictícios. Este laboratório existe para treinar a técnica e a
+            <b>postura ética</b> do pentest. Leia a aba <b>Curadoria e escopo</b> a qualquer momento.
+        </div>
+        <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
+                   maxlength="42" autocomplete="off"
+                   style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
+                          background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+        </div>
+        <div class="features">
+            <div class="feature-item"><div class="icon">1</div><span>Mapear uma <b>API REST</b> de e-commerce</span></div>
+            <div class="feature-item"><div class="icon">2</div><span>Encontrar <b>IDOR</b> em detalhe de pedido</span></div>
+            <div class="feature-item"><div class="icon">3</div><span>Medir o <b>vazamento em massa</b> de clientes</span></div>
+            <div class="feature-item"><div class="icon">4</div><span>Contornar o <b>segundo fator (2FA)</b></span></div>
+            <div class="feature-item"><div class="icon">5</div><span>Extrair <b>segredo de administração</b> do front-end</span></div>
+            <div class="feature-item"><div class="icon">6</div><span>Escalar privilégio por <b>mass assignment</b></span></div>
+            <div class="feature-item"><div class="icon">7</div><span>Escrever o <b>laudo</b> com CVSS e OWASP</span></div>
+            <div class="feature-item"><div class="icon">8</div><span>Corrigir a aplicação e <b>entregar o relatório</b></span></div>
+        </div>
+        <p style="font-size:0.9em; color:#888;">Use o terminal com comandos reais de segurança de aplicações.</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="closeWelcome()" id="welcomeBtn" style="font-size:1.1em; padding: 15px 40px;">
+                🧩 Começar!
+            </button>
+            <button class="btn btn-ghost" id="resumeBtn" style="display:none; font-size:1.1em; padding: 15px 30px;" onclick="resumeGame()">
+                ⏩ Continuar
+            </button>
+        </div>
+        <div style="margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.08);">
+            <a href="https://projetosdisruptivos.com.br/" target="_blank" rel="noopener"
+               style="color:#106ebe; text-decoration:none; font-size:0.85em; letter-spacing:0.5px; transition:color 0.3s ease;">
+                👨‍💻 Developed by <b>SF</b> · Projetos Disruptivos
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <h2 id="successTitle">🎉 Nível Completo!</h2>
+        <p id="successMsg">Parabéns! Você completou o nível!</p>
+        <div class="score" id="successScore">+50 pontos</div>
+        <button class="btn btn-success" id="btnSuccessPrimary" onclick="nextLevel()" style="font-size:1.1em; padding: 15px 40px;">
+            Próximo Nível →
+        </button>
+    </div>
+</div>
+
+<!-- Game Complete Modal -->
+<div class="modal-overlay" id="gameCompleteModal">
+    <div class="modal">
+        <h2>🏆 Missão Cumprida!</h2>
+        <p>Parabéns! Você auditou a Loja Aurora por completo, achou as falhas de autorização, segredo e privilégio, e entregou a correção.</p>
+        <div class="score" id="finalScore">Pontuação Final: 0</div>
+        <p style="color:#888;">Você agora sabe:</p>
+        <div style="text-align:left; color:#4a4a4a; margin: 15px 0;">
+            ✓ Mapear a superfície de uma API REST<br>
+            ✓ Reconhecer IDOR/BOLA e medir o vazamento de dados<br>
+            ✓ Entender por que 2FA sem amarração à sessão não protege nada<br>
+            ✓ Perceber que segredo no front-end é segredo público<br>
+            ✓ Reconhecer mass assignment como caminho de escalonamento<br>
+            ✓ Escrever laudo com CVSS e referência OWASP<br>
+            ✓ Corrigir autorização, 2FA, segredos e validação de entrada
+        </div>
+        <div class="scope-box">
+            ⚖️ <b>Lembrete de postura:</b> se algum dia um desses testes aparecer em um site que não é seu,
+            pare e reporte ao responsável. <b>Achou, avisa. Não achou, não publica.</b>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="openCuration()">⚖️ Curadoria</button>
+            <button class="btn btn-success" id="btnGameCert" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
+                🎓 Ver Certificado
+            </button>
+            <button class="btn btn-warning" onclick="openQuiz()" style="font-size:1.05em; padding: 15px 30px;">
+                📝 Refazer Prova
+            </button>
+            <button class="btn btn-primary" onclick="resetGame()" style="font-size:1.1em; padding: 15px 40px;">
+                🔄 Jogar Novamente
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Certificate Modal -->
+<div class="modal-overlay" id="certificateModal">
+    <div class="modal" style="max-width:720px; text-align:center;">
+        <div id="certificatePrint" style="text-align:center;">
+            <div style="border:4px double rgba(255,215,0,0.7); border-radius:16px; padding:34px 24px; background:linear-gradient(180deg,#1a1a2e 0%,#0f0f23 100%);">
+                <svg class="shield" viewBox="0 0 64 64" width="86" height="86" style="display:block; margin:0 auto 14px;" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="sfGradCert" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ff2d55"/>
+                            <stop offset="0.5" stop-color="#7b2ff7"/>
+                            <stop offset="1" stop-color="#00d4ff"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M32 4 L56 12 V30 C56 46 45 57 32 62 C19 57 8 46 8 30 V12 Z" fill="url(#sfGradCert)" stroke="#ffd700" stroke-width="3"/>
+                    <text x="32" y="41" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">SF</text>
+                </svg>
+                <div style="font-size:0.9em; letter-spacing:6px; color:#ffd700; text-transform:uppercase;">SF Cyber Academy</div>
+                <div style="font-size:1.05em; color:#00d4ff; margin-top:4px;">CiberSegurança e Redes</div>
+                <div style="width:120px; height:3px; margin:18px auto; background:linear-gradient(90deg,#ff2d55,#7b2ff7,#00d4ff); border-radius:2px;"></div>
+                <h2 style="font-family:Georgia, 'Times New Roman', serif; color:#fff; font-size:1.9em; margin:6px 0 2px; text-align:center;">CERTIFICADO DE CONCLUSÃO</h2>
+                <p style="color:#bbb; font-size:0.95em; margin-top:14px;">Este certificado é concedido a</p>
+                <div style="font-family:Georgia, 'Times New Roman', serif; font-size:2em; color:#ffd700; margin:14px 0; font-weight:bold; word-break:break-word;" id="certStudentName">Aluno(a)</div>
+                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o laboratório prático</p>
+                <div style="font-size:1.15em; color:#00d4ff; font-weight:bold; margin:10px 0;">Pentest em E-commerce (API | IDOR | 2FA | Segredos)</div>
+                <p style="color:#bbb; font-size:0.9em; margin-top:6px;">Simulador Interativo de Pentest em E-commerce 8 níveis + prova final</p>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:34px; text-align:center; gap:16px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certScore" style="font-size:1.3em; color:#fff; font-weight:bold;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">PONTUAÇÃO FINAL</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div style="font-family:Georgia, 'Times New Roman', serif; font-style:italic; color:#fff; font-size:1em;">SF Cyber</div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVAÇÃO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content:center;">
+            <button class="btn btn-primary" onclick="downloadCertificate()">⬇️ Baixar Certificado</button>
+            <button class="btn btn-ghost" onclick="closeModal('certificateModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===================== ESTADO =====================
+const term = document.getElementById('terminalBody');
+const input = document.getElementById('terminalInput');
+
+const state = {
+    currentLevel: 0,
+    score: 0,
+    attempts: 0,
+    studentName: '',
+    quizDone: false,
+    quizApproved: false,
+    scorePaid: new Set(),
+    api: {
+        apiMapped: false,
+        idorConfirmed: false,
+        bulkExfil: false,
+        twofaBypass: false,
+        adminTokenFound: false,
+        adminPanelAcess: false,
+        privesc: false,
+        privescVerified: false,
+        patchAuthz: false,
+        patch2fa: false,
+        patchSecrets: false,
+        patchValidation: false,
+        reportGenerated: false,
+    },
+    levelDone: {},
+    commandHistory: [],
+    historyIndex: -1,
+};
+
+// ===================== LEVELS =====================
+const HOST = 'http://192.168.10.40/aurora';
+const API = HOST + '/api/v1';
+const ADMIN_TOKEN = 'lja_live_adm_7f2c91e4b8d6035a';
+const SESSION_TOKEN = 'sfk_sess_91c7f0a2bb3e4d17';
+
+const levels = [
+    {
+        id: 1,
+        title: "Nível 1: Reconhecimento da API",
+        desc: "Você é o Analista de Segurança de Aplicações. A Loja Aurora foi construída do zero e responde em " + HOST + ". Sua sessão de cliente comum já está autenticada. Mapeie a API para entender quais endpoints existem e quais respondem a um usuário normal.",
+        hint: "💡 Dica: use <code>curl " + API + "</code> para ver o índice de endpoints.",
+        check: () => state.api.apiMapped,
+        successMsg: "API mapeada: /products, /orders, /me, /customers, /auth/2fa/verify e /admin. Repare que /admin aparece no índice público, sem nenhum aviso de que exige privilégio.",
+    },
+    {
+        id: 2,
+        title: "Nível 2: IDOR no detalhe do pedido",
+        desc: "O seu pedido é o #1001. A rota /orders/{id} recebe o identificador do pedido na URL e devolve o pedido inteiro. Troque o número e observe se a API confere a autoria do registro antes de responder.",
+        hint: "💡 Dica: <code>curl \"" + API + "/orders/1002\"</code>",
+        check: () => state.api.idorConfirmed,
+        successMsg: "IDOR confirmado: o pedido #1002 pertence à cliente Marina Alves e a API devolveu o CPF, o telefone e o endereço dela. A rota confia no id da URL e não pergunta de quem é o pedido (falta checagem de autorização por objeto, o BOLA).",
+    },
+    {
+        id: 3,
+        title: "Nível 3: Enumeração em massa de clientes",
+        desc: "Um IDOR em um pedido expõe um registro. Meça o alcance real do problema: a rota /customers ignora completamente a sessão e devolve a base inteira em uma requisição.",
+        hint: "💡 Dica: <code>curl \"" + API + "/customers?limit=200\"</code>",
+        check: () => state.api.bulkExfil,
+        successMsg: "1.284 clientes expostos de uma vez: nome, CPF, telefone, e-mail e endereço completo. Não é uma falha de um endpoint, é um problema de desenho da API inteira.",
+    },
+    {
+        id: 4,
+        title: "Nível 4: Bypass do segundo fator (2FA)",
+        desc: "Sua conta tem 2FA ligado, então um login normal exige senha e código. A rota /auth/2fa/verify recebe user e code, mas o código não é amarrado à sessão e não tem limite de tentativas. Tente validar com um código trivial.",
+        hint: "💡 Dica: <code>curl -X POST -d \"user=lucas.pereira@email.com&code=000000\" " + API + "/auth/2fa/verify</code>",
+        check: () => state.api.twofaBypass,
+        successMsg: "Sessão administrativa aberta com o código 000000. Segundo fator que não amarra o código à sessão, não expira rápido e não tem rate limit é apenas um campo de formulário a mais.",
+    },
+    {
+        id: 5,
+        title: "Nível 5: Segredo de administração no front-end",
+        desc: "A loja tem painel administrativo e ele usa um token de serviço para falar com a API. Token de serviço nunca pode viver no navegador. Baixe o bundle do front-end e procure por credencial exposta.",
+        hint: "💡 Dica: <code>curl " + HOST + "/assets/app.js</code>",
+        check: () => state.api.adminTokenFound,
+        successMsg: "Token de serviço em texto puro dentro do JavaScript que qualquer visitante da loja baixa antes de ver o primeiro produto. O que está no cliente é público: segredo no front-end é segredo perdido.",
+    },
+    {
+        id: 6,
+        title: "Nível 6: Painel administrativo com o token vazado",
+        desc: "Use o token encontrado no header Authorization para chamar a área restrita. Ela deveria exigir uma sessão administrativa emitida pelo servidor, e não um token que o próprio front-end distribuía.",
+        hint: "💡 Dica: <code>curl -H \"Authorization: Bearer " + ADMIN_TOKEN + "\" " + API + "/admin/orders</code>",
+        check: () => state.api.adminPanelAcess,
+        successMsg: "Painel administrativo aberto com um token que estava no código do navegador: todos os pedidos e todos os clientes da loja, sem limite e sem registro de quem pediu.",
+    },
+    {
+        id: 7,
+        title: "Nível 7: Escalonamento de privilégio (mass assignment)",
+        desc: "O token do painel já te deu tudo. Teste o outro caminho, o mais subestimado: a sua conta comum. O endpoint /me aceita PATCH e a API aplica todos os campos enviados, sem filtrar o que o cliente pode mexer. Depois prove o resultado em /admin/settings.",
+        hint: "💡 Dica: <code>curl -X PATCH -d \"role=admin\" " + API + "/me</code> e depois <code>curl \"" + API + "/admin/settings\"</code>",
+        check: () => state.api.privesc && state.api.privescVerified,
+        successMsg: "A sua conta comum virou admin sem token nenhum, só pedindo um campo a mais no corpo da requisição. Mass assignment é o caminho mais subestimado de escalonamento em API.",
+    },
+    {
+        id: 8,
+        title: "Nível 8: Corrigir a aplicação",
+        desc: "Agora conserte a Loja Aurora e feche as quatro portas: (1) autorização por objeto checada no servidor, (2) 2FA amarrado à sessão com rate limit, (3) rotação do segredo e remoção do front-end, (4) validação de campos no PATCH /me.",
+        hint: "💡 Dica: <code>patch aurora --object-authorization</code>, <code>--bind-2fa-session</code>, <code>--rotate-secrets</code> e <code>--validate-mass-assignment</code>",
+        check: () => state.api.patchAuthz && state.api.patch2fa && state.api.patchSecrets && state.api.patchValidation,
+        successMsg: "🏆 Missão cumprida! IDOR, 2FA, segredo exposto e mass assignment corrigidos. Feche com o laudo: report aurora",
+    },
+];
+
+const theoryLevels = {
+    1: [
+        { icon: "🗺️", title: "Reconhecimento de API", desc: "Todo teste começa pelo inventário: quais rotas existem, quais exigem autenticação e quais deviam ser restritas. Índice de rota exposto é ouro para o atacante." },
+        { icon: "🔑", title: "Sessão vs token de serviço", desc: "Sessão de usuário (<code>sfk_sess_...</code>) identifica a pessoa. Token de serviço (<code>sfk_live_...</code>) identifica a aplicação e tem poder alto: nunca vai para o cliente." },
+    ],
+    2: [
+        { icon: "🆔", title: "IDOR (IDOR na API)", desc: "Referência direta a objeto insegura: a API confia no identificador que veio na URL e não verifica se o registro pertence a quem pergunta. Em API REST é chamada de <b>BOLA</b> (OWASP API1)." },
+        { icon: "🔒", title: "Autorização por objeto", desc: "A correção é o servidor decidir: <code>WHERE id = ? AND customer_id = sessao.usuario_id</code>. Esconder o id ou UUID não corrige nada, só desacelera." },
+    ],
+    3: [
+        { icon: "📉", title: "Medir o alcance", desc: "Um registro vazado é incidente. Uma base inteira em uma requisição é breach. Pentest não para no primeiro <code>200 OK</code>, mede o volume afetado." },
+        { icon: "🧾", title: "Dado pessoal é LGPD", desc: "CPF, endereço e telefone são dado pessoal. Expor a base é incidente de segurança e de proteção de dados, com obrigação de comunicação à ANPD e aos titulares." },
+    ],
+    4: [
+        { icon: "🚪", title: "2FA sem amarração", desc: "Se o endpoint de verificação não exige o identificador da sessão challenge já iniciada, o código deixa de ser do segundo fator e vira só um valor adivinhável." },
+        { icon: "🐌", title: "Rate limit e expiração", desc: "Código de 6 dígitos tem um milhão de combinações. Com rate limit, lockout e expiração curta, o ataque forçado deixa de ser viável. Sem isso, é só tempo." },
+    ],
+    5: [
+        { icon: "📦", title: "Bundle do front-end", desc: "Todo JavaScript enviado ao navegador é legível pelo usuário. Chaves, senhas e tokens no bundle são públicos no mesmo sentido que um outdoor." },
+        { icon: "🚧", title: "Onde o segredo deve viver", desc: "Segredo no servidor, em variável de ambiente ou cofre de segredos, nunca no código que sai. O front-end recebe permissões, não credenciais." },
+    ],
+    6: [
+        { icon: "🛡️", title: "Falha de configuração (OWASP A05)", desc: "Endpoint administrativo protegido só por um bearer token estático é uma única linha de defesa. Se ela vaza, não existe segunda camada." },
+        { icon: "🧾", title: "Token escopado e rotativo", desc: "Token de serviço precisa ser de escopo mínimo, curto prazo, rotativo e revogável, além de deixar rastro de auditoria de quem chamou." },
+    ],
+    7: [
+        { icon: "🧬", title: "Mass assignment", desc: "A API copia todos os campos enviados para o modelo. Se <code>role</code> estiver no mesmo objeto do nome, o cliente escolhe o próprio nível de permissão (OWASP API8 / A08)." },
+        { icon: "📃", title: "Allowlist de campos", desc: "A correção é lista explícita do que cada endpoint aceita, com validação de tipo e faixa. Campo desconhecido é rejeitado, nunca ignorado em silêncio." },
+    ],
+    8: [
+        { icon: "✅", title: "Autorização no servidor", desc: "Toda rota que recebe identificador valida a posse do recurso. Teste negative: se eu troco o id, o servidor tem que dizer 403 ou 404, nunca devolver o dado." },
+        { icon: "⏱️", title: "2FA transacional", desc: "Código amarrado ao id da sessão, com expiração curta, uso único e limite de tentativas. Reutilização de código precisa falhar." },
+        { icon: "🔄", title: "Rotação de segredo", desc: "Exposição invalida o credencial. Rotacionar sem avisar é tratar a próxima coleta como se já fosse o próximo incidente." },
+        { icon: "🧹", title: "Limpar e monitorar", desc: "Remover segredo do front-end, invalidar sessões antigas, varrer logs em busca de uso anômalo e monitorar os endpoints corrigidos." },
+    ],
+};
+
+// ===================== QUIZ =====================
+const quizQuestions = [
+    {
+        q: "O que é IDOR (chamado de BOLA quando acontece em API REST)?",
+        options: [
+            "Servidor fora do ar respondendo 503",
+            "API devolver um registro alterando só o identificador na URL, sem conferir de quem é",
+            "Ataque que derruba o banco de dados",
+            "Erro de JavaScript no navegador",
+        ],
+        correct: 1,
+        explain: "IDOR/BOLA acontece quando a API confia no id enviado pelo cliente e não verifica a posse do recurso. Trocar o id entrega o dado de outra pessoa.",
+    },
+    {
+        q: "Qual é a correção correta para o IDOR no detalhe do pedido?",
+        options: [
+            "Esconder o id da URL e usar um número sequencial mais alto",
+            "Bloquear a rota /orders para usuários comuns",
+            "Filtrar a consulta no servidor pelo dono do recurso (customer_id da sessão)",
+            "Exigir que o usuário confirme o CPF antes de abrir o pedido",
+        ],
+        correct: 2,
+        explain: "A decisão tem que ser do servidor: a consulta já filtra pela posse do registro. Esconder id, bloquear rota ou pedir CPF não resolvem a falha de autorização.",
+    },
+    {
+        q: "Por que um token de serviço (sfk_live_...) não pode ficar no JavaScript do front-end?",
+        options: [
+            "Porque o bundle fica lento para carregar",
+            "Porque quebra o build da aplicação",
+            "Porque todo código enviado ao navegador é público e pode ser lido por qualquer visitante",
+            "Porque o navegador não aceita token com prefixo específico",
+        ],
+        correct: 2,
+        explain: "O que vai para o navegador é legível pelo usuário. Credencial no bundle equivale a credencial publicada.",
+    },
+    {
+        q: "O que torna um 2FA efetivamente um segundo fator?",
+        options: [
+            "Ter um campo de código no formulário de login",
+            "O código ser amarrado à sessão já iniciada, com expiração curta, uso único e limite de tentativas",
+            "Enviar o código por e-mail em vez de SMS",
+            "Pedir o código duas vezes",
+        ],
+        correct: 1,
+        explain: "Sem amarração à sessão, o código é só um valor adivinhável e reutilizável. Com expiração e rate limit, o ataque forçado deixa de ser viável.",
+    },
+    {
+        q: "O que é mass assignment e por que causa escalonamento de privilégio?",
+        options: [
+            "É o envio de um arquivo muito grande, que derruba o servidor",
+            "É a API aplicar todos os campos enviados pelo cliente, permitindo que ele mesmo envie role=admin",
+            "É um tipo de compressão usado no corpo da requisição",
+            "É o ataque que altera o preço de um item no carrinho",
+        ],
+        correct: 1,
+        explain: "Se a API copia todos os campos sem filtrar, o cliente escolhe o próprio nível de permissão. A correção é allowlist de campos por endpoint.",
+    },
+    {
+        q: "Ao encontrar uma falha em um site que não é seu, o que fazer?",
+        options: [
+            "Publicar o link com os dados para ganhar visualização",
+            "Usar os dados encontrados para fins de teste e depois apagar",
+            "Reportar ao responsável por canal oficial, dar prazo razoável e só publicar depois, sem expor os dados",
+            "Testar mais um pouco para ver o tamanho do estrago",
+        ],
+        correct: 2,
+        explain: "Isso é divulgação responsável. Sem autorização, testar é crime (Lei 12.737/2012). Com dados reais, o dever é avisar, proteger e não expor.",
+    },
+    {
+        q: "Qual item pertence à categoria de API do OWASP API Security Top 10?",
+        options: [
+            "Exposição de segredo de serviço no bundle do front-end",
+            "Uso de cookies sem HttpOnly",
+            "Ausência de cabeçalho HSTS",
+            "Erro de SSL no formulário",
+        ],
+        correct: 0,
+        explain: "Exposição de segredo de front-end está em API8 (Security Misconfiguration) no API Security Top 10, junto com endpoint administrativo mal protegido.",
+    },
+    {
+        q: "Um laudo de pentest profissional precisa trazer, no mínimo:",
+        options: [
+            "Print do perfil do.linkedin do responsável",
+            "Descrição da falha, evidência, impacto, classificação (CVSS) e recomendação de correção",
+            "O código completo do banco de dados",
+            "Uma estimativa de quanto o atacante ganhou",
+        ],
+        correct: 1,
+        explain: "Relatório precisa ser reproduzível e acionável: o que é, como reproduzir, o que causa, o quão grave é (CVSS) e o que corrigir.",
+    },
+];
+
+// ===================== SF Bot =====================
+const ROBOT_NAME = 'SF Bot';
+const robotBubble = document.getElementById('robotBubble');
+const robotTitleEl = document.getElementById('robotTitle');
+const robotTextEl = document.getElementById('robotText');
+let robotStepKey = '';
+let robotTimer = null;
+
+function setRobotBubble(title, text) {
+    robotTitleEl.textContent = title;
+    robotTextEl.innerHTML = text;
+    robotBubble.classList.add('visible');
+    robotBubble.style.animation = 'none';
+    void robotBubble.offsetWidth;
+    robotBubble.style.animation = '';
+}
+
+function getRobotStep(lvl) {
+    const w = state.api;
+    switch (lvl) {
+        case 0:
+            if (!w.apiMapped) return [ROBOT_NAME + ' 🗺️', 'Mapeie a API: <b>curl ' + API + '</b>'];
+            return [ROBOT_NAME + ' 🎉', 'API mapeada! Toque em <b>Próximo Nível</b>.'];
+        case 1:
+            if (!w.idorConfirmed) return [ROBOT_NAME + ' 🆔', 'O seu pedido é o #1001. Troque o número: <b>curl "' + API + '/orders/1002"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'IDOR confirmado! Toque em <b>Próximo Nível</b>.'];
+        case 2:
+            if (!w.bulkExfil) return [ROBOT_NAME + ' 📉', 'Meça o alcance: <b>curl "' + API + '/customers?limit=200"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Base inteira exposta! Toque em <b>Próximo Nível</b>.'];
+        case 3:
+            if (!w.twofaBypass) return [ROBOT_NAME + ' 🚪', 'Contorne o segundo fator: <b>curl -X POST -d "user=lucas.pereira@email.com&amp;code=000000" ' + API + '/auth/2fa/verify</b>'];
+            return [ROBOT_NAME + ' 🎉', '2FA contornado! Toque em <b>Próximo Nível</b>.'];
+        case 4:
+            if (!w.adminTokenFound) return [ROBOT_NAME + ' 📦', 'Baixe o bundle: <b>curl ' + HOST + '/assets/app.js</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Segredo encontrado! Toque em <b>Próximo Nível</b>.'];
+        case 5:
+            if (!w.adminPanelAcess) return [ROBOT_NAME + ' 🛡️', 'Use o token: <b>curl -H "Authorization: Bearer ' + ADMIN_TOKEN + '" ' + API + '/admin/orders</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Painel aberto! Toque em <b>Próximo Nível</b>.'];
+        case 6:
+            if (!w.privesc) return [ROBOT_NAME + ' 🧬', 'Escale sem token: <b>curl -X PATCH -d "role=admin" ' + API + '/me</b>'];
+            if (!w.privescVerified) return [ROBOT_NAME + ' 🧾', 'Agora prove: <b>curl "' + API + '/admin/settings"</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Escalonamento confirmado! Toque em <b>Próximo Nível</b>.'];
+        case 7:
+            if (!w.patchAuthz) return [ROBOT_NAME + ' ✅', 'Autorização por objeto: <b>patch aurora --object-authorization</b>'];
+            if (!w.patch2fa) return [ROBOT_NAME + ' ⏱️', '2FA transacional: <b>patch aurora --bind-2fa-session</b>'];
+            if (!w.patchSecrets) return [ROBOT_NAME + ' 🔄', 'Rotacionar segredo: <b>patch aurora --rotate-secrets</b>'];
+            if (!w.patchValidation) return [ROBOT_NAME + ' 📃', 'Allowlist de campos: <b>patch aurora --validate-mass-assignment</b>'];
+            return [ROBOT_NAME + ' 🏆', 'Aplicação protegida! Feche com <b>report aurora</b> e toque em <b>Próximo Nível</b>.'];
+    }
+    return [ROBOT_NAME + ' 🤖', 'Boa sorte nesta etapa!'];
+}
+
+function updateRobot() {
+    if (!robotBubble) return;
+    const lvl = state.currentLevel;
+    const complete = levels[lvl].check();
+    let title, text;
+    if (complete) {
+        if (lvl >= levels.length - 1) {
+            title = '🏆 ' + ROBOT_NAME;
+            text = 'Loja Aurora protegida. Gere o laudo com <b>report aurora</b> e toque em <b>Próximo Nível</b> para a prova final!';
+        } else {
+            title = '🎉 ' + ROBOT_NAME + ' Nível ' + (lvl + 1) + ' completo!';
+            text = 'Próxima etapa: toque em <b>Próximo Nível</b> →';
+        }
+    } else {
+        const g = getRobotStep(lvl);
+        title = g[0];
+        text = g[1];
+    }
+    const key = lvl + '|' + complete + '|' + title + text;
+    if (key !== robotStepKey) {
+        robotStepKey = key;
+        setRobotBubble(title, text);
+    }
+}
+
+function scheduleUpdateRobot() {
+    clearTimeout(robotTimer);
+    robotTimer = setTimeout(updateRobot, 80);
+}
+
+function closeRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.add('hidden');
+    if (reopen) reopen.classList.add('show');
+}
+
+function openRobot() {
+    const robot = document.getElementById('robot');
+    const reopen = document.getElementById('robotReopenBtn');
+    if (robot) robot.classList.remove('hidden');
+    if (reopen) reopen.classList.remove('show');
+    setTimeout(updateRobot, 50);
+}
+
+function robotIntro(greeting) {
+    robotStepKey = '';
+    setRobotBubble(
+        ROBOT_NAME + (greeting ? ' ' + greeting : ' 🤖 Olá!'),
+        greeting === 'De volta!'
+            ? 'Seu progresso foi salvo. Bora continuar a auditoria na Loja Aurora.'
+            : 'Vou te guiar etapa por etapa. Sua missão: <b>auditar a API da Loja Aurora</b> como um pentest autorizado. <br><br>Antes de tudo: a loja aqui é <b>simulação</b>, nenhum dado é real e nenhum site é atacável. Toque em <b>Iniciar Etapa</b>.'
+    );
+    document.getElementById('robotContinueBtn').style.display = 'inline-block';
+    document.getElementById('robotContinueBtn').textContent = '▶ Iniciar Etapa';
+}
+
+function robotContinue() {
+    document.getElementById('robotContinueBtn').style.display = 'none';
+    input.focus();
+}
+
+// ===================== TERMINAL =====================
+function addOutput(text, cls = '') {
+    const div = document.createElement('div');
+    div.className = 'output console-line ' + cls;
+    div.textContent = text;
+    term.insertBefore(div, input.parentNode);
+    term.scrollTop = term.scrollHeight;
+}
+
+function echo(text) {
+    addOutput(text, 'user');
+}
+
+function submitCmd() {
+    const raw = input.value.trim();
+    if (raw) {
+        echo('analista-api@lab:~$ ' + raw);
+        state.attempts++;
+        updateStats();
+        state.commandHistory.push(raw);
+        state.historyIndex = state.commandHistory.length;
+        handleCommand(raw);
+    } else {
+        echo('');
+    }
+    scheduleUpdateRobot();
+    input.value = '';
+    hideAutocomplete();
+    save();
+}
+
+function navHistory(dir) {
+    const h = state.commandHistory;
+    if (!h.length) return;
+    state.historyIndex += dir;
+    if (state.historyIndex < 0) state.historyIndex = 0;
+    if (state.historyIndex > h.length) state.historyIndex = h.length;
+    input.value = state.historyIndex === h.length ? '' : h[state.historyIndex];
+}
+
+const SUGGESTIONS = [
+    'clear',
+    'ajuda',
+    'curl ' + API,
+    'curl "' + API + '/orders/1001"',
+    'curl "' + API + '/orders/1002"',
+    'curl "' + API + '/customers?limit=200"',
+    'curl -X POST -d "user=lucas.pereira@email.com&code=000000" ' + API + '/auth/2fa/verify',
+    'curl ' + HOST + '/assets/app.js',
+    'curl -H "Authorization: Bearer ' + ADMIN_TOKEN + '" ' + API + '/admin/orders',
+    'curl -X PATCH -d "role=admin" ' + API + '/me',
+    'curl "' + API + '/admin/settings"',
+    'report aurora',
+    'patch aurora --object-authorization',
+    'patch aurora --bind-2fa-session',
+    'patch aurora --rotate-secrets',
+    'patch aurora --validate-mass-assignment',
+];
+
+function showAutocomplete() {
+    const val = input.value.toLowerCase();
+    if (!val) { hideAutocomplete(); return; }
+    const matches = SUGGESTIONS.filter(s => s.toLowerCase().startsWith(val)).slice(0, 6);
+    const box = document.getElementById('autocomplete');
+    if (!matches.length) { hideAutocomplete(); return; }
+    box.innerHTML = '';
+    matches.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'ac-item';
+        div.textContent = m;
+        div.onclick = () => { input.value = m; input.focus(); hideAutocomplete(); };
+        box.appendChild(div);
+    });
+    box.style.display = 'block';
+}
+
+function hideAutocomplete() { document.getElementById('autocomplete').style.display = 'none'; }
+input.addEventListener('input', showAutocomplete);
+
+function autocomplete() {
+    const val = input.value.toLowerCase();
+    const match = SUGGESTIONS.find(s => s.toLowerCase().startsWith(val));
+    if (match) { input.value = match; showAutocomplete(); }
+}
+
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); submitCmd(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); navHistory(-1); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); navHistory(1); }
+    else if (e.key === 'Tab') { e.preventDefault(); autocomplete(); }
+    else if (e.key === 'Escape') { hideAutocomplete(); }
+});
+
+// ===================== COMMAND HANDLER =====================
+const LEVEL_TRIGGERS = [
+    ['curl ' + API],
+    ['curl ' + API + '/orders/1002'],
+    ['curl ' + API + '/customers?limit=200'],
+    ['curl -x post -d user=lucas.pereira@email.com&code=000000 ' + API + '/auth/2fa/verify'],
+    ['curl ' + HOST + '/assets/app.js'],
+    ['curl -h authorization: bearer ' + ADMIN_TOKEN + ' ' + API + '/admin/orders'],
+    ['curl -x patch -d role=admin ' + API + '/me', 'curl ' + API + '/admin/settings'],
+    ['patch aurora --object-authorization', 'patch aurora --bind-2fa-session', 'patch aurora --rotate-secrets', 'patch aurora --validate-mass-assignment'],
+];
+
+const LEVEL_SEC_FLAGS = [
+    ['apiMapped'],
+    ['idorConfirmed'],
+    ['bulkExfil'],
+    ['twofaBypass'],
+    ['adminTokenFound'],
+    ['adminPanelAcess'],
+    ['privesc', 'privescVerified'],
+    ['patchAuthz', 'patch2fa', 'patchSecrets', 'patchValidation'],
+];
+
+function normalizeTrig(s) {
+    return s.trim().toLowerCase().replace(/["']/g, '').replace(/\s+/g, ' ');
+}
+
+function commandWasTrigger(raw, lvlIdx) {
+    const norm = normalizeTrig(raw || '');
+    if (!norm) return false;
+    return (LEVEL_TRIGGERS[lvlIdx] || []).some(t => normalizeTrig(t) === norm);
+}
+
+function handleCommand(raw) {
+    const parts = raw.trim().split(/\s+/);
+    if (parts[0] && parts[0].toLowerCase() === 'sudo' && parts.length > 1) parts.shift();
+    const cmd = (parts[0] || '').toLowerCase();
+    const args = parts.slice(1);
+
+    switch (cmd) {
+        case 'help':
+        case 'ajuda':
+            SUGGESTIONS.forEach(s => addOutput(s, 'info'));
+            return;
+        case 'clear':
+        case 'cls': {
+            const keep = input.parentNode;
+            term.querySelectorAll('.output').forEach(o => o.remove());
+            term.insertBefore(keep, term.firstChild);
+            return;
+        }
+        case 'whoami':
+            addOutput('analista-api (laboratório SF Cyber) · escopo: Loja Aurora (simulado)', 'success');
+            return;
+        case 'echo':
+            addOutput(args.join(' ') || '', 'system');
+            return;
+        case 'report':
+        case 'relatorio':
+            generateReport(false);
+            return;
+        case 'patch': {
+            const opt = (args[1] || '').toLowerCase();
+            const w = state.api;
+            if ((args[0] || '').toLowerCase() !== 'aurora') {
+                addOutput('uso: patch aurora --object-authorization | --bind-2fa-session | --rotate-secrets | --validate-mass-assignment', 'error');
+                break;
+            }
+            if (opt === '--object-authorization') {
+                w.patchAuthz = true;
+                addOutput('Aplicando autorização por objeto na Loja Aurora...', 'system');
+                addOutput('Toda rota com identificador agora filtra pela posse do recurso (customer_id da sessão).', 'success');
+                addOutput('Re-teste: "/orders/1002" responde 404 e "/customers" responde 403.', 'success');
+            } else if (opt === '--bind-2fa-session') {
+                w.patch2fa = true;
+                addOutput('Amarrando o segundo fator à sessão...', 'system');
+                addOutput('O código passa a ser vinculado ao id da sessão, expira em 60s, uso único e com rate limit de 5 tentativas.', 'success');
+                addOutput('Re-teste: "code=000000" responde 401 invalid_code.', 'success');
+            } else if (opt === '--rotate-secrets') {
+                w.patchSecrets = true;
+                addOutput('Rotacionando segredos de serviço...', 'system');
+                addOutput('O token sfk_live_antigo foi revogado e removido do bundle. Novo token vive em variável de ambiente do servidor.', 'success');
+                addOutput('Re-teste: o token antigo em /admin/orders responde 401 invalid_token.', 'success');
+            } else if (opt === '--validate-mass-assignment') {
+                w.patchValidation = true;
+                addOutput('Aplicando allowlist de campos no PATCH /me...', 'system');
+                addOutput('role deixou de ser um campo aceito. Campo fora da lista é rejeitado com 422, não ignorado.', 'success');
+                addOutput('Re-teste: "role=admin" responde 422 field_not_allowed.', 'success');
+            } else {
+                addOutput('uso: patch aurora --object-authorization | --bind-2fa-session | --rotate-secrets | --validate-mass-assignment', 'error');
+            }
+            break;
+        }
+        case 'curl': {
+            if (!args.length) {
+                addOutput('uso: curl <url> | curl -X POST -d "campos" <url> | curl -H "Authorization: Bearer <token>" <url>', 'error');
+                break;
+            }
+            const d = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+            const has = (s) => d.indexOf(s) !== -1;
+            const w = state.api;
+
+            // Painel administrativo com token vazado
+            if (has('/admin/orders') && has(ADMIN_TOKEN)) {
+                if (w.patchSecrets) {
+                    addOutput('HTTP/1.1 401 Unauthorized', 'error');
+                    addOutput('{"error":"invalid_token","message":"token revogado em 2026-09-14"}', 'error');
+                    addOutput('✔ O token antigo não abre mais nada. Correção funcionando.', 'success');
+                    break;
+                }
+                w.adminPanelAcess = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"total_pedidos":18437,"total_clientes":1284,"total_faturamento_brl":2413907.55}', 'system');
+                addOutput('Exemplo de registro retornado para qualquer visitante:', 'warning');
+                addOutput('  { "id":1002, "cliente":"Marina Alves", "cpf":"***.***.**-62",', 'warning');
+                addOutput('    "telefone":"(11) 98812-4471", "endereco":"Rua Aroeira, 1180, apto 74",', 'warning');
+                addOutput('    "total_brl":1299.00, "status":"paid" }', 'warning');
+                addOutput('⚠ Acesso administrativo com credencial que estava no JavaScript público. Toda a base da loja, sem limite e sem auditoria.', 'warning');
+                break;
+            }
+
+            // Prova do escalonamento
+            if (has('/admin/settings')) {
+                if (!w.privesc) {
+                    addOutput('HTTP/1.1 403 Forbidden', 'error');
+                    addOutput('{"error":"forbidden","message":"requer role=admin"}', 'error');
+                    addOutput('Sua conta é de cliente comum. Sem escalonamento, esta rota continua fechada.', 'info');
+                    break;
+                }
+                w.privescVerified = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"frete_gratis_min_brl":0,"taxa_porcento":0,"banner_home":"BLACK FRIDATE 80% OFF","maintenance":false}', 'system');
+                addOutput('✔ A sua conta comum (papel "customer") virou "admin" só por pedir um campo a mais.', 'success');
+                addOutput('⚠ Com isto você controla preço, frete, banner e manutenção da loja inteira.', 'warning');
+                break;
+            }
+
+            // IDOR no detalhe do pedido
+            if (has('/orders/1002')) {
+                if (w.patchAuthz) {
+                    addOutput('HTTP/1.1 404 Not Found', 'error');
+                    addOutput('{"error":"not_found"}', 'error');
+                    addOutput('✔ Autorização por objeto ativa: pedido de terceiro não é retornado.', 'success');
+                    break;
+                }
+                w.idorConfirmed = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"id":1002,"status":"paid","total_brl":1299.00}', 'system');
+                addOutput('{ "id":1002, "cliente":"Marina Alves", "email":"marina.alves@email.com",', 'error');
+                addOutput('  "cpf":"412.663.108-62", "telefone":"(11) 98812-4471",', 'error');
+                addOutput('  "endereco":"Rua Aroeira, 1180, apto 74, Sao Paulo/SP",', 'error');
+                addOutput('  "cartao_final":"**** **** **** 4417", "itens":[...] }', 'error');
+                addOutput('⚠ Você pediu o pedido #1002 e recebeu o pedido de outra cliente, com dado pessoal.', 'warning');
+                addOutput('⚠ A API não checa de quem é o pedido antes de responder (IDOR / BOLA).', 'warning');
+                break;
+            }
+
+            // Enumeração em massa
+            if (has('/customers')) {
+                if (w.patchAuthz) {
+                    addOutput('HTTP/1.1 403 Forbidden', 'error');
+                    addOutput('{"error":"forbidden","message":"acesso restrito a administradores"}', 'error');
+                    addOutput('✔ A rota /customers agora exige papel administrativo.', 'success');
+                    break;
+                }
+                w.bulkExfil = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"total":1284,"page":1}', 'system');
+                addOutput('Primeiros registros devolvidos sem nenhuma verificação de sessão:', 'warning');
+                addOutput('  { "id":1,  "nome":"Joana Prado",   "cpf":"190.442.335-11", "tel":"(11) 99120-3344", "email":"joana.prado@email.com" }', 'warning');
+                addOutput('  { "id":2,  "nome":"Marina Alves",  "cpf":"412.663.108-62", "tel":"(11) 98812-4471", "email":"marina.alves@email.com" }', 'warning');
+                addOutput('  { "id":3,  "nome":"Ricardo Nunes", "cpf":"038.771.920-04", "tel":"(21) 99455-2100", "email":"ricardo.nunes@email.com" }', 'warning');
+                addOutput('  ... 1.281 registros restantes', 'warning');
+                addOutput('⚠ Uma requisição, base inteira: CPF, telefone, e-mail e endereço de 1.284 pessoas.', 'warning');
+                addOutput('⚠ Isso é incidente de dado pessoal (LGPD), não só falha técnica.', 'warning');
+                break;
+            }
+
+            // Bypass de 2FA
+            if (has('2fa/verify')) {
+                if (w.patch2fa) {
+                    addOutput('HTTP/1.1 401 Unauthorized', 'error');
+                    addOutput('{"error":"invalid_code","message":"codigo expirado ou ja utilizado"}', 'error');
+                    addOutput('✔ O segundo fator está amarrado à sessão, com expiração e uso único.', 'success');
+                    break;
+                }
+                w.twofaBypass = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"verified":true}', 'system');
+                addOutput('Set-Cookie: sfk_sess_admin=a91f7c2e88bb05d4', 'system');
+                addOutput('{"user":"lucas.pereira@email.com","role":"admin","mfa":"contornado"}', 'success');
+                addOutput('⚠ O código 000000 foi aceito, não há amarração com a sessão challenge e não há rate limit.', 'warning');
+                addOutput('⚠ 6 dígitos têm 1.000.000 de combinações: sem limite de tentativas, basta forçar.', 'warning');
+                break;
+            }
+
+            // Segredo no bundle do front-end
+            if (has('assets/app.js')) {
+                if (w.patchSecrets) {
+                    addOutput('HTTP/1.1 200 OK', 'system');
+                    addOutput('// bundle minificado, 184 KB', 'system');
+                    addOutput('const API_BASE="'+API+'"; const SESSION=window.session;', 'system');
+                    addOutput('✔ Nenhum segredo no bundle. O front-end só recebe sessão e permissões.', 'success');
+                    break;
+                }
+                w.adminTokenFound = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('/* Loja Aurora front bundle · 184 KB minificado */', 'system');
+                addOutput('const API_BASE = "' + API + '";', 'system');
+                addOutput('const ADMIN_TOKEN = "' + ADMIN_TOKEN + '";', 'error');
+                addOutput('function loadAdminPanel(){ fetch(API_BASE+"/admin/orders",', 'error');
+                addOutput('  { headers: { Authorization: "Bearer "+ADMIN_TOKEN } }).then(r=>r.json()) }', 'error');
+                addOutput('⚠ Token de serviço de ADMINISTRADOR em texto puro no arquivo que todo visitante baixa.', 'warning');
+                addOutput('⚠ Não existe segredo no JavaScript do navegador: o código é entregue ao usuário.', 'warning');
+                break;
+            }
+
+            // Mass assignment
+            if (has('/api/v1/me') && has('role=admin')) {
+                if (w.patchValidation) {
+                    addOutput('HTTP/1.1 422 Unprocessable Entity', 'error');
+                    addOutput('{"error":"field_not_allowed","field":"role"}', 'error');
+                    addOutput('✔ Allowlist de campos ativa: role não é mais aceito no PATCH /me.', 'success');
+                    break;
+                }
+                w.privesc = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"id":4187,"nome":"Lucas Pereira","email":"lucas.pereira@email.com","role":"admin"}', 'system');
+                addOutput('✔ "role" era um campo comum no modelo e a API aplicou o que o cliente mandou.', 'success');
+                addOutput('⚠ Você não roubou nada: só pediu um campo a mais no corpo da requisição.', 'warning');
+                addOutput('→ Prova o acesso em: curl "' + API + '/admin/settings"', 'info');
+                break;
+            }
+
+            // Seu próprio pedido
+            if (has('/orders/1001')) {
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"id":1001,"status":"paid","total_brl":249.90,"cliente":"Lucas Pereira"}', 'system');
+                addOutput('Este é o seu pedido (customer_id = 4187). Ele abre com qualquer sessão de cliente.', 'info');
+                addOutput('Dica de método: e se você abrir o pedido #1002? Troque apenas o número na URL.', 'info');
+                break;
+            }
+
+            // Perfil
+            if (has('/api/v1/me') && !has('role=')) {
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{"id":4187,"nome":"Lucas Pereira","email":"lucas.pereira@email.com","role":"customer","mfa":true}', 'system');
+                addOutput('Sua sessão: Authorization: Bearer ' + SESSION_TOKEN, 'info');
+                break;
+            }
+
+            // Índice da API
+            if (has('/api/v1')) {
+                if (w.patchAuthz) {
+                    addOutput('HTTP/1.1 200 OK', 'system');
+                    addOutput('{"endpoints":["/products","/orders/{id}","/me","/auth/2fa/verify"]}', 'system');
+                    addOutput('✔ Rotas /admin saíram do índice público e exigem papel administrativo.', 'success');
+                    break;
+                }
+                w.apiMapped = true;
+                addOutput('HTTP/1.1 200 OK', 'system');
+                addOutput('{ "name":"Loja Aurora API", "version":"1.4.0", "endpoints":[', 'system');
+                addOutput('  "/products", "/orders/{id}", "/orders", "/me",', 'system');
+                addOutput('  "/customers", "/auth/2fa/verify", "/admin/orders", "/admin/settings" ] }', 'system');
+                addOutput('Repare: /customers e /admin aparecem no índice público, sem aviso de restrição.', 'warning');
+                addOutput('Índice de rota exposto é o primeiro mapa do atacante.', 'info');
+                break;
+            }
+
+            addOutput('Este alvo responde apenas nas rotas da Loja Aurora. Use ' + API + ' e os caminhos encontrados no índice.', 'warning');
+            break;
+        }
+        default:
+            addOutput('comando ' + raw.trim() + ': não encontrado. Digite "ajuda" ou "help".', 'error');
+    }
+    checkLevel(raw);
+}
+
+// ===================== LAUDO =====================
+function reportLines() {
+    const w = state.api;
+    const out = [];
+    const has = (cond, text) => { if (cond) out.push(text); };
+    out.push('╔══════════════════════════════════════════════════════════════╗');
+    out.push('║  LAUDO DE PENTEST · Loja Aurora (API) · SF Cyber Lab        ║');
+    out.push('║  Autorizado: sim (escopo simulado) · Alvo: ' + HOST + '           ║');
+    out.push('╚══════════════════════════════════════════════════════════════╝');
+    out.push('');
+
+    if (!w.apiMapped) {
+        out.push('Nenhum teste executado ainda. Mapeie a API antes de escrever o laudo.');
+        return out;
+    }
+
+    out.push('── RESUMO EXECUTIVO ──');
+    const found = [];
+    if (w.idorConfirmed) found.push('F-01 IDOR/BOLA');
+    if (w.bulkExfil) found.push('F-02 Exposição em massa');
+    if (w.twofaBypass) found.push('F-03 2FA contornável');
+    if (w.adminTokenFound) found.push('F-04 Segredo no front-end');
+    if (w.adminPanelAcess) found.push('F-05 Acesso administrativo indevido');
+    if (w.privesc) found.push('F-06 Mass assignment');
+    out.push(found.length ? 'Findings confirmados: ' + found.join(', ') : 'Nenhum finding confirmado até aqui.');
+    out.push('');
+
+    let n = 0;
+    const finding = (id, title, sev, cvss, owasp, ev, rec) => {
+        n++;
+        out.push('── ' + id + ' · ' + title + ' ──');
+        out.push('Severidade: ' + sev + '   CVSS v3.1: ' + cvss);
+        out.push('Referência: ' + owasp);
+        out.push('Evidência: ' + ev);
+        out.push('Recomendação: ' + rec);
+        out.push('Status: ' + (patchStatusFor(id) || 'A CORRIGIR'));
+        out.push('');
+    };
+
+    if (w.idorConfirmed) finding('F-01', 'IDOR (BOLA) no detalhe do pedido', 'Alta', '8.1', 'OWASP API1 (BOLA) / API3',
+        'GET /api/v1/orders/1002 devolveu pedido de terceiro com CPF, telefone e endereço.',
+        'Filtrar a consulta pela posse do recurso (customer_id da sessão) e responder 404 quando o registro não for do usuário.');
+    if (w.bulkExfil) finding('F-02', 'Listagem de clientes sem autorização', 'Crítica', '9.1', 'OWASP API1 / API5',
+        'GET /api/v1/customers?limit=200 devolveu 1.284 clientes (CPF, telefone, e-mail, endereço) sem verificação de papel.',
+        'Exigir papel administrativo, limitar o tamanho de página, remover CPF/CPF mascarado da resposta e registrar acesso a dado pessoal.');
+    if (w.twofaBypass) finding('F-03', 'Segundo fator contornável', 'Crítica', '9.8', 'OWASP A07 (falha de autenticação)',
+        'POST /api/v1/auth/2fa/verify aceitou code=000000 e não amarra o código à sessão challenge; sem rate limit.',
+        'Amarrar o código ao id da sessão, expirar em 60s, uso único, rate limit por sessão e por conta, e auditoria de tentativas.');
+    if (w.adminTokenFound) finding('F-04', 'Segredo de serviço no front-end', 'Crítica', '9.1', 'OWASP API8 (Security Misconfiguration) / A02',
+        'Token de serviço administrativo em texto puro no bundle /assets/app.js, entregue a todo visitante.',
+        'Revogar e rotacionar o token, movê-lo para variável de ambiente no servidor e remover do bundle; o front-end recebe apenas permissão, nunca credencial.');
+    if (w.adminPanelAcess) finding('F-05', 'Painel administrativo sem segunda camada', 'Alta', '8.8', 'OWASP A05 (falha de configuração)',
+        'Bearer token estático abriu /api/v1/admin/orders, devolvendo toda a base da loja sem limite e sem log de auditoria.',
+        'Exigir sessão administrativa emitida pelo servidor, token de escopo mínimo e rotativo, mais log de auditoria e alertas de uso anômalo.');
+    if (w.privesc) finding('F-06', 'Escalonamento por mass assignment', 'Alta', '8.8', 'OWASP API8 / A08',
+        'PATCH /api/v1/me aplicou o campo role=admin enviado pelo cliente, concedendo papel administrativo à conta.',
+        'Usar allowlist de campos por endpoint com validação de tipo e faixa; rejeitar com 422 campo desconhecido em vez de ignorar.');
+
+    if (n === 0) {
+        out.push('Sem findings confirmados. Continue a auditoria antes de emitir o laudo.');
+        return out;
+    }
+
+    out.push('── AÇÕES DE RESPOSTA IMEDIATA ──');
+    out.push('1. Revogar e rotacionar o token de serviço exposto.');
+    out.push('2. Forçar logout de todas as sessões e revisar pedidos/clientes acessados.');
+    out.push('3. Verificar logs em busca de leitura em massa sem interação do cliente.');
+    out.push('4. Avaliar obrigação de comunicação à ANPD e aos titulares (dado pessoal).');
+    out.push('');
+    out.push('── POSTURA ──');
+    out.push('Achou falha em sistema de terceiro? Reporte ao responsável por canal oficial,');
+    out.push('dê prazo razoável para correção e só publique depois, sem expor os dados afetados.');
+    return out;
+}
+
+function patchStatusFor(id) {
+    const w = state.api;
+    const map = {
+        'F-01': w.patchAuthz ? 'CORRIGIDO' : null,
+        'F-02': w.patchAuthz ? 'CORRIGIDO' : null,
+        'F-03': w.patch2fa ? 'CORRIGIDO' : null,
+        'F-04': w.patchSecrets ? 'CORRIGIDO' : null,
+        'F-05': w.patchSecrets ? 'PARCIAL (token revogado; exigir sessão administrativa)' : null,
+        'F-06': w.patchValidation ? 'CORRIGIDO' : null,
+    };
+    return map[id] || null;
+}
+
+function generateReport(toModal) {
+    state.api.reportGenerated = true;
+    const lines = reportLines();
+    if (toModal) {
+        const box = document.getElementById('reportContent');
+        box.textContent = lines.join('\n');
+        openModal('reportModal');
+        renderSvcTable();
+        save();
+        return;
+    }
+    lines.forEach(l => addOutput(l, 'system'));
+    addOutput('Laudo gerado (CVSS + OWASP). Guarde o resultado para o relatório final do laboratório.', 'success');
+    renderSvcTable();
+    save();
+}
+
+// ===================== LEVEL FLOW =====================
+function checkLevel(raw) {
+    const lvl = levels[state.currentLevel];
+    if (!lvl) return;
+    if (state.levelDone[lvl.id]) {
+        if (lvl.check() && commandWasTrigger(raw, state.currentLevel)) {
+            addOutput('✔ Este nível já foi concluído! Use o botão "Próximo Nível" →', 'warning');
+        }
+        return;
+    }
+    if (lvl.check()) {
+        state.levelDone[lvl.id] = true;
+        if (!state.scorePaid) state.scorePaid = new Set();
+        const firstTime = !state.scorePaid.has(lvl.id);
+        if (firstTime) {
+            state.score += 50;
+            state.scorePaid.add(lvl.id);
+        }
+        updateStats();
+        drawScene();
+        renderSvcTable();
+        document.getElementById('successMsg').textContent = lvl.successMsg;
+        document.getElementById('successScore').textContent = firstTime ? '+50 pontos' : 'Nível concluído (pontos já contados)';
+        document.getElementById('btnSuccessPrimary').textContent =
+            state.currentLevel < levels.length - 1 ? 'Próximo Nível →' : '🏆 Concluir Missão';
+        openModal('successModal');
+        updateRobot();
+        save();
+    }
+}
+
+function nextLevel() {
+    closeModal('successModal');
+    const lvl = levels[state.currentLevel];
+    if (lvl && !state.levelDone[lvl.id]) {
+        addOutput('Você ainda não completou este nível. Use as dicas!', 'warning');
+        return;
+    }
+    if (state.currentLevel < levels.length - 1) {
+        state.currentLevel++;
+        renderLevel();
+        addOutput('--- Nível ' + (state.currentLevel + 1) + ' · ' + levels[state.currentLevel].title.replace(/^Nível \d+: /, '') + ' ---', 'system');
+    } else {
+        closeModal('successModal');
+        openGameComplete();
+    }
+}
+
+function showHint() {
+    const lvl = levels[state.currentLevel];
+    const box = document.getElementById('hintBox');
+    box.innerHTML = lvl.hint;
+    box.style.display = 'block';
+}
+
+function resetLevel() {
+    const lvl = levels[state.currentLevel];
+    (LEVEL_SEC_FLAGS[state.currentLevel] || []).forEach(f => { state.api[f] = false; });
+    state.levelDone[lvl.id] = false;
+    closeModal('successModal');
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    addOutput('Nível reiniciado. Execute os comandos novamente.', 'system');
+    renderLevel();
+    updateStats();
+    save();
+}
+
+function renderLevel() {
+    const lvl = levels[state.currentLevel];
+    document.getElementById('levelTitle').textContent = lvl.title;
+    document.getElementById('taskDesc').textContent = lvl.desc;
+    const box = document.getElementById('hintBox');
+    box.innerHTML = '';
+    box.style.display = 'none';
+    const isLast = state.currentLevel === levels.length - 1;
+    document.getElementById('btnProvaFinal').style.display = isLast ? 'inline-block' : 'none';
+    document.getElementById('levelDisplay').textContent = lvl.id;
+    const pct = ((state.currentLevel + 1) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    drawScene();
+    renderSvcTable();
+    updateRobot();
+    save();
+}
+
+function updateStats() {
+    document.getElementById('levelDisplay').textContent = levels[state.currentLevel].id;
+    document.getElementById('scoreDisplay').textContent = state.score;
+    document.getElementById('attemptsDisplay').textContent = state.attempts;
+    const pct = ((state.currentLevel + 1) / levels.length) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ===================== CANVAS =====================
+const canvas = document.getElementById('topologyCanvas');
+const ctx = canvas.getContext('2d');
+ctx.roundRect = (x, y, w, h, r) => {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+};
+
+function drawGrid(W, H) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+}
+
+function arrow(x1, y1, x2, y2, color, dashed) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    if (dashed) ctx.setLineDash([6, 6]); else ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    const ang = Math.atan2(y2 - y1, x2 - x1);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 10 * Math.cos(ang - 0.4), y2 - 10 * Math.sin(ang - 0.4));
+    ctx.lineTo(x2 - 10 * Math.cos(ang + 0.4), y2 - 10 * Math.sin(ang + 0.4));
+    ctx.closePath();
+    ctx.fill();
+}
+
+function box(x, y, w, h, stroke, label, sub, labelColor) {
+    ctx.fillStyle = '#101828';
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 3;
+    ctx.roundRect(x, y, w, h, 12);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = labelColor || stroke;
+    ctx.font = 'bold ' + (h * 0.19) + 'px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x + w / 2, y + h * 0.46);
+    if (sub) {
+        ctx.fillStyle = '#8ab4d8';
+        ctx.font = (h * 0.13) + 'px monospace';
+        ctx.fillText(sub, x + w / 2, y + h * 0.75);
+    }
+}
+
+function drawScene() {
+    const W = canvas.width, H = canvas.height;
+    const w = state.api;
+    ctx.clearRect(0, 0, W, H);
+    drawGrid(W, H);
+
+    // API
+    const sx = W * 0.28, sy = H * 0.06, sw = W * 0.68, sh = H * 0.40;
+    box(sx, sy, sw, sh, '#00d4ff', '🛒 API LOJA AURORA v1.4.0', '192.168.10.40 · REST /api/v1', '#00d4ff');
+
+    const routes = [
+        { lbl: 'GET /orders/{id}', found: w.idorConfirmed, fixed: w.patchAuthz },
+        { lbl: 'GET /customers', found: w.bulkExfil, fixed: w.patchAuthz },
+        { lbl: 'POST /auth/2fa/verify', found: w.twofaBypass, fixed: w.patch2fa },
+        { lbl: 'GET /assets/app.js', found: w.adminTokenFound, fixed: w.patchSecrets },
+        { lbl: 'GET /admin/*', found: w.adminPanelAcess, fixed: w.patchSecrets },
+    ];
+    let ry = sy + sh * 0.26;
+    const rowH = sh * 0.145;
+    routes.forEach(r => {
+        let color = '#777';
+        if (r.found && r.fixed) color = '#27c93f';
+        else if (r.found) color = '#ff5f56';
+        else if (!w.apiMapped) color = '#777';
+        else color = '#ffbd2e';
+        ctx.fillStyle = '#0b1220';
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.roundRect(sx + 12, ry - rowH * 0.4, sw - 24, rowH * 0.82, 6);
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = color;
+        ctx.font = (H * 0.026) + 'px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText((color === '#ff5f56' ? '⚠ ' : color === '#27c93f' ? '✔ ' : '· ') + r.lbl, sx + 20, ry + 4);
+        ry += rowH;
+    });
+
+    // Atacante
+    const ax = W * 0.03, ay = H * 0.20, aw = W * 0.21, ah = H * 0.20;
+    const done = w.patchAuthz && w.patch2fa && w.patchSecrets && w.patchValidation;
+    box(ax, ay, aw, ah, '#ff5f56', '🕵️ ANALISTA', done ? 'entregando relatório' : 'pentest autorizado', '#ff8a80');
+
+    // Front-end bundle
+    const bx = W * 0.04, by = H * 0.60, bw = W * 0.28, bh = H * 0.15;
+    box(bx, by, bw, bh, w.adminTokenFound ? (w.patchSecrets ? '#27c93f' : '#ff5f56') : '#ffbd2e',
+        '📦 app.js', w.adminTokenFound ? (w.patchSecrets ? 'sem segredo' : 'token exposto!') : 'bundle público', '#00d4ff');
+
+    // Painel admin
+    const px = W * 0.36, py = H * 0.60, pw = W * 0.28, ph = H * 0.15;
+    box(px, py, pw, ph, w.adminPanelAcess ? (w.patchSecrets ? '#27c93f' : '#ff5f56') : '#ffbd2e',
+        '🛡️ /admin', w.adminPanelAcess ? (w.patchSecrets ? 'protegido' : 'acesso indevido') : 'restrito', '#27c93f');
+
+    // Banco
+    const dbX = W * 0.70, dbY = H * 0.60, dbR = W * 0.09, dbH = H * 0.15;
+    ctx.strokeStyle = w.patchAuthz ? '#27c93f' : '#ffbd2e';
+    ctx.fillStyle = '#101828';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, dbR, dbH * 0.18, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(dbX - dbR, dbY);
+    ctx.lineTo(dbX - dbR, dbY + dbH * 0.7);
+    ctx.quadraticCurveTo(dbX - dbR, dbY + dbH, dbX, dbY + dbH);
+    ctx.quadraticCurveTo(dbX + dbR, dbY + dbH, dbX + dbR, dbY + dbH * 0.7);
+    ctx.lineTo(dbX + dbR, dbY);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(dbX, dbY, dbR, dbH * 0.18, 0, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#8ab4d8';
+    ctx.font = (H * 0.028) + 'px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('🗄️ dados', dbX, dbY + dbH * 0.5);
+    ctx.fillStyle = w.patchAuthz ? '#27c93f' : '#ffbd2e';
+    ctx.fillText(w.patchAuthz ? 'filtrado' : '1.284 clientes', dbX, dbY + dbH * 0.85);
+
+    // Setas
+    arrow(ax + aw, ay + ah / 2, sx - 8, sy + sh / 2, done ? '#27c93f' : '#ffbd2e');
+    arrow(bx + bw / 2, by, sx + sw * 0.35, sy + sh, w.patchSecrets ? '#27c93f' : '#ff5f56', true);
+    arrow(sx + sw * 0.6, sy + sh, px + pw / 2, py, w.adminPanelAcess ? (w.patchSecrets ? '#27c93f' : '#ff5f56') : '#777');
+    arrow(sx + sw, sy + sh * 0.7, dbX - dbR, dbY + dbH * 0.4, w.patchAuthz ? '#27c93f' : '#ffbd2e');
+}
+
+// ===================== TABELA DE STATUS =====================
+function renderSvcTable() {
+    const w = state.api;
+    const rows = [
+        {
+            svc: 'GET /orders/{id} (IDOR/BOLA)',
+            status: w.idorConfirmed ? (w.patchAuthz ? 'Corrigido' : 'Vulnerável') : 'Não testado',
+            cls: w.idorConfirmed ? (w.patchAuthz ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'GET /customers (exposição em massa)',
+            status: w.bulkExfil ? (w.patchAuthz ? 'Corrigido' : 'Base exposta') : 'Não testado',
+            cls: w.bulkExfil ? (w.patchAuthz ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'POST /auth/2fa/verify (2FA)',
+            status: w.twofaBypass ? (w.patch2fa ? 'Corrigido' : 'Contornado') : 'Não testado',
+            cls: w.twofaBypass ? (w.patch2fa ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'GET /assets/app.js (segredo)',
+            status: w.adminTokenFound ? (w.patchSecrets ? 'Removido' : 'Token exposto') : 'Não testado',
+            cls: w.adminTokenFound ? (w.patchSecrets ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'GET /admin/* (acesso indevido)',
+            status: w.adminPanelAcess ? (w.patchSecrets ? 'Protegido' : 'Aberto') : 'Não testado',
+            cls: w.adminPanelAcess ? (w.patchSecrets ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'PATCH /me (mass assignment)',
+            status: w.privesc ? (w.patchValidation ? 'Corrigido' : 'Escalado') : 'Não testado',
+            cls: w.privesc ? (w.patchValidation ? 'ok' : 'bad') : 'mid',
+        },
+        {
+            svc: 'Laudo de pentest',
+            status: w.reportGenerated ? 'Gerado' : 'Pendente',
+            cls: w.reportGenerated ? 'ok' : 'mid',
+        },
+        {
+            svc: 'Aplicação',
+            status: (w.patchAuthz && w.patch2fa && w.patchSecrets && w.patchValidation) ? 'Protegida' : 'Em análise',
+            cls: (w.patchAuthz && w.patch2fa && w.patchSecrets && w.patchValidation) ? 'ok' : 'mid',
+        },
+    ];
+    const tbody = document.getElementById('svcTableBody');
+    tbody.innerHTML = '';
+    rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + r.svc + '</td><td class="' + r.cls + '">' + r.status + '</td>';
+        tbody.appendChild(tr);
+    });
+}
+
+// ===================== MODAIS =====================
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function openTheory() {
+    const theory = document.getElementById('theoryContent');
+    theory.innerHTML = '';
+    const items = theoryLevels[levels[state.currentLevel].id] || [];
+    items.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'concept-item';
+        div.innerHTML = '<div class="concept-icon">' + t.icon + '</div><div><b>' + t.title + '</b><br>' + t.desc + '</div>';
+        theory.appendChild(div);
+    });
+    openModal('theoryModal');
+}
+
+function openLevelMap() {
+    const grid = document.getElementById('levelMapGrid');
+    grid.innerHTML = '';
+    levels.forEach(lvl => {
+        const div = document.createElement('div');
+        const done = !!state.levelDone[lvl.id];
+        const current = state.currentLevel === lvl.id - 1;
+        div.className = 'level-card' + (done ? ' done' : current ? ' current' : '');
+        div.innerHTML = '<div class="lv-num">' + lvl.id + '</div>' +
+            '<div style="font-size:0.85em; color:#4a4a4a;">' + lvl.title.replace(/^Nível \d+: /, '') + '</div>' +
+            '<div class="lv-status">' + (done ? '✔ Concluído' : current ? '► Atual' : '') + '</div>';
+        if (done || current) div.onclick = () => { state.currentLevel = lvl.id - 1; closeModal('levelMapModal'); renderLevel(); };
+        grid.appendChild(div);
+    });
+    openModal('levelMapModal');
+}
+
+function openCuration() {
+    openModal('curationModal');
+}
+
+const GUIDE_TABS = {
+    idor: 'guideIdor',
+    '2fa': 'guide2fa',
+    ambos: 'guideAmbos',
+};
+
+function openGuide(tab) {
+    const target = GUIDE_TABS[tab] || GUIDE_TABS.ambos;
+    Object.values(GUIDE_TABS).forEach(id => {
+        document.getElementById(id).style.display = (id === target) ? 'block' : 'none';
+    });
+    document.querySelectorAll('.guide-tab').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+    });
+    openModal('guideModal');
+}
+
+// ===================== QUIZ =====================
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function openQuiz() {
+    quizIndex = 0;
+    quizScore = 0;
+    quizAnswered = false;
+    document.getElementById('quizFeedback').textContent = '';
+    showQuizQuestion();
+    openModal('quizModal');
+}
+
+function showQuizQuestion() {
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    const q = quizQuestions[quizIndex];
+    document.getElementById('quizQuestion').textContent = '(' + (quizIndex + 1) + '/' + quizQuestions.length + ') ' + q.q;
+    const opts = document.getElementById('quizOptions');
+    opts.innerHTML = '';
+    quizAnswered = false;
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerQuiz(i);
+        opts.appendChild(btn);
+    });
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizNextBtn').style.display = 'none';
+}
+
+function answerQuiz(i) {
+    if (quizAnswered) return;
+    quizAnswered = true;
+    const q = quizQuestions[quizIndex];
+    const btns = document.querySelectorAll('#quizOptions .quiz-option');
+    btns.forEach((b, bIdx) => {
+        b.disabled = true;
+        if (bIdx === q.correct) b.classList.add('correct');
+        else if (bIdx === i) b.classList.add('wrong');
+    });
+    if (i === q.correct) { quizScore += 100; document.getElementById('quizFeedback').textContent = '✅ ' + q.explain; }
+    else document.getElementById('quizFeedback').textContent = '❌ ' + q.explain;
+    document.getElementById('quizNextBtn').style.display = 'inline-block';
+    document.getElementById('quizNextBtn').textContent = quizIndex + 1 < quizQuestions.length ? 'Próxima ▶' : 'Ver Resultado';
+}
+
+function quizNext() {
+    if (!quizAnswered) return;
+    quizIndex++;
+    if (quizIndex >= quizQuestions.length) return finishQuiz();
+    showQuizQuestion();
+}
+
+function finishQuiz() {
+    if (!state.quizDone) {
+        state.score += quizScore;
+        state.quizDone = true;
+    }
+    updateStats();
+    document.getElementById('quizQuestion').textContent = '🏁 Resultado da Prova Final';
+    document.getElementById('quizFeedback').textContent = '';
+    const container = document.getElementById('quizOptions');
+    container.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = 'score';
+    box.textContent = 'Você acertou ' + (quizScore / 100) + ' de ' + quizQuestions.length + ' perguntas';
+    box.style.fontSize = '1.3em';
+    container.appendChild(box);
+    const approved = quizScore >= quizQuestions.length * 50;
+    state.quizApproved = approved;
+    const p = document.createElement('p');
+    if (approved) { p.style.color = '#27c93f'; p.style.fontWeight = 'bold'; p.textContent = '🎓 Aprovado! Procure seu certificado na tela final.'; }
+    else { p.style.color = '#ff8c00'; p.textContent = '💪 Você pode refazer a prova quando quiser!'; }
+    container.appendChild(p);
+    document.getElementById('quizNextBtn').style.display = 'none';
+    const gameCert = document.getElementById('btnGameCert');
+    if (gameCert) gameCert.style.display = approved ? '' : 'none';
+    const footer = document.getElementById('quizFooter');
+    footer.innerHTML = '';
+    if (approved) {
+        const btnCert = document.createElement('button');
+        btnCert.className = 'btn btn-success';
+        btnCert.textContent = '🎓 Ver Certificado';
+        btnCert.onclick = () => { closeModal('quizModal'); showCertificate(); };
+        footer.appendChild(btnCert);
+    }
+    const btnAgain = document.createElement('button');
+    btnAgain.className = 'btn btn-ghost';
+    btnAgain.textContent = '🔁 Refazer Prova';
+    btnAgain.onclick = () => openQuiz();
+    footer.appendChild(btnAgain);
+    const btnClose = document.createElement('button');
+    btnClose.className = 'btn btn-primary';
+    btnClose.textContent = 'Fechar';
+    btnClose.onclick = () => closeModal('quizModal');
+    footer.appendChild(btnClose);
+    save();
+}
+
+// ===================== FLUXO DO JOGO =====================
+function confirmAction(kind) {
+    document.getElementById('confirmText').textContent =
+        kind === 'reset' ? 'Todo o progresso e a pontuação serão reiniciados. Continuar?' : '';
+    document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); resetGame(); };
+    openModal('confirmModal');
+}
+
+function resetGame() {
+    state.currentLevel = 0;
+    state.score = 0;
+    state.attempts = 0;
+    state.quizDone = false;
+    state.quizApproved = false;
+    state.levelDone = {};
+    state.scorePaid = new Set();
+    Object.keys(state.api).forEach(k => state.api[k] = false);
+    term.querySelectorAll('.output').forEach(o => o.remove());
+    addOutput('Jogo reiniciado. Boa sorte!', 'system');
+    renderLevel();
+    updateStats();
+    updateRobot();
+    save();
+}
+
+function openGameComplete() {
+    document.getElementById('finalScore').textContent = 'Pontuação Final: ' + state.score;
+    document.getElementById('btnProvaFinal').style.display = 'none';
+    const gameCert = document.getElementById('btnGameCert');
+    if (gameCert) gameCert.style.display = (state.quizDone && state.quizApproved) ? '' : 'none';
+    openModal('gameCompleteModal');
+}
+
+function showCertificate() {
+    if (!state.quizDone || !state.quizApproved) {
+        document.getElementById('quizFeedback').textContent = '🔒 Você precisa ser aprovado na prova final (50%+ ) para obter o certificado.';
+        openQuiz();
+        return;
+    }
+    const name = state.studentName || 'Aluno(a)';
+    document.getElementById('certStudentName').textContent = name;
+    document.getElementById('certScore').textContent = state.score + ' pts';
+    document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
+    closeModal('gameCompleteModal');
+    closeModal('successModal');
+    openModal('certificateModal');
+}
+
+function downloadCertificate() {
+    const node = document.getElementById('certificatePrint');
+    if (window.htmlToImage) {
+        htmlToImage.toPng(node, { pixelRatio: 2, backgroundColor: '#f3f7fa' })
+            .then(dataUrl => {
+                const a = document.createElement('a');
+                a.download = 'certificado-sfcyber-pentest-ecommerce-' + (state.studentName || 'aluno').toLowerCase().replace(/\s+/g, '-') + '.png';
+                a.href = dataUrl;
+                a.click();
+            })
+            .catch(() => window.print());
+    } else {
+        window.print();
+    }
+}
+
+// ===================== WELCOME / STORAGE =====================
+function closeWelcome() {
+    const nameInput = document.getElementById('studentNameInput');
+    const name = (nameInput.value || '').trim();
+    state.studentName = name || 'Aluno(a)';
+    closeModal('welcomeModal');
+    input.focus();
+    renderLevel();
+    updateStats();
+    robotIntro();
+    save();
+}
+
+function resumeGame() {
+    closeModal('welcomeModal');
+    input.focus();
+    renderLevel();
+    updateStats();
+    robotIntro('De volta!');
+}
+
+function save() {
+    try {
+        const data = {
+            currentLevel: state.currentLevel,
+            score: state.score,
+            attempts: state.attempts,
+            studentName: state.studentName,
+            api: state.api,
+            levelDone: state.levelDone,
+            quizDone: state.quizDone,
+            quizApproved: state.quizApproved,
+        };
+        localStorage.setItem('sfcyber-ecommerce-v1', JSON.stringify(data));
+    } catch (e) {}
+}
+
+function load() {
+    try {
+        const raw = localStorage.getItem('sfcyber-ecommerce-v1');
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        state.currentLevel = data.currentLevel || 0;
+        state.score = data.score || 0;
+        state.attempts = data.attempts || 0;
+        state.studentName = data.studentName || '';
+        state.quizDone = data.quizDone || false;
+        state.quizApproved = data.quizApproved || false;
+        state.api = Object.assign(state.api, data.api || {});
+        state.levelDone = data.levelDone || {};
+        state.scorePaid = new Set(Object.keys(state.levelDone).map(Number));
+        return true;
+    } catch (e) { return false; }
+}
+
+// ===================== INIT =====================
+function resizeCanvas() {
+    const cssH = 400;
+    canvas.width = Math.max(canvas.clientWidth, 50) * 2;
+    canvas.height = cssH * 2;
+    drawScene();
+}
+window.addEventListener('resize', resizeCanvas);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const had = load();
+    document.getElementById('studentNameInput').value = state.studentName || '';
+    if (had && state.studentName) document.getElementById('resumeBtn').style.display = 'inline-block';
+    resizeCanvas();
+    if (!had || !state.studentName) {
+        openModal('welcomeModal');
+        document.getElementById('studentNameInput').focus();
+    } else {
+        closeModal('welcomeModal');
+        robotIntro('De volta!');
+    }
+    renderLevel();
+    updateStats();
+    renderSvcTable();
+    input.focus();
+});
+</script>
+</body>
+</html>

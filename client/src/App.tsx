@@ -11,6 +11,7 @@ import { SimulatorPage } from "./pages/SimulatorPage";
 import { SimulatorSecurityPage } from "./pages/SimulatorSecurityPage";
 import { SimulatorWebPage } from "./pages/SimulatorWebPage";
 import { SimulatorDnsPage } from "./pages/SimulatorDnsPage";
+import { SimulatorEcommercePage } from "./pages/SimulatorEcommercePage";
 
 const FALLBACK_ROUTE_KEY = "sfcyberRoute";
 
@@ -45,6 +46,7 @@ function AppRoutes() {
       <Route path="/simulador-seguranca" component={SimulatorSecurityPage} />
       <Route path="/simulador-web" component={SimulatorWebPage} />
       <Route path="/simulador-dns" component={SimulatorDnsPage} />
+      <Route path="/simulador-ecommerce" component={SimulatorEcommercePage} />
       <Route path="/404" component={NotFound} />
 
       {/* Final fallback route */}

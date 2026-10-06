@@ -25,8 +25,9 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 - **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH).
 - **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação).
 - **Simulador de Servidor DNS (Resolução | AXFR | DNSSEC)** em `/simulador-dns` (registros A/MX/NS, subdomínio exposto, transferência de zona, envenenamento de cache e proteção com AXFR restrito + DNSSEC).
-- **SF Bot**: assistente robô nos quatro simuladores para guiar o aluno etapa por etapa.
-- Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos quatro simuladores.
+- **Simulador de Pentest em E-commerce (IDOR | 2FA | Segredos)** em `/simulador-ecommerce` (API REST de loja fictícia: recon de endpoints, IDOR/BOLA em detalhe de pedido, enumeração em massa de clientes, bypass de segundo fator, segredo administrativo no front-end, escalonamento por mass assignment, laudo com CVSS/OWASP e correção da aplicação). Inclui guia IDOR + 2FA em três abas e aba de curadoria com escopo ético e divulgação responsável. Progresso em `localStorage["sfcyber-ecommerce-v1"]`.
+- **SF Bot**: assistente robô nos cinco simuladores para guiar o aluno etapa por etapa.
+- Cards de áreas da plataforma ("Escolha sua área e comece agora") com acesso direto aos cinco simuladores.
 - Planos de pré-lançamento: **FREE** (grátis) e **MEMBROS PARCEIROS** 
 - Modal de escolha de simulador ao clicar em "Começar Grátis" (plano FREE).
 - Modal de pré-lançamento em Acesso/Registro e nos CTAs dos planos pagos, com captura de e-mail (visual).
@@ -43,16 +44,17 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 
 ## Testes
 
-Os quatro simuladores possuem testes automatizados de fluxo completo (8 níveis -> prova final -> certificado), executados com Node no jogo emulado:
+Os cinco simuladores possuem testes automatizados de fluxo completo (8 níveis -> prova final -> certificado), executados com Node no jogo emulado:
 
 ```text
-C:\Users\Family\AppData\Local\Temp\soc_test.cjs    (fluxo SOC)
-C:\Users\Family\AppData\Local\Temp\web_test.cjs    (fluxo Segurança Web)
-C:\Users\Family\AppData\Local\Temp\dns_test.cjs    (fluxo DNS)
-C:\Users\Family\AppData\Local\Temp\vlan_test.cjs   (fluxo VLAN, inclui XSS e pay-once)
+C:\Users\Sandro\AppData\Local\Temp\opencode\ecom\soc_test.cjs    (fluxo SOC)
+C:\Users\Sandro\AppData\Local\Temp\opencode\ecom\web_test.cjs    (fluxo Segurança Web)
+C:\Users\Sandro\AppData\Local\Temp\opencode\ecom\dns_test.cjs    (fluxo DNS)
+C:\Users\Sandro\AppData\Local\Temp\opencode\ecom\vlan_test.cjs   (fluxo VLAN, inclui XSS e pay-once)
+C:\Users\Sandro\AppData\Local\Temp\opencode\ecom\test.cjs        (fluxo Pentest E-commerce, inclui guia IDOR/2FA)
 ```
 
-Os testes garantem score determinístico (400 nos níveis + 800 na prova = 1200 nos simuladores SOC/Web/DNS; 580 + 160 = 740 no VLAN), que o certificado só sai após aprovação na prova e que payloads XSS não executam no terminal do VLAN. Validação em browser real é feita com Chrome headless via CDP contra o `dist/`.
+Os testes garantem score determinístico (400 nos níveis + 800 na prova = 1200 nos simuladores SOC/Web/DNS/Ecommerce; 580 + 160 = 740 no VLAN), que o certificado só sai após aprovação na prova e que payloads XSS não executam no terminal do VLAN. Validação em browser real é feita com Chrome headless via CDP contra o `dist/`.
 
 ## Deploy
 

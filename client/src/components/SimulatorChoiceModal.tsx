@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Network, ShieldHalf, Bug, Globe, ArrowRight } from "lucide-react";
+import { X, Network, ShieldHalf, Bug, Globe, ShoppingCart, ArrowRight } from "lucide-react";
 
 interface SimulatorChoiceModalProps {
   isOpen: boolean;
@@ -110,6 +110,26 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
             <h3 className="font-extrabold font-mono text-white mb-2">Laboratório de Servidor DNS</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-4">
               Resolva registros com dig, descubra o AXFR aberto e aplique DNSSEC.
+            </p>
+            <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-cyan-400">
+              Acessar
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </a>
+
+          <a
+            href="/ecommerce/index.html"
+            onClick={onClose}
+            className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="w-12 h-12 mb-4 rounded-xl bg-amber-600/15 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+              <ShoppingCart className="w-6 h-6" />
+            </div>
+            <h3 className="font-extrabold font-mono text-white mb-2">Pentest em E-commerce</h3>
+            <p className="text-xs text-slate-400 leading-relaxed mb-4">
+              Audite a API da loja: IDOR, bypass de 2FA, segredo no front-end e escalonamento.
             </p>
             <span className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-cyan-400">
               Acessar
