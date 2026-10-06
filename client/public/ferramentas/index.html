@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YFJCPYJWQV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YFJCPYJWQV');
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sandro Ferreira">
+    <meta name="description" content="Laboratório SF Cyber de Ferramentas de Diagnóstico: ping, traceroute, nslookup e netstat para analisar rotas e falhas. 8 níveis e certificado.">
+    <meta name="robots" content="index, follow">
+    <title>SF Academia Cibersegurança e Redes - Ferramentas de Diagnóstico</title>
+    <link rel="icon" href="favicon-sf-red_blue.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <link rel="stylesheet" href="../labkit/labkit.css">
+</head>
+<body>
+<script src="../labkit/labkit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var HOST_SF = 'servidor-sf.exemplo.local';
+  var IP_SF = '10.20.0.10';
+  var HOST_WEB = 'www.exemplo.com';
+  var IP_WEB = '93.184.216.34';
+  var DNS_SERVIDOR = '10.20.0.53';
+  var ALVO = 'app.exemplo.com';
+  var IP_ALVO_DEAD = '10.20.8.77';
+
+  var levels = [
+    {
+      id: 1,
+      title: 'Nível 1: Medir a conectividade com ping',
+      desc: 'Você é o Analista de Redes. Um usuário relata que "o site não abre". Antes de mudar qualquer coisa, meça. Use ping para verificar se o servidor ' + HOST_SF + ' (' + IP_SF + ') responde e quantas requisições se perdem.',
+      hint: '💡 Dica: <code>ping -c 4 ' + IP_SF + '</code> envia 4 pacotes e mostra o percentual de perda.',
+      check: function () { return api.flag('pingOk'); },
+      successMsg: 'Servidor respondeu nos 4 pacotes, 0% de perda e tempo médio baixo. A conectividade até ele está boa, então o problema está depois.',
+    },
+    {
+      id: 2,
+      title: 'Nível 2: Descobrir o salto que está falhando',
+      desc: 'A rede da empresa tem três saltos: roteador de borda,isp, e o servidor. Ping para um IP que não existe na faixa da empresa revela onde a rota morre. Teste ' + IP_ALVO_DEAD + ' e leia os tempos de resposta salto a salto.',
+      hint: '💡 Dica: <code>ping -c 3 ' + IP_ALVO_DEAD + '</code> responde "Destination Host Unreachable" a partir de um salto específico.',
+      check: function () { return api.flag('pingDead'); },
+      successMsg: '"Destination Host Unreachable" veio do primeiro roteador (10.20.0.1). A falha está no trecho interno, antes de sair da empresa. Ping mostra onde, não só que.',
+    },
+    {
+      id: 3,
+      title: 'Nível 3: Rastrear o caminho com traceroute',
+      desc: 'Ping diz se chega e quanto tempo leva, mas não mostra o caminho. traceroute revela cada roteador atravessado. Rastreie até ' + HOST_WEB + ' (' + IP_WEB + ') e identifique onde está o salto que demora mais.',
+      hint: '💡 Dica: <code>traceroute ' + IP_WEB + '</code> lista os saltos com o tempo de cada um.',
+      check: function () { return api.flag('traceroute'); },
+      successMsg: '3 saltos: 10.20.0.1 (0.8ms), 100.64.0.1 (12ms) e o destino (28ms). O segundo salto está com RTT alto, mas ainda dentro do aceitável.',
+    },
+    {
+      id: 4,
+      title: 'Nível 4: Resolver nomes com nslookup',
+      desc: 'Usuários reclamam de "site não abre", mas o sintoma clássico é DNS quebrado. Use nslookup para consultar o nome e ver qual endereço o servidor DNS está devolvendo.',
+      hint: '💡 Dica: <code>nslookup ' + ALVO + '</code> consulta o nome no DNS configurado.',
+      check: function () { return api.flag('nslookup'); },
+      successMsg: 'app.exemplo.com resolve para 10.20.8.90. O nome existe e resolve certo. Então o problema do usuário não é DNS: pode ser rota ou porta.',
+    },
+    {
+      id: 5,
+      title: 'Nível 5: Detectar falha de DNS autoritativo',
+      desc: 'O nome resolve localmente, mas o servidor DNS externo está devolvendo um endereço antigo (10.20.8.15) que não existe mais. Consulte explicitamente o DNS público e compare as respostas.',
+      hint: '💡 Dica: <code>nslookup ' + ALVO + ' 8.8.8.8</code> força a consulta ao DNS público.',
+      check: function () { return api.flag('dnsExterno'); },
+      successMsg: 'O DNS público devolve 10.20.8.15 (endereço antigo), enquanto o local devolve 10.20.8.90. Divergência de DNS é uma das causas mais comuns de "funciona na minha máquina".',
+    },
+    {
+      id: 6,
+      title: 'Nível 6: Ver conexões e portas com netstat',
+      desc: 'Saber que o host responde não basta: é preciso ver o que está escutando e para onde as conexões vão. Use netstat para listar portas em escuta e conexões estabelecidas.',
+      hint: '💡 Dica: <code>netstat -tuln</code> mostra portas TCP/UDP em escuta. Use também <code>netstat -an</code> para todas as conexões.',
+      check: function () { return api.flag('netstat'); },
+      successMsg: 'Porta 443 em escuta e conexões estabelecidas no destino correto. Serviço está no ar e com tráfego: a porta não é o problema.',
+    },
+    {
+      id: 7,
+      title: 'Nível 7: Diagnosticar o caso completo',
+      desc: 'Chegou a hora de juntar tudo. Um usuário não consegue acessar ' + ALVO + '. Faça o diagnóstico completo: nome resolve? endereço responde? serviço escuta? Conteúdo volta?cada etapa aponta para uma camada diferente.',
+      hint: '💡 Dica: <code>diag app.exemplo.com</code> roda ping, traceroute, nslookup e netstat em sequência e diz em que camada parou.',
+      check: function () { return api.flag('diag'); },
+      successMsg: 'Diagnóstico: DNS ok, rota ok, porta 443 em escuta, mas sem resposta HTTP na verificação. O problema é na aplicação, não na rede. Agora dá para agir com precisão.',
+    },
+    {
+      id: 8,
+      title: 'Nível 8: Corrigir os quatro problemas',
+      desc: 'Feche os quatro problemas encontrados: (1) DNS público com registro antigo, (2) porta de serviço fechada no firewall, (3) rota com salto errado, (4) conexão vazandoTIME_WAIT. Aplique as correções e confirme.',
+      hint: '💡 Dica: <code>fix net --dns</code>, <code>fix net --porta</code>, <code>fix net --rota</code> e <code>fix net --socket</code>',
+      check: function () { return api.flag('fDns') && api.flag('fPorta') && api.flag('fRota') && api.flag('fSocket'); },
+      successMsg: '🏆 Missão cumprida! DNS, porta, rota e sockets corrigidos. Agora a aplicação responde em todas as camadas.',
+    },
+  ];
+
+  var teoria = {
+    1: [
+      { icon: '📡', title: 'O que o ping testa', desc: 'Ping envia pacote ICMP Echo Request e espera Echo Reply. Mede se há resposta (alcance) e quanto tempo leva (RTT). Não garante que o serviço na porta 443 funcione: só que o host responde a ICMP.' },
+      { icon: '📉', title: 'Perda de pacote', desc: 'Perda em 0% é o esperado em rede local. Perda intermitente indica problema físico (cabo, Wi-Fi), congestionamento ou filtro de ICMP. Perda de 100% pode ser só o firewall bloqueando ICMP, não necessariamente host fora do ar.' },
+    ],
+    2: [
+      { icon: '🚫', title: 'Unreachable', desc: '"Destination Host Unreachable" significa que um roteador não tem para onde enviar. "Destination Net Unreachable" é problema de rota de rede. Os dois salvam tempo: apontam onde agir.' },
+      { icon: '🕵️', title: 'Ping não é diagnóstico completo', desc: 'Ping bem-sucedido não garante aplicação funcionando. Também não mostra caminho. Por isso ele é o primeiro teste, nunca o único.' },
+    ],
+    3: [
+      { icon: '🛣️', title: 'TTL e saltos', desc: 'Traceroute usa TTL crescente para mapear roteadores. O TTL máximo Linux é 255 e o Windows 128, o que define quantos saltos aparecem antes de sumir.' },
+      { icon: '⏱️', title: 'RTT alto em um salto', desc: 'Tempo alto num salto indica atraso ou perda naquele trecho. Mas asterisco (sem resposta) não é necessariamente falha: muitos roteadores não respondem a ICMP, mas seguem encaminhando o tráfego.' },
+    ],
+    4: [
+      { icon: '📛', title: 'DNS traduz nome em IP', desc: 'nslookup consulta o servidor configurado e devolve o registro. Se o nome não resolve, nenhum ping para o nome funciona, mesmo com a rede perfeita.' },
+      { icon: '🗂️', title: 'Tipos de registro', desc: 'A resolve para IPv4, AAAA para IPv6, CNAME aponta para outro nome, MX para servidor de e-mail, PTR para reverso. Ver o tipo certo evita conclusões erradas.' },
+    ],
+    5: [
+      { icon: '🔀', title: 'DNS local x DNS público', desc: 'Consultar servidores diferentes revela inconsistência. Divergência entre local e público é falha clássica: registro antigo em um servidor faz o site funcionar para uns e falhar para outros.' },
+      { icon: '⏳', title: 'Cache e TTL', desc: 'Depois de corrigir um registro, ele só some do cache após o TTL. Testar antes do TTL expirar gera conclusão errada. Ferramentas de cache como ipconfig /flushdns ajudam no teste local.' },
+    ],
+    6: [
+      { icon: '🚪', title: 'Porta em escuta (LISTEN)', desc: 'O processo está esperando conexão naquela porta. Se o serviço deveria estar no ar e não aparece em escuta, ele não subiu ou falhou no start.' },
+      { icon: '🔗', title: 'ESTABLISHED e TIME_WAIT', desc: 'ESTABLISHED é sessão ativa. TIME_WAIT é socket aguardando para fechar, normalmente inofensivo mas acumula em servidor com muitas conexões curtas. Servidor_wait em massa costuma exigir ajuste de keepalive.' },
+    ],
+    7: [
+      { icon: '🪜', title: 'Diagnóstico por camadas', desc: 'Nome resolve? endereço responde? rota existe? porta escuta? serviço entrega conteúdo? Cada etapa isola uma camada. Corrigir sem isolar é tentativa e erro.' },
+      { icon: '📋', title: 'Registre tudo', desc: 'Anote cada comando e a saída. Relatório de incidente sem evidência não serve para nada, e repetir do zero perde tempo.' },
+    ],
+    8: [
+      { icon: '🔁', title: 'Fechar o ciclo', desc: 'Aplicou a correção? Teste de novo na mesma camada e confirme que as outras não quebraram. Uma mudança de DNS pode afetar rotas e vice-versa.' },
+      { icon: '🚧', title: 'Prevenção', desc: 'Monitoramento de DNS e porta, alerta de alteração de registro e revisão de rota evitam a maioria desses incidentes.' },
+    ],
+  };
+
+  var quiz = [
+    { q: 'O que o comando ping verifica principalmente?', options: ['Se a porta 443 está aberta', 'Se o host responde a requisições ICMP e qual o tempo de ida e volta', 'O caminho completo até o destino', 'Qual DNS está configurado'], correct: 1, explain: 'Ping usa ICMP Echo: mede alcance e RTT. Não valida porta nem aplicação.' },
+    { q: '"Destination Host Unreachable" no ping indica o quê?', options: ['O servidor está sobrecarregado', 'Um roteador não tem rota para o host de destino', 'O DNS não resolveu o nome', 'A senha do usuário está errada'], correct: 1, explain: 'A mensagem vem de um roteador, indicando que ele não sabe para onde encaminhar o pacote.' },
+    { q: 'Qual comando mostra o caminho (cada salto) até um destino?', options: ['ping', 'netstat', 'traceroute', 'nslookup'], correct: 2, explain: 'traceroute usa TTL crescente para revelar os roteadores intermediários.' },
+    { q: 'No traceroute, um salto que responde com asterisco significa necessariamente falha?', options: ['Sim, o salto está fora do ar', 'Não, muitos roteadores não respondem a ICMP mas seguem encaminhando o tráfego', 'Sim, o pacote foi descartado', 'Não, significa que o destino está fora do ar'], correct: 1, explain: ' asterisco costuma ser firewall que bloqueia ICMP no salto, não necessariamente quebra.' },
+    { q: 'Qual comando consulta um nome no servidor DNS?', options: ['nslookup', 'traceroute', 'netstat', 'ping'], correct: 0, explain: 'nslookup consulta registros DNS e mostra a resposta do servidor configurado.' },
+    { q: 'nslookup retorna um IP diferente do esperado ao consultar um DNS público. O que isso indica?', options: ['A rede local está sem internet', 'Registro DNS divergente entre servidores, provável registro antigo', 'A porta 443 está fechada', 'O host está sem máscara de sub-rede'], correct: 1, explain: 'Divergência entre DNS local e público é sinal clássico de registro desatualizado em algum servidor.' },
+    { q: 'O que indica uma porta aparecendo em estado LISTEN no netstat?', options: ['Existe uma sessão ativa naquela porta', 'Um processo está esperando conexões naquela porta', 'O pacote foi descartado', 'O DNS não respondeu'], correct: 1, explain: 'LISTEN significa que o serviço está no ar e aguardando conexão.' },
+    { q: 'Ping e traceroute respondem bem, mas o usuário não consegue abrir o site. Qual camada investigar primeiro?', options: ['A porta do serviço e a aplicação no servidor', 'O cabo de rede', 'O DNS público', 'A máscara de sub-rede do cliente'], correct: 0, explain: 'Se há resposta e rota funcionais, o problema está na camada de serviço: porta fechada ou aplicação com erro.' },
+  ];
+
+  var api = {
+    flag: function (k) { return !!window.SFKit.state.flags[k]; },
+    setFlag: function (k, v) { window.SFKit.api.setFlag(k, v); },
+    out: function (t) { window.SFKit.api.out(t); },
+    ok: function (t) { window.SFKit.api.ok(t); },
+    warn: function (t) { window.SFKit.api.warn(t); },
+    err: function (t) { window.SFKit.api.err(t); },
+    info: function (t) { window.SFKit.api.info(t); },
+    refresh: function () { window.SFKit.api.refresh(); },
+  };
+
+  function comandos(raw) {
+    var d = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+    var out = api.out, ok = api.ok, warn = api.warn, err = api.err, info = api.info;
+
+    if (d === 'help' || d === 'ajuda') { cfg.sugestoes.forEach(info); return; }
+    if (d === 'clear' || d === 'cls') {
+      document.querySelectorAll('#terminalBody .output').forEach(function (o) { o.remove(); });
+      return;
+    }
+    if (d === 'whoami') { ok('analista-redes@lab-sfcyber · escopo: rede interna SF (simulada)'); return; }
+
+    if (d.indexOf('ping -c 4 ' + IP_SF) === 0 || d.indexOf('ping -c 4 ' + HOST_SF) === 0) {
+      api.setFlag('pingOk');
+      out('PING ' + IP_SF + ' (' + HOST_SF + ') 56(84) bytes of data.');
+      ok('64 bytes from ' + IP_SF + ': icmp_seq=1 ttl=64 time=0.412 ms');
+      ok('64 bytes from ' + IP_SF + ': icmp_seq=2 ttl=64 time=0.389 ms');
+      ok('64 bytes from ' + IP_SF + ': icmp_seq=3 ttl=64 time=0.401 ms');
+      ok('64 bytes from ' + IP_SF + ': icmp_seq=4 ttl=64 time=0.377 ms');
+      ok('--- ' + IP_SF + ' ping statistics ---');
+      ok('4 packets transmitted, 4 received, 0% packet loss, time 3003ms');
+      ok('rtt min/avg/max/mdev = 0.377/0.395/0.412/0.013 ms');
+      info('Host responde e a perda é zero. O problema do usuário está em outra camada.');
+      api.refresh();
+      return;
+    }
+    if (d.indexOf('ping -c 3 ' + IP_ALVO_DEAD) === 0) {
+      api.setFlag('pingDead');
+      out('PING ' + IP_ALVO_DEAD + ' 56(84) bytes of data.');
+      err('From 10.20.0.1 icmp_seq=1 Destination Host Unreachable');
+      err('From 10.20.0.1 icmp_seq=2 Destination Host Unreachable');
+      err('From 10.20.0.1 icmp_seq=3 Destination Host Unreachable');
+      ok('--- ' + IP_ALVO_DEAD + ' ping statistics ---');
+      ok('3 packets transmitted, 0 received, 100% packet loss, time 2045ms');
+      warn('O erro veio do roteador de borda 10.20.0.1: a falha é no trecho interno, antes de sair da empresa.');
+      api.refresh();
+      return;
+    }
+    if (d.indexOf('traceroute ' + IP_WEB) === 0 || d.indexOf('traceroute ' + HOST_WEB) === 0) {
+      api.setFlag('traceroute');
+      out('traceroute to ' + IP_WEB + ' (' + HOST_WEB + '), 30 hops max, 60 byte packets');
+      ok(' 1  10.20.0.1        (gateway)      0.812 ms  0.790 ms  0.801 ms');
+      ok(' 2  100.64.0.1       (isp-core)     12.4 ms  18.9 ms  15.2 ms');
+      ok(' 3  ' + IP_WEB.padEnd(16) + '(' + HOST_WEB + ') 28.1 ms  27.6 ms  28.0 ms');
+      ok('Caminho completo até o destino: 3 saltos.');
+      warn('O salto 2 tem RTT alto e variável (12 a 19 ms). Ainda dentro do aceitável, mas vale investigar.');
+      info('Asterisco (*) em um salto normalmente é firewall bloqueando ICMP, não necessariamente falha.');
+      api.refresh();
+      return;
+    }
+    if (d.indexOf('nslookup ' + ALVO + ' 8.8.8.8') === 0) {
+      api.setFlag('dnsExterno');
+      out('> nslookup ' + ALVO + ' 8.8.8.8');
+      out('Server:   8.8.8.8');
+      out('Address:  8.8.8.8#53');
+      ok('Name:     ' + ALVO);
+      ok('Address:  10.20.8.15    <- registro ANTIGO no DNS público');
+      warn('O DNS local devolve 10.20.8.90, o público devolve 10.20.8.15. Divergência de registro.');
+      info('Enquanto o DNS público tiver o endereço antigo, parte dos usuários não chega no servidor.');
+      api.refresh();
+      return;
+    }
+    if (d.indexOf('nslookup ' + ALVO) === 0) {
+      api.setFlag('nslookup');
+      out('> nslookup ' + ALVO);
+      out('Server:   ' + DNS_SERVIDOR);
+      out('Address:  ' + DNS_SERVIDOR + '#53');
+      ok('Name:     ' + ALVO);
+      ok('Address:  10.20.8.90');
+      ok('resposta do servidor DNS local: o nome resolve corretamente.');
+      info('Se resolve, mas ping no nome falhar, o problema não é DNS.');
+      api.refresh();
+      return;
+    }
+    if (d.indexOf('netstat -tuln') === 0 || d.indexOf('netstat -an') === 0) {
+      api.setFlag('netstat');
+      out('Proto Recv-Q Send-Q Local Address    Foreign Address   State');
+      out('tcp        0      0 0.0.0.0:22        0.0.0.0:*         LISTEN');
+      ok('tcp        0      0 0.0.0.0:443       0.0.0.0:*         LISTEN');
+      if (d.indexOf('-an') === 0) {
+        out('tcp        0      0 10.20.5.20:443   10.20.0.77:51234   ESTABLISHED');
+        warn('tcp        0      0 10.20.5.20:8443  10.20.0.81:49812   TIME_WAIT   <- socket acumulado');
+      }
+      info('LISTEN em 443: o serviço web está no ar e escutando.');
+      if (d.indexOf('-an') === 0) info('TIME_WAIT em volume indica ajuste de keepalive no servidor.');
+      api.refresh();
+      return;
+    }
+    if (d === 'diag ' + ALVO) {
+      api.setFlag('diag');
+      out('=== diagnóstico de ' + ALVO + ' ===');
+      out('[1/4] DNS local .................. OK (10.20.8.90)');
+      out('[2/4] rota até 10.20.8.90 ....... OK (2 saltos, 14 ms)');
+      out('[3/4] porta 443 ................. OK (em escuta)');
+      err('[4/4] requisição HTTP ........... SEM RESPOSTA (timeout após 5 s)');
+      warn('Diagnóstico concluído: DNS ok, rota ok, porta ok, aplicação sem resposta.');
+      api.ok('O problema está na camada de aplicação, não na rede. investigate o serviço web.');
+      api.refresh();
+      return;
+    }
+    if (d === 'fix net --dns') {
+      api.setFlag('fDns');
+      out('Atualizando registro no DNS público: ' + ALVO + ' 10.20.8.15 -> 10.20.8.90');
+      ok('Registro corrigido. Aguardando propagação (TTL 300s).');
+      api.refresh();
+      return;
+    }
+    if (d === 'fix net --porta') {
+      api.setFlag('fPorta');
+      out('Liberando porta 8443 no firewall para origem 10.20.0.0/16');
+      ok('Porta liberada. Serviço antes bloqueado agora responde.');
+      api.refresh();
+      return;
+    }
+    if (d === 'fix net --rota') {
+      api.setFlag('fRota');
+      out('Corrigindo rota do salto 2: 100.64.0.1 -> 100.64.0.254');
+      ok('Rota corrigida. Novo salto responde com RTT estável.');
+      api.refresh();
+      return;
+    }
+    if (d === 'fix net --socket') {
+      api.setFlag('fSocket');
+      out('Ajustando keepalive no serviço: tcp_fin_timeout 30 -> 15');
+      ok('Sockets TIME_WAIT reduzidos. Conexões curtas param de acumular.');
+      api.refresh();
+      return;
+    }
+    err('comando não encontrado: ' + raw.trim() + '. Digite "ajuda".');
+  }
+
+  var cfg = {
+    id: 'ferramentas',
+    titulo: 'Ferramentas de Diagnóstico',
+    subtitulo: 'ping, traceroute, nslookup e netstat para analisar rotas e falhas de conectividade',
+    painelTitulo: '🧰 Laboratório de Diagnóstico · Rede SF',
+    colunaStatus: 'Camada / verificação',
+    terminalTitulo: 'analista-redes@lab-sfcyber',
+    bannerTerminal: 'Alvo: ' + ALVO + ' · DNS ' + DNS_SERVIDOR + ' (simulado).',
+    prompt: 'analista-redes@lab:~$',
+    boasVindas: 'Assuma o papel de um <b>Analista de Redes</b> e diagnostique uma queixa real: "o site não abre". Use <b>ping</b>, <b>traceroute</b>, <b>nslookup</b> e <b>netstat</b> para isolar a camada do problema, como faria num plantão.',
+    avisoEscopo: 'todos os hosts e IPs são fictícios e de faixa privada. Nenhuma requisição de rede é feita: as respostas são geradas por código local.',
+    features: [
+      'Medir conectividade e perda com <b>ping</b>',
+      'Localizar o salto que falha com <b>traceroute</b>',
+      'Resolver nomes e comparar <b>DNS local x público</b>',
+      'Verificar portas em escuta e conexões com <b>netstat</b>',
+      'Rodar um <b>diagnóstico por camadas</b> completo',
+      'Corrigir DNS, porta, rota e sockets acumulados',
+    ],
+    referencia:
+      '<div><span>clear / cls</span> - Limpar a tela do terminal</div>' +
+      '<div><span>ajuda / help</span> - Listar comandos disponíveis</div>' +
+      '<div><span>ping -c 4 ' + IP_SF + '</span> - Medir conectividade e perda</div>' +
+      '<div><span>ping -c 3 ' + IP_ALVO_DEAD + '</span> - Ver onde a rota falha (Unreachable)</div>' +
+      '<div><span>traceroute ' + IP_WEB + '</span> - Mapear o caminho salto a salto</div>' +
+      '<div><span>nslookup ' + ALVO + '</span> - Resolver o nome no DNS local</div>' +
+      '<div><span>nslookup ' + ALVO + ' 8.8.8.8</span> - Consultar o DNS público e comparar</div>' +
+      '<div><span>netstat -tuln</span> - Ver portas TCP/UDP em escuta</div>' +
+      '<div><span>netstat -an</span> - Ver todas as conexões (ESTABLISHED/TIME_WAIT)</div>' +
+      '<div><span>diag ' + ALVO + '</span> - Diagnóstico completo por camadas</div>' +
+      '<div><span>fix net --dns | --porta | --rota | --socket</span> - Corrigir os problemas</div>',
+    sugestoes: [
+      'clear', 'ajuda',
+      'ping -c 4 ' + IP_SF,
+      'ping -c 3 ' + IP_ALVO_DEAD,
+      'traceroute ' + IP_WEB,
+      'nslookup ' + ALVO,
+      'nslookup ' + ALVO + ' 8.8.8.8',
+      'netstat -tuln', 'netstat -an',
+      'diag ' + ALVO,
+      'fix net --dns', 'fix net --porta', 'fix net --rota', 'fix net --socket',
+    ],
+    flagsIniciais: ['pingOk', 'pingDead', 'traceroute', 'nslookup', 'dnsExterno', 'netstat', 'diag', 'fDns', 'fPorta', 'fRota', 'fSocket'],
+    resetFlags: [['pingOk'], ['pingDead'], ['traceroute'], ['nslookup'], ['dnsExterno'], ['netstat'], ['diag'], ['fDns', 'fPorta', 'fRota', 'fSocket']],
+    triggerList: [
+      ['ping -c 4 ' + IP_SF],
+      ['ping -c 3 ' + IP_ALVO_DEAD],
+      ['traceroute ' + IP_WEB],
+      ['nslookup ' + ALVO],
+      ['nslookup ' + ALVO + ' 8.8.8.8'],
+      ['netstat -tuln', 'netstat -an'],
+      ['diag ' + ALVO],
+      ['fix net --dns', 'fix net --porta', 'fix net --rota', 'fix net --socket'],
+    ],
+    levels: levels,
+    teoria: teoria,
+    quiz: quiz,
+    comandos: comandos,
+    status: function (s) {
+      var f = s.flags;
+      return [
+        { item: 'Ping (conectividade)', status: f.pingOk ? '0% perda' : 'Não medido', cls: f.pingOk ? 'ok' : 'mid' },
+        { item: 'Salto com falha', status: f.pingDead ? 'Identificado (10.20.0.1)' : 'Não testado', cls: f.pingDead ? 'ok' : 'mid' },
+        { item: 'Rota até o destino', status: f.traceroute ? (f.fRota ? 'Corrigida' : '3 saltos mapeados') : 'Não mapeada', cls: f.traceroute ? (f.fRota ? 'ok' : 'mid') : 'mid' },
+        { item: 'Resolução de nome', status: f.nslookup ? 'DNS local ok' : 'Não consultada', cls: f.nslookup ? 'ok' : 'mid' },
+        { item: 'DNS público', status: f.dnsExterno ? (f.fDns ? 'Corrigido' : 'Registro divergente') : 'Não consultado', cls: f.dnsExterno ? (f.fDns ? 'ok' : 'bad') : 'mid' },
+        { item: 'Porta em escuta', status: f.netstat ? (f.fPorta ? 'Liberada' : '443 em escuta') : 'Não verificada', cls: f.netstat ? (f.fPorta ? 'ok' : 'ok') : 'mid' },
+        { item: 'Sockets TIME_WAIT', status: f.fSocket ? 'Ajustado' : (f.netstat ? 'Socket acumulado' : 'Não verificado'), cls: f.fSocket ? 'ok' : (f.netstat ? 'bad' : 'mid') },
+        { item: 'Diagnóstico completo', status: f.diag ? 'Concluído' : 'Não executado', cls: f.diag ? 'ok' : 'mid' },
+      ];
+    },
+    cena: function (c, W, H, s, k) {
+      var f = s.flags;
+      var okAll = f.fDns && f.fPorta && f.fRota && f.fSocket;
+
+      k.box(W * 0.03, H * 0.20, W * 0.20, H * 0.18, k.cor.info, '💻 CLIENTE', 'analista-redes', k.cor.info);
+      k.box(W * 0.28, H * 0.20, W * 0.20, H * 0.18, f.pingOk ? k.cor.ok : k.cor.warn, '🌐 ' + HOST_SF, IP_SF, k.cor.info);
+      k.box(W * 0.53, H * 0.20, W * 0.20, H * 0.18, f.fRota ? k.cor.ok : (f.pingDead ? k.cor.bad : k.cor.warn), '🛣️ ROTEADOR', f.pingDead ? 'falha interna' : (f.fRota ? 'rota corrigida' : '10.20.0.1'), k.cor.info);
+      k.box(W * 0.78, H * 0.20, W * 0.19, H * 0.18, f.traceroute ? k.cor.ok : k.cor.warn, '🌍 DESTINO', IP_WEB, k.cor.info);
+
+      k.box(W * 0.03, H * 0.60, W * 0.20, H * 0.16, f.nslookup ? k.cor.ok : k.cor.warn, '📛 DNS LOCAL', f.nslookup ? '10.20.8.90' : 'sem consulta', k.cor.info);
+      k.box(W * 0.28, H * 0.60, W * 0.20, H * 0.16, f.fDns ? k.cor.ok : (f.dnsExterno ? k.cor.bad : k.cor.warn), '🌐 DNS 8.8.8.8', f.fDns ? 'corrigido' : (f.dnsExterno ? '10.20.8.15 ✖' : 'sem consulta'), k.cor.info);
+      k.box(W * 0.53, H * 0.60, W * 0.20, H * 0.16, f.netstat ? (f.fPorta ? k.cor.ok : k.cor.ok) : k.cor.warn, '🚪 PORTA 443', f.netstat ? 'em escuta' : 'não verificada', k.cor.info);
+      k.box(W * 0.78, H * 0.60, W * 0.19, H * 0.16, f.diag ? (okAll ? k.cor.ok : k.cor.warn) : k.cor.dim, '🪜 DIAG', f.diag ? (okAll ? 'tudo certo' : 'camada app') : 'não executado', k.cor.info);
+
+      k.arrow(W * 0.23, H * 0.29, W * 0.28, H * 0.29, f.pingOk ? k.cor.ok : k.cor.warn);
+      k.arrow(W * 0.48, H * 0.29, W * 0.53, H * 0.29, f.fRota ? k.cor.ok : (f.pingDead ? k.cor.bad : k.cor.warn));
+      k.arrow(W * 0.73, H * 0.29, W * 0.78, H * 0.29, f.traceroute ? k.cor.ok : k.cor.warn);
+      k.arrow(W * 0.13, H * 0.38, W * 0.13, H * 0.60, f.nslookup ? k.cor.ok : k.cor.warn, true);
+      k.arrow(W * 0.63, H * 0.38, W * 0.63, H * 0.60, f.netstat ? k.cor.ok : k.cor.warn, true);
+    },
+    bot: function (idx, s) {
+      var f = s.flags;
+      switch (idx) {
+        case 0: return f.pingOk ? ['SF Bot 📡', '0% de perda! A rede até ' + HOST_SF + ' está boa.'] : ['SF Bot 📡', 'Meça a conectividade: <b>ping -c 4 ' + IP_SF + '</b>'];
+        case 1: return f.pingDead ? ['SF Bot 🚫', 'Falha localizada no roteador de borda!'] : ['SF Bot 🚫', 'Veja onde a rota morre: <b>ping -c 3 ' + IP_ALVO_DEAD + '</b>'];
+        case 2: return f.traceroute ? ['SF Bot 🛣️', 'Caminho mapeado, 3 saltos!'] : ['SF Bot 🛣️', 'Mapeie o caminho: <b>traceroute ' + IP_WEB + '</b>'];
+        case 3: return f.nslookup ? ['SF Bot 📛', 'Nome resolve no DNS local.'] : ['SF Bot 📛', 'Resolva o nome: <b>nslookup ' + ALVO + '</b>'];
+        case 4: return f.dnsExterno ? ['SF Bot 🔀', 'O DNS público tem registro antigo!'] : ['SF Bot 🔀', 'Compare com o DNS público: <b>nslookup ' + ALVO + ' 8.8.8.8</b>'];
+        case 5: return f.netstat ? ['SF Bot 🚪', 'Portas e conexões mapeadas.'] : ['SF Bot 🚪', 'Veja o que escuta: <b>netstat -tuln</b> (e <b>netstat -an</b>)'];
+        case 6: return f.diag ? ['SF Bot 🪜', 'Diagnóstico concluído: o problema é na aplicação.'] : ['SF Bot 🪜', 'Diagnóstico completo: <b>diag ' + ALVO + '</b>'];
+        case 7:
+          if (!f.fDns) return ['SF Bot 🔁', 'DNS público: <b>fix net --dns</b>'];
+          if (!f.fPorta) return ['SF Bot 🚪', 'Porta bloqueada: <b>fix net --porta</b>'];
+          if (!f.fRota) return ['SF Bot 🛣️', 'Rota do salto 2: <b>fix net --rota</b>'];
+          if (!f.fSocket) return ['SF Bot ⏱️', 'Sockets acumulados: <b>fix net --socket</b>'];
+          return ['SF Bot 🏆', 'Tudo funcionando! Toque em <b>Próximo Nível</b>.'];
+      }
+      return null;
+    },
+    curadoria:
+      '<div class="curation-block ok"><b>Tudo aqui é simulação.</b> Os hosts e IPs usados são fictícios e de faixa privada. Nenhuma requisição de rede é feita: ping, traceroute, nslookup e netstat são simulados por código local. Nenhuma máquina real é sondada.</div>' +
+      '<div class="curation-block"><b>Por que diagnóstico importa?</b> A maior parte dos "o site está fora" é falha em uma camada específica: DNS com registro antigo, porta fechada no firewall, rota quebrada ou aplicação no ar mas sem resposta. Isolar a camada antes de agir transforma tentativa e erro em correção direcionada.</div>' +
+      '<div class="curation-block warn"><b>Cuidado com onde você testa.</b> Fazer ping em um endereço que não é seu, em grande volume e sem permissão, é varredura e pode ser tratado como ataque. Ferramenta de diagnóstico só é legítima em rede própria ou com autorização formal. Na dúvida, peça permissão antes de sondar qualquer coisa que não seja sua.</div>' +
+      '<div class="curation-block"><b>Antes de escalar.</b> Registre horário, comando usado e saída completa. Verificar se o problema é geral ou de um usuário (só um cliente, só um navegador, só uma rede) muda o diagnóstico. Ter um segundo par de olhos evita "corrigir" o equipamento errado.</div>',
+    guide: {
+      titulo: 'Guia de Diagnóstico',
+      abas: [
+        { id: 'ping', label: '📡 Ping', html:
+          '<h3>📡 Ping: alcance e tempo</h3>' +
+          '<p>Ping envia <b>ICMP Echo Request</b> e mede o tempo até o <b>Echo Reply</b>. Dois números importam: houve resposta (alcance) e quanto tempo levou (RTT).</p>' +
+          '<div class="exemplo"><span class="rotulo">Leitura da saída</span><p><code>4 packets transmitted, 4 received, 0% packet loss</code> e <code>rtt min/avg/max/mdev = 0.377/0.395/0.412/0.013</code>. <code>mdev</code> alto indica variação, típico de link instável.</p></div>' +
+          '<h4>Mensagens que importam</h4><ul>' +
+          '<li><b>Destination Host Unreachable</b>: um roteador não tem rota para o host.</li>' +
+          '<li><b>Destination Net Unreachable</b>: problema de rota de rede.</li>' +
+          '<li><b>Request timeout</b>: sem resposta (pode ser filtro de ICMP, não necessariamente falha).</li>' +
+          '<li><b>100% packet loss</b>: nenhum retorno. Pode ser firewall bloqueando ICMP mesmo com serviço no ar.</li></ul>' +
+          '<div class="problema"><b>Cuidado:</b> ping com sucesso não prova que a aplicação funciona. Só prova que o host responde a ICMP.</div>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> ping responde "chega?", não "funciona?".</div>' },
+        { id: 'traceroute', label: '🛣️ Traceroute', html:
+          '<h3>🛣️ Traceroute: o caminho</h3>' +
+          '<p>Traceroute usa TTL crescente: cada roteador decrementa o TTL e, quando chega a zero, devolve uma mensagem ao originator. O resultado é o mapa de saltos.</p>' +
+          '<div class="exemplo"><span class="rotulo">Leitura</span><ul>' +
+          '<li>Salto com tempo baixo e estável: tudo bem.</li>' +
+          '<li>Salto com tempo alto e variável: atraso ou perda naquele trecho.</li>' +
+          '<li>Asterisco (*): o salto não respondeu a ICMP. Pode ser firewall, e o tráfego segue passando normalmente.</li>' +
+          '<li>Aumento do tempo a partir de certo salto: problema a partir dali.</li></ul></div>' +
+          '<h4>Limites</h4><p>TTL máximo é 255 no Linux e 128 no Windows, o que corta o rastreio em caminhos longos. E traceroute mostra caminho, não qualidade de serviço: um caminho curto pode ter latência péssima.</p>' +
+          '<div class="problema"><b>Atenção:</b> asterisco não é diagnóstico de falha. Investigar o asterisco como "salto quebrado" leva o técnico a fechar ticket à toa.</div>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> asterisco é resposta ausente, não prova de queda.</div>' },
+        { id: 'dns', label: '📛 DNS', html:
+          '<h3>📛 DNS: onde o nome vira endereço</h3>' +
+          '<p>Ninguém digita IP. O <b>DNS</b> traduz o nome em endereço. Se o nome não resolve, nada mais funciona, mesmo com a rede perfeita.</p>' +
+          '<div class="exemplo"><span class="rotulo">Registros comuns</span><ul>' +
+          '<li><b>A</b>: nome para IPv4.</li><li><b>AAAA</b>: nome para IPv6.</li>' +
+          '<li><b>CNAME</b>: apelido para outro nome.</li><li><b>MX</b>: servidor de e-mail.</li>' +
+          '<li><b>PTR</b>: reverso (IP para nome).</li></ul></div>' +
+          '<h4>Divergência é a falha clássica</h4><p>Consultar o DNS local e o público e comparar as respostas encontra o problema na maioria dos casos: registro antigo em um dos servidores faz o site funcionar para parte dos usuários e falhar para outros.</p>' +
+          '<div class="exemplo"><span class="rotulo">Depois de corrigir</span><p>A mudança só vale após o <b>TTL</b> expirar. Testar antes gera conclusão errada. Limpe o cache local com <code>ipconfig /flushdns</code> ao testar.</p></div>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> "funciona aqui e não ali" quase sempre é DNS divergente ou cache.</div>' },
+        { id: 'netstat', label: '🚪 Netstat', html:
+          '<h3>🚪 Netstat: o que escuta e o que está conectado</h3>' +
+          '<p>Responder a ping não diz se o serviço funciona. <code>netstat</code> mostra processos em escuta e conexões ativas.</p>' +
+          '<div class="exemplo"><span class="rotulo">Estados que importam</span><ul>' +
+          '<li><b>LISTEN</b>: processo esperando conexão. Serviço no ar.</li>' +
+          '<li><b>ESTABLISHED</b>: sessão ativa.</li>' +
+          '<li><b>TIME_WAIT</b>: socket aguardando para fechar. Inofensivo em peu, problema quando acumula.</li>' +
+          '<li><b>SYN_RECV</b> em volume: varredura ou ataque de conexão.</li></ul></div>' +
+          '<h4>Opções úteis</h4><ul>' +
+          '<li><code>-tuln</code>: TCP e UDP em escuta, com número do processo.</li>' +
+          '<li><code>-an</code>: todas as conexões e estados.</li>' +
+          '<li><code>-rn</code>: tabela de rotas, para conferir gateway default.</li></ul>' +
+          '<div class="problema"><b>Diagnóstico errado:</b> ver porta em escuta e concluir que o site funciona. Serviço escutando pode estar devolvendo erro 500, certificado inválido ou resposta vazia.</div>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> escuta prova que o processo existe, não que ele serve o conteúdo certo.</div>' },
+      ],
+    },
+    missaoCumprida: 'Você isolou a camada de cada falha de conectividade no ambiente simulado e corrigiu DNS, porta, rota e sockets acumulados.',
+    saberes: '✓ Medir alcance e perda com ping e saber ler Unreachable<div>✓ Mapear saltos e interpretar RTT alto e asterisco</div><div>✓ Resolver nomes e detectar divergência entre DNS local e público</div><div>✓ Verificar portas em escuta e estados de conexão com netstat</div><div>✓ Diagnosticar por camadas, do DNS até a aplicação</div><div>✓ Registrar evidências e fechar o ciclo após a correção</div>',
+    posRemember: 'antes de testar em rede que não é sua, peça autorização. Sondagem não autorizada é varredura e pode ser tratada como ataque.',
+    certTitulo: 'Ferramentas de Diagnóstico (ping | traceroute | nslookup | netstat)',
+    certNota: 'Simulador Interativo de Diagnóstico 8 níveis + prova final',
+    storageKey: 'sfcyber-ferramentas-v1',
+  };
+
+  window.SFKit.init(cfg);
+}());
+</script>
+</body>
+</html>

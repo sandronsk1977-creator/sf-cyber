@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { X, Network, ShieldHalf, Bug, Globe, ShoppingCart, ArrowRight } from "lucide-react";
+import { X, Network, ShieldHalf, Bug, Globe, ShoppingCart, Terminal, ArrowRight } from "lucide-react";
 
 interface SimulatorChoiceProps {
   isOpen: boolean;
@@ -42,6 +42,27 @@ const LAB_ITEMS = [
     iconClass: "bg-amber-600/15 text-amber-400",
     title: "Pentest em E-commerce",
     desc: "Audite a API da loja: IDOR, bypass de 2FA, segredo no front-end e escalonamento.",
+  },
+  {
+    href: "/ip-subnets/index.html",
+    icon: Network,
+    iconClass: "bg-cyan-500/15 text-cyan-400",
+    title: "Endereçamento IP e Sub-redes",
+    desc: "Calcule sub-redes IPv4/IPv6, configure IP estático e DHCP e corrija a máscara.",
+  },
+  {
+    href: "/ferramentas/index.html",
+    icon: Terminal,
+    iconClass: "bg-cyan-500/15 text-cyan-400",
+    title: "Ferramentas de Diagnóstico",
+    desc: "Isole a camada da falha com ping, traceroute, nslookup e netstat.",
+  },
+  {
+    href: "/camada2/index.html",
+    icon: ShieldHalf,
+    iconClass: "bg-rose-600/15 text-rose-400",
+    title: "Ataques de Camada 2",
+    desc: "ARP Spoofing, DHCP rogue e MitM em laboratório isolado, com defesa em profundidade.",
   },
 ];
 

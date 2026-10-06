@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YFJCPYJWQV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YFJCPYJWQV');
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sandro Ferreira">
+    <meta name="description" content="Laboratório SF Cyber de Ataques de Camada 2: ARP Spoofing e envenenamento de DHCP em simulação, com defesa em profundidade. 8 níveis e certificado.">
+    <meta name="robots" content="index, follow">
+    <title>SF Academia Cibersegurança e Redes - Ataques de Camada 2 (MitM)</title>
+    <link rel="icon" href="favicon-sf-red_blue.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <link rel="stylesheet" href="../labkit/labkit.css">
+</head>
+<body>
+<script src="../labkit/labkit.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var REDE = 'VLAN 20 · 10.20.20.0/24';
+  var GW = '10.20.20.1';
+  var GW_MAC = '00:1b:21:aa:bb:01';
+  var VITIMA = '10.20.20.50';
+  var VITIMA_MAC = '00:1b:21:cc:dd:50';
+  var ATACANTE = '10.20.20.99';
+  var DNS_SERVER = '10.20.20.53';
+
+  var levels = [
+    {
+      id: 1,
+      title: 'Nível 1: Entender a Camada 2',
+      desc: 'Você é o Analista de Segurança. A rede da empresa usa a ' + REDE + '. Antes de qualquer ataque, entenda o que o switch sabe: ele não olha IP, ele olha MAC. Mapeie a tabela ARP e veja quem está registrado para o gateway ' + GW + '.',
+      hint: '💡 Dica: <code>arp -an</code> mostra a tabela ARP (IP para qual MAC).',
+      check: function () { return api.flag('viuArp'); },
+      successMsg: 'A tabela ARP mostra que ' + GW + ' responde pelo MAC ' + GW_MAC + '. O switch so sabe MAC: é essa confiança que permite o ataque.',
+    },
+    {
+      id: 2,
+      title: 'Nível 2: Descobrir o gateway porsniffing passivo',
+      desc: 'Antes de atacar, observe. Capture passivamente a rede por alguns segundos e descubra quais MACs aparecem e qual deles é o gateway. Nada é alterado ainda.',
+      hint: '💡 Dica: <code>sniff arp --time 8</code> observa o tráfego ARP sem enviar nada.',
+      check: function () { return api.flag('sniff'); },
+      successMsg: 'Três MACs observados: gateway (' + GW_MAC + '), vítima (' + VITIMA_MAC + ') e um terceiro host. Você já sabe quem precisa ser enganado.',
+    },
+    {
+      id: 3,
+      title: 'Nível 3: ARP Spoofing: envenenar a tabela da vítima',
+      desc: 'O ARP não tem autenticação: qualquer um pode responder "o gateway é eu" e o host aceita. Envie respostas ARP forjadas para a vítima fazendo crer que o gateway está no seu MAC. Confirme a alteração na tabela.',
+      hint: '💡 Dica: <code>arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW + '</code>',
+      check: function () { return api.flag('spoof'); },
+      successMsg: 'A tabela ARP da vítima agora aponta o gateway para o MAC do atacante. A vítima vai enviar o tráfego do gateway para você: é o base do Man-in-the-Middle.',
+    },
+    {
+      id: 4,
+      title: 'Nível 4: Ativar o repasse e capturar tráfego',
+      desc: 'Só envenenar não basta: se você não repassar, a conexão da vítima morre e ela percebe. Ative o repasse de pacotes e confirme que a vítima continua navegando enquanto o tráfego passa por você.',
+      hint: '💡 Dica: <code>ettercap -G eth0</code> ativa o modo gateway (repasse) e <code>sniff tcp --port 80</code> captura.',
+      check: function () { return api.flag('mitm'); },
+      successMsg: 'Repasse ativo: a vítima continua com internet, sem nenhuma percepcao perceptível, e o tráfego HTTP passa pelo atacante. MitM estabelecido sem derrubar a conexão.',
+    },
+    {
+      id: 5,
+      title: 'Nível 5: Envenenamento de DHCP (rogue server)',
+      desc: 'Outro ataque de Camada 2: um servidor DHCP falso responde mais rápido que o legítimo e entrega configuração falsa às máquinas. Simule um rogue DHCP server entregando gateway e DNS controlados pelo atacante.',
+      hint: '💡 Dica: <code>dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99</code>',
+      check: function () { return api.flag('dhcpRogue'); },
+      successMsg: 'O rogue DHCP entregou gateway 10.20.20.66 (atacante) e DNS 10.20.20.99. QuemRENOVOU vai para o DNS do atacante: TLS deixa de proteger porque o DNS já foi sequestrado.',
+    },
+    {
+      id: 6,
+      title: 'Nível 6: Capturar credencial exposta',
+      desc: 'Com o MitM ativo, capture uma requisição em texto claro. Note que em HTTP o usuário, a senha e o cookie de sessão aparecem na requisição.',
+      hint: '💡 Dica: <code>sniff http --show</code> exibe as requisições capturadas.',
+      check: function () { return api.flag('sniffHttp'); },
+      successMsg: 'Requisição capturada: POST /login com usuário e senha em texto claro, e cookie de sessão. Em HTTPS isso não aconteceria sem certificado válido: é exatamente o motivo de usar TLS.',
+    },
+    {
+      id: 7,
+      title: 'Nível 7: Defender: Dynamic ARP Inspection e DHCP Snooping',
+      desc: 'Agora do lado defensivo. Descubra que o switch não está com ARP Inspection nem com DHCP Snooping ativos, o que permite ambos os ataques. Verifique a configuração e identifique as duas proteções ausentes.',
+      hint: '💡 Dica: <code>switch show ip arp-inspection</code> e <code>switch show ip dhcp snooping</code>.',
+      check: function () { return api.flag('defesas'); },
+      successMsg: 'Confirmado: ARP Inspection desligado e DHCP Snooping desligado. Sem essas duas features, qualquer host da rede pode fazer ARP Spoofing e rogue DHCP.',
+    },
+    {
+      id: 8,
+      title: 'Nível 8: Ativar as defesas e validar',
+      desc: 'Ative as três proteções que fecham a Camada 2: (1) Dynamic ARP Inspection, (2) DHCP Snooping com limitação de taxa, e (3) port security com limite de MACs por porta. Reexecute os ataques e confirme que falham.',
+      hint: '💡 Dica: <code>defend sw --arp-inspection</code>, <code>defend sw --dhcp-snooping</code>, <code>defend sw --port-security</code> e depois <code>verify attacks</code>.',
+      check: function () { return api.flag('dArp') && api.flag('dDhcp') && api.flag('dPorta') && api.flag('validou'); },
+      successMsg: '🏆 Missão cumprida! ARP Inspection, DHCP Snooping e Port Security ativos. Os dois ataques foram reexecutados e falharam: a Camada 2 está protegida.',
+    },
+  ];
+
+  var teoria = {
+    1: [
+      { icon: '🔗', title: 'ARP sem autenticação', desc: 'ARP (Address Resolution Protocol) traduz IP em MAC na rede local. Ele nao tem autenticacao e nao valida quem responde: um host aceita a primeira resposta que chega. Essa ausência de autenticação é a raiz do ARP Spoofing.' },
+      { icon: '🔀', title: 'Switch e MAC', desc: 'O switch decide para qual porta enviar cada quadro Ethernet com base no MAC de destino. Ele não olha IP. Por isso, sequestrar o ARP de um host é sequestrar o caminho físico do tráfego.' },
+    ],
+    2: [
+      { icon: '👁️', title: 'Sniffing passivo', desc: 'Capturar tráfego sem enviar nada não altera a rede e não quebra conexão. Em rede comutada só é possível em porta espelhada (SPAN) ou com o host em modo promíscuo.' },
+      { icon: '🎯', title: 'Recon antes do ataque', desc: 'Saber quem é o gateway e quem é a vítima evita ataque às cegas. Também revela se já existe ARP estático protegendo a rede.' },
+    ],
+    3: [
+      { icon: '⚔️', title: 'ARP Spoofing / ARP Poisoning', desc: 'O atacante envia respostas ARP forjadas Associate o IP do gateway (ou da vítima) ao próprio MAC. As máquinas passam a enviar o tráfego para o atacante. Também chamado de ARP Cache Poisoning ou ARP MITM.' },
+      { icon: '⚠️', title: 'Cache etimeout', desc: 'A tabela ARP expira em few minutos. Por isso o ataque precisa de renovação constante (arp-spoof em loop). Uma proteção só momentânea: o atacante volta em poucos minutos.' },
+    ],
+    4: [
+      { icon: '🧩', title: 'Forwarding é obrigatório', desc: 'Sem repasse de pacotes, a vítima fica sem internet e percebe o ataque. Com repasse (modo gateway do ettercap), o atacante encaminha o tráfego e a a conexão segue normal: ataque silencioso.' },
+      { icon: '🧪', title: 'ARP estático como defesa simples', desc: 'Configurar ARP estático no servidor ou no switch imobiliza o mapeamento de um IP crítico, bloqueando ARP Spoofing naquele host. É defesa reativa; para a rede toda, prefira ARP Inspection.' },
+    ],
+    5: [
+      { icon: '📡', title: 'DHCP Discover/Offer', desc: 'Quando um host entra na rede, ele transmite DHCP Discover e espera Offer. Qualquer um na rede pode responder. O primeiro Offer aceito vence: um rogue DHCP server responde antes do legítimo e sequestra a configuração.' },
+      { icon: '🧷', title: 'Efeito em cascata', desc: 'Com gateway errado, a vítima nem sai da rede local. Com DNS falso, qualquer domínio resolve para o atacante: o TLS passa a proteger o servidor falso, não o real. Um único Offer falso compromete tudo.' },
+    ],
+    6: [
+      { icon: '🔓', title: 'HTTP em texto claro', desc: 'Requisição HTTP expõe cabeçalhos, cookies e formulário de login. TLS (HTTPS) cria um canal criptografado que impede a leitura direta, desde que o DNS aponte para o servidor certo.' },
+      { icon: '🎣', title: 'Por que o TLS não bastava', desc: 'No nível 5 o atacante controlava o DNS. Com DNS sequestrado, ele apresenta certificado válido para o domínio: o usuário navega "com cadeado" e conecta no servidor falso. Isso é DNS hijacking.' },
+    ],
+    7: [
+      { icon: '🛡️', title: 'Dynamic ARP Inspection (DAI)', desc: 'O switch compara as respostas ARP recebidas com sua tabela ARP autorizada. Resposta que mapeia um IP para MAC diferente do esperado é descartada. Neutraliza ARP Spoofing na Camada 2.' },
+      { icon: '🛡️', title: 'DHCP Snooping', desc: 'Marca as portas do servidor DHCP legítimo como confiáveis. Offers de outras portas são bloqueados. Em conjunto com Port Security e IP Source Guard, fecha a entrada de rogue DHCP.' },
+    ],
+    8: [
+      { icon: '📋', title: 'Defesa em profundidade', desc: 'ARP Inspection, DHCP Snooping, Port Security, IP Source Guard e Monitoramento de DHCP formam camadas. Nenhuma substitui a outra: cada uma cobre um vetor diferente.' },
+      { icon: '🔒', title: 'TLS e VLAN', desc: 'TLS protege o conteúdo do roteamento, mas não o DNS nem a Camada 2. Segmentação em VLANs limita o broadcast e a propagação do ataque.' },
+    ],
+  };
+
+  var quiz = [
+    { q: 'Por que o ARP é vulnerability para ARP Spoofing?', options: ['Porque envia dados criptografados', 'Porque não tem autenticação: aceita a primeira resposta que chega', 'Porque só funciona em redes sem switch', 'Porque usa portas altas'], correct: 1, explain: 'ARP não tem autenticação nem integridade. Qualquer resposta é aceita, o que permite o sequestro do mapeamento IP-MAC.' },
+    { q: 'O que um switch Ethernet usa para decidir para qual porta enviar um quadro?', options: ['O endereço IP de destino', 'O endereço MAC de destino', 'A subnet mask', 'A porta do roteador'], correct: 1, explain: 'O switch encaminha com base na tabela MAC. Por isso sequestrar o ARP muda o caminho do tráfego.' },
+    { q: 'Por que o atacante precisa ativar o repasse de pacotes após o ARP Spoofing?', options: ['Para encrypt o tráfego', 'Porque sem repasse a vítima perde a conexão e percebe o ataque', 'Para capturar mais pacotes', 'Para resolver o DNS'], correct: 1, explain: 'Sem forwarding, a vítima fica sem internet e nota o ataque. Com forwarding, a conexão segue normal e o MitM fica silencioso.' },
+    { q: 'Em um ataque de rogue DHCP server, por que o atacante consegue responder primeiro?', options: ['Porque tem banda maior', 'Porque DHCP não tem autenticação e o primeiro Offer aceito vence', 'Porque usa IP fixo', 'Porque o switch encaminha DHCP primeiro'], correct: 1, explain: 'DHCP Discover é broadcast e não tem autenticação. O primeiro Offer aceito pela vítima define a configuração.' },
+    { q: 'O que o Dynamic ARP Inspection (DAI) faz?', options: ['Criptografar o tráfego ARP', 'Comparar respostas ARP com a tabela ARP autorizada e descartar as divergentes', 'Bloquear ARP estático', 'Impedir DHCP na rede'], correct: 1, explain: 'DAI valida as respostas ARP contra a tabela do switch e bloqueia mapeamentos não autorizados.' },
+    { q: 'O que o DHCP Snooping protege?', options: ['Contra ARP Spoofing', 'Contra rogue DHCP server, bloqueando Offers de portas não confiáveis', 'Contra ping flood', 'Contra DNS hijacking isoladamente'], correct: 1, explain: 'DHCP Snooping marca a porta do servidor legítimo como confiável e bloqueia Offers DHCP vindos de outras portas.' },
+    { q: 'Com o DNS apontando para o atacante, por que o HTTPS não impede o ataque?', options: ['Porque o atacante apresenta um certificado válido para o domínio e o usuário conecta no servidor falso', 'Porque HTTPS não criptografa nada', 'Porque o certificado é sempre público', 'Porque o DNS não tem relação com TLS'], correct: 0, explain: 'É DNS hijacking: o certificado TLS válido é para o domínio, mas o DNS entrega o endereço do atacante. O TLS protege o canal até quem responde, não quem deveria responder.' },
+    { q: 'Qual afirmação sobre Port Security está correta?', options: ['Permite qualquer número de MACs por porta', 'Limita quantos MACs podem ser aprendidos em uma porta, bloqueando excessos', 'Substitui o ARP Inspection', 'É uma feature de Camada 3'], correct: 1, explain: 'Port Security restringe o número de MACs por porta. É uma proteção de Camada 2, complementar ao DAI e ao DHCP Snooping.' },
+  ];
+
+  var api = {
+    flag: function (k) { return !!window.SFKit.state.flags[k]; },
+    setFlag: function (k, v) { window.SFKit.api.setFlag(k, v); },
+    out: function (t) { window.SFKit.api.out(t); },
+    ok: function (t) { window.SFKit.api.ok(t); },
+    warn: function (t) { window.SFKit.api.warn(t); },
+    err: function (t) { window.SFKit.api.err(t); },
+    info: function (t) { window.SFKit.api.info(t); },
+    refresh: function () { window.SFKit.api.refresh(); },
+  };
+
+  function comandos(raw) {
+    var d = raw.trim().toLowerCase().replace(/\s+/g, ' ');
+    var out = api.out, ok = api.ok, warn = api.warn, err = api.err, info = api.info;
+    var f = function (k) { return api.flag(k); };
+
+    if (d === 'help' || d === 'ajuda') { cfg.sugestoes.forEach(info); return; }
+    if (d === 'clear' || d === 'cls') {
+      document.querySelectorAll('#terminalBody .output').forEach(function (o) { o.remove(); });
+      return;
+    }
+    if (d === 'whoami') { ok('analista-seg@lab-sfcyber · escopo: ' + REDE + ' (simulado, laboratório isolado)'); return; }
+
+    if (d === 'arp -an') {
+      api.setFlag('viuArp');
+      out('Address                  HWtype  HWaddress           Flags Mask            Iface');
+      ok(GW + '             ether   ' + GW_MAC + '   C                     enp0s3');
+      out(VITIMA + '           ether   ' + VITIMA_MAC + '   C                     enp0s3');
+      out(DNS_SERVER + '            ether   00:1b:21:aa:bb:53   C                     enp0s3');
+      info('O IP do gateway está associado ao MAC ' + GW_MAC + '.');
+      warn('ARP não tem autenticação: qualquer resposta com o par IP-MAC errado é aceita pela vítima.');
+      api.refresh();
+      return;
+    }
+    if (d === 'sniff arp --time 8') {
+      api.setFlag('sniff');
+      out('Observando ARP por 8 segundos (modo passivo, nada é enviado)...');
+      ok('[00:01] ARP request  who-has ' + GW + '  tell ' + VITIMA);
+      ok('[00:03] ARP reply   ' + VITIMA + ' is-at ' + VITIMA_MAC);
+      ok('[00:06] ARP reply   ' + GW + ' is-at ' + GW_MAC);
+      ok('Hosts observados: 3 (gateway, vítima e um terceiro)');
+      info('Sniffing passivo: nenhuma alteração na rede, ninguém percebe.');
+      api.refresh();
+      return;
+    }
+    if (d === 'arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW) {
+      if (f('dArp')) {
+        err('ARP reply para ' + VITIMA + ' BLOQUEADO pelo switch (Dynamic ARP Inspection ativo).');
+        ok('✔ ARP Inspection impediu o envenenamento da tabela.');
+        return;
+      }
+      api.setFlag('spoof');
+      out('arp-spoof: envenenando tabela ARP de ' + VITIMA + ' ...');
+      ok('[+] ARP reply enviado: ' + GW + ' is-at 00:1b:21:ff:ee:99 (MAC do atacante)');
+      out('Tabela ARP de ' + VITIMA + ':');
+      warn('  ' + GW + '  ->  00:1b:21:ff:ee:99   <- agora é o atacante');
+      warn('A vítima passa a enviar o tráfego do gateway para você. MitM sem derrubar a conexão ainda.');
+      info('A tabela expira em poucos minutos: o ataque precisa de loop de renovação.');
+      api.refresh();
+      return;
+    }
+    if (d === 'ettercap -g eth0') {
+      if (!f('spoof')) {
+        err('Ative primeiro o ARP Spoofing: sem sequestrar a tabela da vítima o forwarding não tem efeito.');
+        info('Use: arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW);
+        return;
+      }
+      api.setFlag('mitm');
+      out('ettercap -G eth0');
+      ok('[*] Modo gateway (repasse) ativado em eth0');
+      ok('[*] Tráfego da vítima '+' NÃO é descartado');
+      info('A vítima continua navegando normalmente. Nenhuma percepção perceptível.');
+      warn('Agora todo o tráfego HTTP entre a vítima e o gateway passa por você.');
+      api.refresh();
+      return;
+    }
+    if (d === 'sniff tcp --port 80') {
+      if (!f('mitm')) {
+        err('Sem MitM ativo não há tráfego para capturar. Ative o modo gateway primeiro.');
+        return;
+      }
+      api.setFlag('sniffTcp');
+      out('Capturando TCP na porta 80...');
+      ok('[*] 14.02 10.20.20.50:51234 > 93.184.216.34:80  GET /index.html HTTP/1.1');
+      ok('[*] 14.02 10.20.20.50:51240 > 93.184.216.34:80  GET /perfil  HTTP/1.1');
+      ok('[*] Captura ativa. Use sniff http --show para ler o conteúdo.');
+      api.refresh();
+      return;
+    }
+    if (d === 'sniff http --show') {
+      if (!f('mitm')) { err('Ative o MitM antes de ler o tráfego capturado.'); return; }
+      api.setFlag('sniffHttp');
+      out('=== Requisições capturadas ===');
+      err('POST /login HTTP/1.1');
+      err('Host: app.exemplo.com');
+      err('Cookie: sessao=a7f3c9e21b884d5f   <- cookie de sessão em texto claro');
+      err('usuario=joana.prado&senha=Senha123   <- credenciais em texto claro');
+      warn('⚠ Em HTTP, usuário, senha e cookie trafegam legíveis. TLS (HTTPS) impediria essa leitura.');
+      warn('⚠ E se o DNS apontasse para o atacante, o TLS protegeria o servidor falso, não o real.');
+      api.refresh();
+      return;
+    }
+    if (d === 'dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99') {
+      if (f('dDhcp')) {
+        err('Offer DHCP do rogue bloqueado pelo switch (DHCP Snooping ativo).');
+        ok('✔ DHCP Snooping impediu o rogue DHCP server.');
+        return;
+      }
+      api.setFlag('dhcpRogue');
+      out('dhcp-starve: inundando DHCP Discover com Offer rogue...');
+      ok('[+] Offer rogue enviado: gateway 10.20.20.66 (atacante)');
+      ok('[+] Offer rogue enviado: dns     10.20.20.99 (atacante)');
+      warn('3 hosts renovaram e agora usam a configuração do atacante.');
+      warn('Gateway errado = sem saída. DNS falso = qualquer domínio resolve para o atacante.');
+      warn('Com DNS sequestrado, um certificado TLS válido para o domínio leva a vítima ao servidor do atacante.');
+      api.refresh();
+      return;
+    }
+    if (d === 'switch show ip arp-inspection' || d === 'switch show ip dhcp snooping') {
+      api.setFlag('defesas');
+      if (d.indexOf('arp-inspection') !== -1) {
+        out('Switch1# show ip arp-inspection');
+        err('Dynamic ARP Inspection is DISABLED');
+        warn('Sem DAI, qualquer host pode enviar resposta ARP falsa e sequestrar rotas de outros.');
+        return;
+      }
+      out('Switch1# show ip dhcp snooping');
+      err('DHCP Snooping is DISABLED');
+      warn('Sem DHCP Snooping, um rogue DHCP server na rede oferece configuração falsa para todos.');
+      api.refresh();
+      return;
+    }
+    if (d === 'defend sw --arp-inspection') {
+      api.setFlag('dArp');
+      out('Switch1(config)# ip arp inspection');
+      ok('Dynamic ARP Inspection ativado. Respostas ARP fora da tabela autorizada serão descartadas.');
+      api.refresh();
+      return;
+    }
+    if (d === 'defend sw --dhcp-snooping') {
+      api.setFlag('dDhcp');
+      out('Switch1(config)# ip dhcp snooping');
+      out('Switch1(config)# ip dhcp snooping vlan 20');
+      ok('DHCP Snooping ativado. Porta do servidor DHCP marcada como confiável; Offers rogue bloqueados.');
+      info('Limitação de taxa aplicada: máximo de 5 Offers por segundo.');
+      api.refresh();
+      return;
+    }
+    if (d === 'defend sw --port-security') {
+      api.setFlag('dPorta');
+      out('Switch1(config)# interface range fa0/1-24');
+      out('Switch1(config-if)# switchport port-security');
+      out('Switch1(config-if)# switchport port-security maximum 2');
+      out('Switch1(config-if)# switchport port-security violation restrict');
+      ok('Port Security ativo: máximo 2 MACs por porta, violação em modo restrict.');
+      api.refresh();
+      return;
+    }
+    if (d === 'verify attacks') {
+      if (!(f('dArp') && f('dDhcp') && f('dPorta'))) {
+        err('Ative as três defesas antes de validar: DAI, DHCP Snooping e Port Security.');
+        info('Faltando: ' + [f('dArp') ? null : 'DAI', f('dDhcp') ? null : 'DHCP Snooping', f('dPorta') ? null : 'Port Security'].filter(Boolean).join(', '));
+        return;
+      }
+      api.setFlag('validou');
+      out('Reexecutando os ataques com as defesas ativas...');
+      ok('[1] ARP Spoofing ......... BLOQUEADO (Dynamic ARP Inspection)');
+      ok('[2] Rogue DHCP ........... BLOQUEADO (DHCP Snooping + limitação de taxa)');
+      ok('[3] MAC flood ............. LIMITADO (Port Security, 2 MACs por porta)');
+      ok('A Camada 2 está protegida. Nenhum ataque completou.');
+      api.refresh();
+      return;
+    }
+    err('comando não encontrado: ' + raw.trim() + '. Digite "ajuda".');
+  }
+
+  var cfg = {
+    id: 'camada2',
+    titulo: 'Ataques de Camada 2 (MitM)',
+    subtitulo: 'ARP Spoofing, envenenamento de DHCP e defesa em profundidade em ambiente isolado',
+    painelTitulo: '🛡️ Laboratório Cibersegurança · Camada 2 (ARP | DHCP)',
+    colunaStatus: 'Vetor / proteção',
+    terminalTitulo: 'analista-seg@lab-sfcyber',
+    bannerTerminal: 'Rede: ' + REDE + ' · gateway ' + GW + ' (laboratório isolado e simulado).',
+    prompt: 'analista-seg@lab:~$',
+    boasVindas: 'Assuma o papel de um <b>Analista de Segurança</b> e estude ataques de <b>Camada 2</b> num laboratório isolado: descubra como o ARP Spoofing e o envenenamento de DHCP funcionam, ative as defesas (DAI, DHCP Snooping, Port Security) e valide que os ataques falham.',
+    avisoEscopo: 'tudo acontece em <b>simulação local</b>. Nenhum tráfego de rede real é gerado e nenhuma rede é atacada. Ferramentas como ettercap e bettercap aparecem como comandos ilustrativos, não são executadas. Ataques em redes de terceiros são <b>crime</b> (Lei 12.737/2012).',
+    features: [
+      'Entender por que o <b>ARP</b> é vulnerável',
+      'Fazer <b>reconhecimento passivo</b> com sniffing ARP',
+      'Simular <b>ARP Spoofing</b> e MitM com repasse',
+      'Simular <b>envenenamento de DHCP</b> (rogue server)',
+      'Ver por que <b>HTTPS não basta</b> com DNS sequestrado',
+      'Ativar <b>DAI, DHCP Snooping</b> e <b>Port Security</b>',
+    ],
+    referencia:
+      '<div><span>clear / cls</span> - Limpar a tela do terminal</div>' +
+      '<div><span>ajuda / help</span> - Listar comandos disponíveis</div>' +
+      '<div><span>arp -an</span> - Ver a tabela ARP da rede</div>' +
+      '<div><span>sniff arp --time 8</span> - Reconhecimento passivo (não altera a rede)</div>' +
+      '<div><span>arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW + '</span> - ARP Spoofing</div>' +
+      '<div><span>ettercap -G eth0</span> - Ativar repasse (modo gateway)</div>' +
+      '<div><span>sniff tcp --port 80</span> - Capturar tráfego TCP</div>' +
+      '<div><span>sniff http --show</span> - Ver o conteúdo capturado</div>' +
+      '<div><span>dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99</span> - Rogue DHCP server</div>' +
+      '<div><span>switch show ip arp-inspection</span> - Verificar Dynamic ARP Inspection</div>' +
+      '<div><span>switch show ip dhcp snooping</span> - Verificar DHCP Snooping</div>' +
+      '<div><span>defend sw --arp-inspection</span> - Ativar DAI</div>' +
+      '<div><span>defend sw --dhcp-snooping</span> - Ativar DHCP Snooping</div>' +
+      '<div><span>defend sw --port-security</span> - Ativar Port Security</div>' +
+      '<div><span>verify attacks</span> - Reexecutar os ataques e ver se falham</div>',
+    sugestoes: [
+      'clear', 'ajuda',
+      'arp -an',
+      'sniff arp --time 8',
+      'arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW,
+      'ettercap -G eth0',
+      'sniff tcp --port 80',
+      'sniff http --show',
+      'dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99',
+      'switch show ip arp-inspection', 'switch show ip dhcp snooping',
+      'defend sw --arp-inspection', 'defend sw --dhcp-snooping', 'defend sw --port-security',
+      'verify attacks',
+    ],
+    flagsIniciais: ['viuArp', 'sniff', 'spoof', 'mitm', 'sniffTcp', 'sniffHttp', 'dhcpRogue', 'defesas', 'dArp', 'dDhcp', 'dPorta', 'validou'],
+    resetFlags: [['viuArp'], ['sniff'], ['spoof'], ['mitm', 'sniffTcp', 'sniffHttp'], ['dhcpRogue'], ['defesas'], ['dArp', 'dDhcp', 'dPorta', 'validou']],
+    triggerList: [
+      ['arp -an'],
+      ['sniff arp --time 8'],
+      ['arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW],
+      ['ettercap -G eth0'],
+      ['dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99'],
+      ['sniff http --show'],
+      ['switch show ip arp-inspection', 'switch show ip dhcp snooping'],
+      ['defend sw --arp-inspection', 'defend sw --dhcp-snooping', 'defend sw --port-security', 'verify attacks'],
+    ],
+    levels: levels,
+    teoria: teoria,
+    quiz: quiz,
+    comandos: comandos,
+    status: function (s) {
+      var f = s.flags;
+      return [
+        { item: 'ARP Spoofing', status: f.spoof ? (f.dArp ? 'Bloqueado (DAI)' : 'Envenenamento ativo') : 'Não executado', cls: f.spoof ? (f.dArp ? 'ok' : 'bad') : 'mid' },
+        { item: 'MitM (repasse ativo)', status: f.mitm ? (f.dArp ? 'Bloqueado' : 'Interceptando tráfego') : 'Não executado', cls: f.mitm ? (f.dArp ? 'ok' : 'bad') : 'mid' },
+        { item: 'Credencial exposta', status: f.sniffHttp ? (f.dArp ? 'Não obtida' : 'Capturada') : 'Não capturada', cls: f.sniffHttp ? (f.dArp ? 'ok' : 'bad') : 'mid' },
+        { item: 'Rogue DHCP server', status: f.dhcpRogue ? (f.dDhcp ? 'Bloqueado' : 'Configuração falsa ativa') : 'Não executado', cls: f.dhcpRogue ? (f.dDhcp ? 'ok' : 'bad') : 'mid' },
+        { item: 'Dynamic ARP Inspection', status: f.dArp ? 'Ativado' : (f.defesas ? 'Desligado' : 'Não verificado'), cls: f.dArp ? 'ok' : (f.defesas ? 'bad' : 'mid') },
+        { item: 'DHCP Snooping', status: f.dDhcp ? 'Ativado' : (f.defesas ? 'Desligado' : 'Não verificado'), cls: f.dDhcp ? 'ok' : (f.defesas ? 'bad' : 'mid') },
+        { item: 'Port Security', status: f.dPorta ? 'Ativado (2 MACs/porta)' : 'Não ativado', cls: f.dPorta ? 'ok' : 'mid' },
+        { item: 'Rede como um todo', status: f.validou ? 'Protegida' : 'Em análise', cls: f.validou ? 'ok' : 'mid' },
+      ];
+    },
+    cena: function (c, W, H, s, k) {
+      var f = s.flags;
+      var okAll = f.dArp && f.dDhcp && f.dPorta && f.validou;
+
+      // atacante no meio
+      var atkX = W * 0.45, atkY = H * 0.42, atkW = W * 0.14, atkH = H * 0.16;
+      k.box(W * 0.03, H * 0.20, W * 0.19, H * 0.18, f.spoof ? (f.dArp ? k.cor.ok : k.cor.bad) : k.cor.dim, '🕵️ ATACANTE', ATACANTE, '#ff8a80');
+      k.box(W * 0.78, H * 0.20, W * 0.19, H * 0.18, k.cor.info, '🌐 GATEWAY', GW_MAC, k.cor.info);
+      k.box(W * 0.03, H * 0.62, W * 0.19, H * 0.16, k.cor.info, '💻 VÍTIMA', VITIMA_MAC, k.cor.info);
+      k.box(W * 0.78, H * 0.62, W * 0.19, H * 0.16, f.dhcpRogue ? (f.dDhcp ? k.cor.ok : k.cor.bad) : k.cor.dim, '📡 DHCP ROGUE', f.dhcpRogue ? (f.dDhcp ? 'bloqueado' : 'ativo') : 'inativo', '#ff8a80');
+
+      // switch
+      k.box(W * 0.30, H * 0.12, W * 0.40, H * 0.16,
+        f.dArp && f.dDhcp ? k.cor.ok : (f.defesas ? k.cor.bad : k.cor.warn),
+        '🔀 SWITCH', f.dArp && f.dDhcp ? 'DAI + Snooping ✔' : (f.defesas ? 'protekções OFF' : 'não verificado'), k.cor.info);
+
+      // caixa do atacante no meio, so aparece com spoof ativo
+      if (f.spoof) {
+        k.box(atkX, atkY, atkW, atkH, f.dArp ? k.cor.ok : k.cor.bad, '🎭 MITM', f.mitm ? 'repasse on' : 'sem repasse', '#ff8a80');
+      }
+
+      // setas: vitima <-> atacante <-> gateway
+      var corArp = f.dArp ? k.cor.ok : (f.spoof ? k.cor.bad : k.cor.warn);
+      k.arrow(W * 0.22, H * 0.29, W * 0.30, H * 0.20, corArp);
+      k.arrow(W * 0.30, H * 0.20, W * 0.78, H * 0.20, corArp, true);
+      k.arrow(W * 0.22, H * 0.70, W * 0.30, H * 0.28, f.dDhcp ? k.cor.ok : (f.dhcpRogue ? k.cor.bad : k.cor.warn), true);
+      k.arrow(W * 0.78, H * 0.70, W * 0.70, H * 0.28, f.dDhcp ? k.cor.ok : (f.dhcpRogue ? k.cor.bad : k.cor.warn), true);
+      if (f.spoof) {
+        k.arrow(W * 0.52, H * 0.42, W * 0.52, H * 0.30, corArp);
+        k.arrow(W * 0.66, H * 0.30, W * 0.84, H * 0.29, corArp);
+      }
+      if (okAll) {
+        k.texto(W * 0.5, H * 0.92, '✔ Camada 2 protegida: ataques bloqueados', k.cor.ok, H * 0.028, 'center');
+      }
+    },
+    bot: function (idx, s) {
+      var f = s.flags;
+      switch (idx) {
+        case 0: return f.viuArp ? ['SF Bot 🔗', 'ARP mapeado! O gateway responde por ' + GW_MAC + '.'] : ['SF Bot 🔗', 'Veja a tabela ARP: <b>arp -an</b>'];
+        case 1: return f.sniff ? ['SF Bot 👁️', 'Recon passivo concluído, ninguém percebeu.'] : ['SF Bot 👁️', 'Observe sem alterar nada: <b>sniff arp --time 8</b>'];
+        case 2: return f.spoof ? (f.dArp ? ['SF Bot ⚔️', 'ARP Inspection bloqueou o spoof!'] : ['SF Bot ⚔️', 'Tabela da vítima envenenada!']) : ['SF Bot ⚔️', 'Envenene a tabela: <b>arp-spoof -i eth0 -t ' + VITIMA + ' -g ' + GW + '</b>'];
+        case 3: return f.mitm ? (f.dArp ? ['SF Bot 🧩', 'Repasse bloqueado pela proteção.'] : ['SF Bot 🧩', 'MitM ativo e silencioso!']) : ['SF Bot 🧩', 'Ative o repasse: <b>ettercap -G eth0</b>'];
+        case 4: return f.dhcpRogue ? (f.dDhcp ? ['SF Bot 📡', 'DHCP Snooping bloqueou o rogue!'] : ['SF Bot 📡', 'Rogue DHCP ativo!']) : ['SF Bot 📡', 'Simule o rogue: <b>dhcp-starve --rogue -i eth0 -g 10.20.20.66 -d 10.20.20.99</b>'];
+        case 5: return f.sniffHttp ? (f.dArp ? ['SF Bot 🔓', 'Nada capturado: ataque bloqueado.'] : ['SF Bot 🔓', 'Credencial capturada em texto claro!']) : ['SF Bot 🔓', 'Leia o capturado: <b>sniff http --show</b>'];
+        case 6: return f.defesas ? ['SF Bot 🛡️', 'Confirme: DAI e DHCP Snooping estão desligados.'] : ['SF Bot 🛡️', 'Verifique: <b>switch show ip arp-inspection</b> e <b>switch show ip dhcp snooping</b>'];
+        case 7:
+          if (!f.dArp) return ['SF Bot 🛡️', 'Ative DAI: <b>defend sw --arp-inspection</b>'];
+          if (!f.dDhcp) return ['SF Bot 🛡️', 'Ative DHCP Snooping: <b>defend sw --dhcp-snooping</b>'];
+          if (!f.dPorta) return ['SF Bot 🛡️', 'Ative Port Security: <b>defend sw --port-security</b>'];
+          if (!f.validou) return ['SF Bot 🔁', 'Valide: <b>verify attacks</b>'];
+          return ['SF Bot 🏆', 'Ataques bloqueados! Toque em <b>Próximo Nível</b>.'];
+      }
+      return null;
+    },
+    curadoria:
+      '<div class="curation-block ok"><b>Tudo aqui é simulação.</b> Nenhum pacote é gerado, nenhuma rede é atacada e nenhum comando real é executado. <code>ettercap</code>, <code>bettercap</code>, <code>arp-spoof</code> e <code>dhcp-starve</code> aparecem como <b>comandos ilustrativos</b> dentro de um simulador local: os comandos são roteados para respostas geradas em código.</div>' +
+      '<div class="curation-block warn"><b>Atenção: ARP Spoofing e DHCP poisoning são crimes.</b> Usar essas técnicas em rede de terceiro sem autorização formal é crime no Brasil (Lei 12.737/2012 e Marco Civil da Internet, art. 19-A) e em quase todos os países. "Era só o meu wifi" não é defesa. Prática legítima só em laboratório próprio ou com autorização por escrito, com escopo e janela definidos.</div>' +
+      '<div class="curation-block"><b>Para treinar de verdade, com alvo planejado.</b> Use ambientes intencionais: <a href="https://www.virtualbox.org/" target="_blank" rel="noopener">VirtualBox</a> com duas VMs e rede interna (o ARP Spoofing precisa de 3 hosts para MitM completo), <a href="https://bettercap.org/" target="_blank" rel="noopener">bettercap</a> em <code>10.0.0.0/8</code> (faixa de laboratório) e ferramentas de rede do próprio SO. Nunca aponte para rede pública ou de terceiros.</div>' +
+      '<div class="curation-block"><b>O lado que importa em produção.</b> Em rede real, ARP Spoofing e DHCP rogue são mitigados com Dynamic ARP Inspection, DHCP Snooping, Port Security, IP Source Guard, segmentação em VLANs e monitoramento de tabela ARP. Todo switch de produção hoje tem essas features desligadas por padrão: ligar e entender por que é parte do trabalho.</div>' +
+      '<div class="curation-block ok"><b>Achou uma falha de Camada 2 numa rede alheia?</b> Não exploreie. Reporte ao responsável da rede e à equipe de segurança, descrevendo o que observou sem repetir o ataque. Informações de Camada 2 ajudam a equipe de seguranca a fechar a defesa e quase nunca exigem prova destrutiva.</div>',
+    guide: {
+      titulo: 'Guia de Camada 2',
+      abas: [
+        { id: 'arp', label: '🔗 ARP', html:
+          '<h3>🔗 ARP: a ponte entre IP e MAC</h3>' +
+          '<p>Dentro da rede local, o <b>switch não lê IP</b>: ele decide o caminho pelo <b>endereço MAC</b>. O ARP é quem traduz "para quem é esse IP?" em "qual é o MAC?".</p>' +
+          '<div class="exemplo"><span class="rotulo">Como o ARP funciona</span>' +
+          '<p>1. Host precisa enviar para 10.20.20.1 e consulta a tabela ARP.<br>' +
+          '2. Sem entrada, transmite <b>ARP Request</b> (broadcast): "quem tem 10.20.20.1?"<br>' +
+          '3. O dono do IP responde com <b>ARP Reply</b> e o mapa fica guardado por alguns minutos.</p></div>' +
+          '<div class="problema"><b>A falha de projeto:</b> o ARP não tem autenticação nem integridade. Qualquer resposta recebida é aceita, mesmo que falsificada. É por isso que o ataque funciona em rede comutada comum.</div>' +
+          '<h4>ARP Spoofing na prática</h4><ol class="passos">' +
+          '<li>O atacante observa quem é o gateway (sniffing passivo).</li>' +
+          '<li>Envia respostas ARP forjadas para a vítima: "o gateway 10.20.20.1 é meu MAC".</li>' +
+          '<li>A vítima atualiza a tabela e passa a enviar o tráfego do gateway para o atacante.</li>' +
+          '<li>O atacante repassa o tráfego (modo gateway) para a conexão não cair.</li>' +
+          '<li>A partir daí, todo o tráfego HTTP da vítima é legível.</li></ol>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> o ARP confia em quem responde. Quem responde primeiro, decide o caminho.</div>' },
+        { id: 'dhcp', label: '📡 DHCP', html:
+          '<h3>📡 DHCP: configuração automática (e sequestrável)</h3>' +
+          '<p>Quando uma máquina entra na rede, ela pede configuração por DHCP. O processo é <b>DORA</b>: Discover, Offer, Request, Acknowledge.</p>' +
+          '<div class="exemplo"><span class="rotulo">O problema do primeiro Offer</span>' +
+          '<p>1. Host entra e transmite <b>Discover</b> (broadcast, "existe algum servidor DHCP?").</p>' +
+          '<p>2. Servidores legítimos respondem com <b>Offer</b>. Um rogue pode responder antes.</p>' +
+          '<p>3. Host envia <b>Request</b> confirmando a escolha.</p>' +
+          '<p>4. Servidor escolhido manda <b>Acknowledge</b> com a configuração.</p>' +
+          '<p>Não há autenticação: <b>o primeiro Offer aceito vence</b>. Nada impede um Offer falso.</p></div>' +
+          '<h4>O que um rogue entrega</h4><ul>' +
+          '<li><b>Gateway falso</b>: a vítima não sai da rede local (ou sai pelo atacante).</li>' +
+          '<li><b>DNS falso</b>: todo domínio resolve para o atacante. É aqui que o HTTPS perde a proteção.</li>' +
+          '<li><b>Servidor de arquivos falso</b> ou <b>proxy</b> aberto para Hijacking.</li></ul>' +
+          '<div class="problema"><b>Por que HTTPS não impede:</b> com o DNS apontando para o atacante, ele apresenta um certificado TLS <b>válido</b> para o domínio. O navegador mostra o cadeado, mas está conectado ao servidor errado. Isso é DNS hijacking.</div>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> TLS protege o canal até quem responde. Se o DNS mente sobre quem responde, TLS protege o impostor.</div>' },
+        { id: 'defesa', label: '🛡️ Defesa', html:
+          '<h3>🛡️ Defesa em profundidade na Camada 2</h3>' +
+          '<p>Cada proteção cobre um vetor diferente. Nenhuma sozinha fecha a Camada 2.</p>' +
+          '<div class="exemplo"><span class="rotulo">Dynamic ARP Inspection (DAI)</span>' +
+          '<p>O switch compara cada resposta ARP com sua própria tabela ARP autorizada. Mapeamento divergente é descartado. Neutraliza ARP Spoofing na origem.</p></div>' +
+          '<div class="exemplo"><span class="rotulo">DHCP Snooping</span>' +
+          '<p>Marca a porta do servidor DHCP legítimo como confiável. Offers de outras portas são bloqueados. Com <b>IP Source Guard</b>, também impede ARP Spoofing usando IP de origem não autorizada.</p></div>' +
+          '<div class="exemplo"><span class="rotulo">Port Security</span>' +
+          '<p>Limita quantos MACs podem ser aprendidos em cada porta (tipicamente 1 a 3). Bloqueia MAC flooding e Rogue DHCP em um único host. Modo <code>restrict</code> em vez de <code>shutdown</code> para não derrubar um dispositivo legítimo.</p></div>' +
+          '<div class="exemplo"><span class="rotulo">ARP estático</span>' +
+          '<p>Imobiliza o mapeamento de um IP crítico (servidor, gateway) no host ou no switch. Defender simples para um servidor específico, mas não protege a rede toda.</p></div>' +
+          '<h4>Não esqueça</h4><ul>' +
+          '<li><b>VLANs</b>: segmentam o broadcast e limitam a propagação do ataque.</li>' +
+          '<li><b>TLS/HTTPS</b>: protege o conteúdo, mas não o DNS nem a Camada 2.</li>' +
+          '<li><b>Monitoramento</b>: tabela ARP crescendo de repente é sinal de spoof em curso.</li>' +
+          '<li><b>Regra de DHCP</b> em host: o rogue vem do cliente 1, não do servidor.</li></ul>' +
+          '<div class="destaque-final"><b>Frase para levar:</b> DAI + Snooping + Port Security + VLAN + TLS: cada um corta um caminho diferente do mesmo ataque.</div>' },
+      ],
+    },
+    missaoCumprida: 'Você estudou ARP Spoofing e envenenamento de DHCP num laboratório isolado, entendeu por que HTTPS não basta com DNS sequestrado, e ativou DAI, DHCP Snooping e Port Security até os ataques falharem.',
+    saberes: '✓ Entender por que o ARP não tem autenticação e é vulnerável a spoofing<div>✓ Reconhecer passivamente quem é o gateway e a vítima</div><div>✓ Explicar por que o MitM exige repasse de pacotes</div><div>✓ Entender DHCP rogue e DNS hijacking</div><div>✓ Saber por que TLS não protege quando o DNS é sequestrado</div><div>✓ Ativar DAI, DHCP Snooping e Port Security como defesa em profundidade</div>',
+    posRemember: 'ataques de Camada 2 em rede de terceiro são crime (Lei 12.737/2012). Pratique só em laboratório próprio ou com autorização escrita, e prefira entender a defesa antes do ataque.',
+    certTitulo: 'Ataques de Camada 2 (ARP Spoofing | DHCP | MitM)',
+    certNota: 'Simulador Interativo de Camada 2 8 níveis + prova final · ambiente isolado',
+    storageKey: 'sfcyber-camada2-v1',
+  };
+
+  window.SFKit.init(cfg);
+}());
+</script>
+</body>
+</html>
