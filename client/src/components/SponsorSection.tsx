@@ -6,7 +6,7 @@ const PARTNERS = [
     icon: Building2,
     title: "Empresas",
     subtitle: "Capacite sua equipe",
-    desc: "Trilhas práticas de Redes e Cibersegurança para desenvolver habilidades aplicáveis ao dia a dia.",
+    desc: "Laboratórios para práticas de Redes e Cibersegurança para desenvolver habilidades aplicáveis ao dia a dia.",
   },
   {
     icon: Handshake,
@@ -16,7 +16,7 @@ const PARTNERS = [
   },
   {
     icon: GraduationCap,
-    title: "Faculdades e IES",
+    title: "Instituições de Ensino",
     subtitle: "Coloque seus alunos para praticar",
     desc: "Laboratórios interativos para complementar as aulas, acompanhar o progresso e reconhecer a conclusão.",
   },
