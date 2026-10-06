@@ -1097,11 +1097,12 @@
             <b>postura ética</b> do pentest. Leia a aba <b>Curadoria e escopo</b> a qualquer momento.
         </div>
         <div class="name-field" style="margin:14px auto 6px; max-width:340px; text-align:left;">
-            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (para o certificado):</label>
+            <label for="studentNameInput" style="font-size:0.85em; color:#5e5e5e; display:block; margin-bottom:6px;">👤 Nome do aluno (obrigatório, para o certificado):</label>
             <input type="text" id="studentNameInput" placeholder="Digite seu nome..."
-                   maxlength="42" autocomplete="off"
+                   maxlength="42" autocomplete="off" oninput="clearNameError()"
                    style="width:100%; padding:12px 14px; border-radius:10px; border:2px solid rgba(0,120,212,0.45);
                           background:#ffffff; color:#201f1e; font-size:1em; outline:none; box-sizing:border-box;">
+            <div id="nameError" style="display:none; margin-top:8px; color:#c50f1f; font-size:0.85em; font-weight:600;">Informe seu nome para acessar o laboratório e emitir o certificado.</div>
         </div>
         <div class="features">
             <div class="feature-item"><div class="icon">1</div><span>Mapear uma <b>API REST</b> de e-commerce</span></div>
@@ -2534,12 +2535,16 @@ function openGameComplete() {
 }
 
 function showCertificate() {
+    if (!requireStudentName()) {
+        openModal('welcomeModal');
+        return;
+    }
     if (!state.quizDone || !state.quizApproved) {
         document.getElementById('quizFeedback').textContent = '🔒 Você precisa ser aprovado na prova final (50%+ ) para obter o certificado.';
         openQuiz();
         return;
     }
-    const name = state.studentName || 'Aluno(a)';
+    const name = state.studentName;
     document.getElementById('certStudentName').textContent = name;
     document.getElementById('certScore').textContent = state.score + ' pts';
     document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
@@ -2550,11 +2555,12 @@ function showCertificate() {
 
 function downloadCertificate() {
     const node = document.getElementById('certificatePrint');
+    const base = 'certificado-sfcyber-pentest-ecommerce-';
     if (window.htmlToImage) {
         htmlToImage.toPng(node, { pixelRatio: 2, backgroundColor: '#f3f7fa' })
             .then(dataUrl => {
                 const a = document.createElement('a');
-                a.download = 'certificado-sfcyber-pentest-ecommerce-' + (state.studentName || 'aluno').toLowerCase().replace(/\s+/g, '-') + '.png';
+                a.download = base + (state.studentName || 'aluno').toLowerCase().replace(/\s+/g, '-') + '.png';
                 a.href = dataUrl;
                 a.click();
             })
@@ -2565,10 +2571,55 @@ function downloadCertificate() {
 }
 
 // ===================== WELCOME / STORAGE =====================
+const NAME_BLOCK_WORDS = ['teste', 'test', 'fulano', 'fulana', 'aluno', 'aluna', 'anonimo', 'anonima', 'exemplo', 'sample', 'nome', 'aqui', 'blabla', 'asdf', 'asdasd', 'qwe', 'qwerty', 'xxx', 'aaa', 'zzz'];
+
+function showNameError(msg) {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) { if (msg) err.textContent = msg; err.style.display = 'block'; }
+    if (ni) { ni.style.borderColor = '#c50f1f'; ni.focus(); }
+}
+
+function clearNameError() {
+    const err = document.getElementById('nameError');
+    const ni = document.getElementById('studentNameInput');
+    if (err) err.style.display = 'none';
+    if (ni) ni.style.borderColor = 'rgba(0,120,212,0.45)';
+}
+
+function validateStudentName(raw) {
+    const value = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!value) return { ok: false, msg: 'Informe seu nome para acessar o laboratório e emitir o certificado.' };
+    if (!/^[\p{L}\p{M}]+(?:[ '\-][\p{L}\p{M}]+)*$/u.test(value)) {
+        return { ok: false, msg: 'Use apenas letras no nome. Não use números, e-mails ou links.' };
+    }
+    const words = value.split(' ');
+    if (words.length < 2) return { ok: false, msg: 'Digite nome e sobrenome para emitir o certificado.' };
+    if (words.some(function (w) { return w.replace(/[ '\-]/g, '').length < 2; })) {
+        return { ok: false, msg: 'Cada parte do nome precisa ter pelo menos 2 letras.' };
+    }
+    if (value.length < 6) return { ok: false, msg: 'O nome completo precisa ter pelo menos 6 caracteres.' };
+    const flatWords = words.map(function (w) {
+        return w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[ '\-]/g, '');
+    });
+    if (flatWords.some(function (w) { return /^([a-z])\1+$/.test(w) || NAME_BLOCK_WORDS.indexOf(w) !== -1; })) {
+        return { ok: false, msg: 'Informe um nome válido para o certificado.' };
+    }
+    return { ok: true, value: value };
+}
+
+function requireStudentName() {
+    const ni = document.getElementById('studentNameInput');
+    const res = validateStudentName((ni && ni.value) || state.studentName || '');
+    if (!res.ok) { showNameError(res.msg); return ''; }
+    state.studentName = res.value;
+    if (ni && ni.value !== res.value) ni.value = res.value;
+    clearNameError();
+    return res.value;
+}
+
 function closeWelcome() {
-    const nameInput = document.getElementById('studentNameInput');
-    const name = (nameInput.value || '').trim();
-    state.studentName = name || 'Aluno(a)';
+    if (!requireStudentName()) return;
     closeModal('welcomeModal');
     input.focus();
     renderLevel();
@@ -2578,6 +2629,7 @@ function closeWelcome() {
 }
 
 function resumeGame() {
+    if (!requireStudentName()) return;
     closeModal('welcomeModal');
     input.focus();
     renderLevel();

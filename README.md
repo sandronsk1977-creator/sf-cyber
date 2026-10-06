@@ -21,6 +21,7 @@ Pré-requisitos: Node.js 24+ e pnpm 10+.
 
 - Landing page em tema dark com animação de "destrinchamento" de título e trilha de contatos flutuante (LinkedIn, Projetos Disruptivos e WhatsApp) com pulsação.
 - Todos os simuladores seguem o mesmo fluxo: **aprendizado -> prática -> avaliação -> aprovação -> certificado de conclusão**, com 8 níveis e prova final de 8 perguntas (aprovação exige 50%+). Após realizar a avaliação e atingir o critério de aprovação, você recebe seu certificado de conclusão. O progresso fica salvo no `localStorage`.
+- **Nome obrigatório**: os cinco laboratórios exigem nome e sobrenome válidos (só letras, mínimo de 2 letras por parte e 6 caracteres no total, sem números, e-mails ou palavras genéricas) para entrar e emitir o certificado.
 - **Simulador de VLANs Switch Cisco** integrado em `/simulador-vlan` (VLANs, trunk/access, teste de ping e certificado).
 - **Simulador de Segurança (Analista SOC | Hacker Ético)** em `/simulador-seguranca` (nmap, firewall ufw, logs, bloqueio de atacante e hardening de SSH).
 - **Simulador de Segurança Web (SQL Injection | XSS)** em `/simulador-web` (descoberta, SQLi, login bypass, UNION SELECT, XSS refletido e armazenado e correção da aplicação).

@@ -25,6 +25,7 @@ const plans = [
         "Laboratório de Segurança (Analista SOC | Hacker Ético)",
         "Laboratório de Segurança Web (SQL Injection | XSS)",
         "Laboratório de Servidor DNS (Resolução | AXFR | DNSSEC)",
+        "Laboratório de Pentest em E-commerce (IDOR | 2FA | Segredos)",
         "Teste de conectividade",
         "Certificado de conclusão (período de avaliação)",
       ],
