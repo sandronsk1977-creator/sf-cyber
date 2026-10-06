@@ -42,7 +42,7 @@ export function SponsorSection() {
         </div>
 
         <p className="text-center text-lg text-cyan-400 font-bold font-mono mb-10">
-          Não entregue apenas conteúdo. Entregue experiência.
+          Você não se prepara para decorar, mas para dominar os conceitos e resolver problemas por meio de desafios.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6 mb-10">
