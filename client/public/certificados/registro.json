@@ -2,7 +2,22 @@
   "versao": 1,
   "chaveId": "sfc-ed25519-2026",
   "emissor": "SF Cyber Academy",
-  "atualizadoEm": "2026-10-07T23:38:38Z",
-  "entradas": [],
-  "assinatura": "L9zIcJDo3kikXHPE369dXvB01NfYVMbvy3O6wFGVQ00VaVwry1KP+7pEkze5xZ8tXJHvZL5ecVVBjsrFdULACg=="
+  "atualizadoEm": "2026-10-07T23:42:38Z",
+  "entradas": [
+    {
+      "codigo": "SFC-2026-000001",
+      "nome": "Aluno de Teste da Validacao",
+      "curso": "Redes · Servidor DNS (resolução, AXFR e DNSSEC)",
+      "cargaHoraria": 20,
+      "dataConclusao": "2026-10-07",
+      "aproveitamento": 87.5,
+      "responsavelNome": "Sandro Ferreira",
+      "responsavelFormacao": "Graduado em Defesa Cibernética",
+      "responsavelEspecialidade": "Especialista em Gestão de Projetos",
+      "responsavelPapel": "Criador e Instrutor da SF Cyber Academy",
+      "emitidoEm": "2026-10-07T23:42:38Z",
+      "assinatura": "WDvQt6qiRQOngxwo+Rh5lVQEfSZ18sQAn0Zau1F/O5qu4PrGAaU6BWpDUK3NhP78gzlWussN1Bb6JxzQiX1RDg=="
+    }
+  ],
+  "assinatura": "hhsoFBeEREkwcfYwX8UvqsPQGRrppixgWOlIcpxddtovfwxWOQ23rH74Zj1pcm3h3bHalaRKeqyQGfts7ePsBA=="
 }
