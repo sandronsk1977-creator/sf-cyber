@@ -1208,7 +1208,7 @@ const levels = [
     {
         id: 6,
         title: "Nível 6: Configuração Completa",
-        desc: "Complete a configuração: atribua a porta fa0/2 à VLAN 20 (RH) como porta access. Depois, salve a configuração!",
+        desc: "Complete a configuração: atribua a porta fa0/2 à VLAN 20 (RH) como porta access. depois salve a configuração!",
         hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/2</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: [] } }, 
@@ -1223,7 +1223,7 @@ const levels = [
     {
         id: 7,
         title: "Nível 7: Conectando o PC3 ao RH",
-        desc: "O PC3 pertence ao setor de Recursos Humanos. Atribua a porta fa0/3 à VLAN 20 (RH) como porta access. Depois, salve a configuração!",
+        desc: "O PC3 pertence ao setor de Recursos Humanos. Atribua a porta fa0/3 à VLAN 20 (RH) como porta access. depois salve a configuração!",
         hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/3</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: ['fa0/2'] } }, 
@@ -1239,7 +1239,7 @@ const levels = [
     {
         id: 8,
         title: "Nível 8: Conectando o PC4 ao TI",
-        desc: "O PC4 pertence ao setor de Tecnologia da Informação. Atribua a porta fa0/4 à VLAN 10 (TI) como porta access. Depois, salve a configuração!",
+        desc: "O PC4 pertence ao setor de Tecnologia da Informação. Atribua a porta fa0/4 à VLAN 10 (TI) como porta access. depois salve a configuração!",
         hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/4</code>, <code>switchport mode access</code>, <code>switchport access vlan 10</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: ['fa0/2', 'fa0/3'] } }, 
@@ -1871,7 +1871,7 @@ case 3:
             if (curIf !== 'fa0/2') return [ROBOT_NAME + ' 💡', 'Última porta! Selecione: <b>interface fa0/2</b>'];
             if (!i2 || i2.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Modo access: <b>switchport mode access</b>'];
             if (i2.vlan !== 20) return [ROBOT_NAME + ' 💡', 'Atribua à RH: <b>switchport access vlan 20</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, primeiro digite <b>exit</b> para voltar ao modo privilegiado. Depois, digite <b>copy running-config startup-config</b> para salvar.'];
             return [ROBOT_NAME + ' 🎉', 'Configuração completa! Toque em <b>Próximo Nível</b>.'];
         case 6:
             const i3 = cfg.interfaces['fa0/3'];
@@ -1880,7 +1880,7 @@ case 3:
             if (curIf !== 'fa0/3') return [ROBOT_NAME + ' 💡', 'PC3 chegou à rede! Selecione a porta que o conecta: <b>interface fa0/3</b>'];
             if (!i3 || i3.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Defina o modo da porta: <b>switchport mode access</b>'];
             if (i3.vlan !== 20) return [ROBOT_NAME + ' 💡', 'O PC3 é do RH, atribua: <b>switchport access vlan 20</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, salve: <b>copy running-config startup-config</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, primeiro digite <b>exit</b> para voltar ao modo privilegiado. Depois, digite <b>copy running-config startup-config</b> para salvar.'];
             return [ROBOT_NAME + ' 🎉', 'PC3 na VLAN 20 (RH)! Toque em <b>Próximo Nível</b>.'];
         case 7:
             const i4 = cfg.interfaces['fa0/4'];
@@ -1889,7 +1889,7 @@ case 3:
             if (curIf !== 'fa0/4') return [ROBOT_NAME + ' 💡', 'Falta o PC4! Selecione a porta que o conecta: <b>interface fa0/4</b>'];
             if (!i4 || i4.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Defina o modo da porta: <b>switchport mode access</b>'];
             if (i4.vlan !== 10) return [ROBOT_NAME + ' 💡', 'O PC4 é do TI, atribua: <b>switchport access vlan 10</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, primeiro digite <b>exit</b> para voltar ao modo privilegiado. Depois, digite <b>copy running-config startup-config</b> para salvar.'];
             return [ROBOT_NAME + ' 🎉', 'Todos os hosts conectados! Toque em <b>Próximo Nível</b>.'];
     }
 return [ROBOT_NAME + ' 💡', 'Boa sorte nesta etapa!'];
