@@ -1,5 +1,5 @@
 import React from "react";
-import { Network, ShieldHalf, Bug, Globe, ShoppingCart, Terminal, ArrowRight, Layers, Award } from "lucide-react";
+import { Network, ShieldHalf, Bug, Globe, ArrowRight, Layers, Award } from "lucide-react";
 
 const metaChips = (
   <>
@@ -40,7 +40,7 @@ export function PortalCardsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <a
             href="/vlans/index.html"
@@ -156,126 +156,6 @@ export function PortalCardsSection() {
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
               Audite o servidor DNS como um Administrador de Redes: resolva registros A, MX e NS com dig, descubra a transferência de zona (AXFR) e proteja a zona com DNSSEC.
-            </p>
-
-            {cardFooter}
-          </a>
-
-          {/* Card 05 - Cibersegurança | Pentest em E-commerce */}
-          <a
-            href="/ecommerce/index.html"
-            style={{ "--neon": "#f43f5e" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
-              Cibersegurança
-            </span>
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-amber-600/15 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                <ShoppingCart className="w-6 h-6" />
-              </div>
-              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                Disponível
-              </span>
-            </div>
-
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
-              Pentest em E-commerce
-            </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">
-              Audite a API de uma loja com curl: IDOR em pedidos, bypass de 2FA, segredo administrativo no front-end, escalonamento de privilégio e o laudo final.
-            </p>
-
-            {cardFooter}
-          </a>
-
-          {/* Card 06 - Redes | Endereçamento IP e Sub-redes */}
-          <a
-            href="/ip-subnets/index.html"
-            style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-wider border border-cyan-400/50 animate-neon-badge z-10">
-              Redes
-            </span>
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                <Network className="w-6 h-6" />
-              </div>
-              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                Disponível
-              </span>
-            </div>
-
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
-              Endereçamento IP e Sub-redes
-            </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">
-              Calcule sub-redes IPv4 e IPv6, configure endereço estático e escopo DHCP e corrija máscara, IP duplicado e rota IPv6.
-            </p>
-
-            {cardFooter}
-          </a>
-
-          {/* Card 07 - Redes | Ferramentas de Diagnóstico */}
-          <a
-            href="/ferramentas/index.html"
-            style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-blue-900 text-white text-xs font-bold uppercase tracking-wider border border-cyan-400/50 animate-neon-badge z-10">
-              Redes
-            </span>
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                <Terminal className="w-6 h-6" />
-              </div>
-              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                Disponível
-              </span>
-            </div>
-
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
-              Ferramentas de Diagnóstico
-            </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">
-              Isole a camada da falha com ping, traceroute, nslookup e netstat: conectividade, rota, DNS, porta e aplicação.
-            </p>
-
-            {cardFooter}
-          </a>
-
-          {/* Card 08 - Cibersegurança | Ataques de Camada 2 */}
-          <a
-            href="/camada2/index.html"
-            style={{ "--neon": "#f43f5e" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-800 text-white text-xs font-bold uppercase tracking-wider border border-rose-500/40 shadow-lg shadow-rose-500/40 z-10">
-              Cibersegurança
-            </span>
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-rose-600/15 flex items-center justify-center text-rose-400 group-hover:scale-110 transition-transform">
-                <ShieldHalf className="w-6 h-6" />
-              </div>
-              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-                Disponível
-              </span>
-            </div>
-
-            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
-              Ataques de Camada 2
-            </h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5">
-              Entenda ARP Spoofing, envenenamento de DHCP e MitM em laboratório isolado, e defenda com DAI, DHCP Snooping e Port Security.
             </p>
 
             {cardFooter}

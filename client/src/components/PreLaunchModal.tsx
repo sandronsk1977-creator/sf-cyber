@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X, Rocket, CheckCircle2, Bot, Boxes, Bug, Globe, ShoppingCart, Network, Terminal, ShieldHalf } from "lucide-react";
+import { X, Rocket, CheckCircle2, Bot, Boxes, Bug, Globe } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -130,34 +130,6 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
               >
                 <Globe className="w-5 h-5 mr-2" />
                 Testar o Laboratório de Servidor DNS
-              </Button>
-              <Button
-                onClick={() => goToSimulator("/ecommerce/index.html")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
-              >
-                <ShoppingCart className="w-5 h-5 mr-2" />
-                Testar o Laboratório de Pentest em E-commerce
-              </Button>
-              <Button
-                onClick={() => goToSimulator("/ip-subnets/index.html")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
-              >
-                <Network className="w-5 h-5 mr-2" />
-                Testar o Laboratório de Endereçamento IP
-              </Button>
-              <Button
-                onClick={() => goToSimulator("/ferramentas/index.html")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
-              >
-                <Terminal className="w-5 h-5 mr-2" />
-                Testar o Laboratório de Diagnóstico
-              </Button>
-              <Button
-                onClick={() => goToSimulator("/camada2/index.html")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-5 rounded-xl"
-              >
-                <ShieldHalf className="w-5 h-5 mr-2" />
-                Testar o Laboratório de Camada 2
               </Button>
             </div>
             <button
