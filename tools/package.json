@@ -1,0 +1,13 @@
+{
+  "name": "sfc-certificados",
+  "private": true,
+  "type": "module",
+  "description": "Ferramenta local de emissao de certificados SF Cyber Academy. Roda apenas na maquina do responsavel. A chave privada fica fora deste repositorio.",
+  "scripts": {
+    "emitir": "node emitir-certificado.mjs",
+    "iniciar": "node emitir-certificado.mjs --iniciar"
+  },
+  "dependencies": {
+    "qrcode": "1.5.4"
+  }
+}

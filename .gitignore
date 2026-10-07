@@ -108,6 +108,9 @@ temp/
 # Webdev artifacts (checkpoint zips, migrations, etc.)
 .webdev/
 
+# Ferramenta local de certificados (saida gerada, nunca versionar)
+tools/saida/
+
 # Manus debug collector (dev-only, not part of source)
 client/public/__manus__
 .project-config.json

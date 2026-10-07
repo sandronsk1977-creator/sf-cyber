@@ -808,7 +808,7 @@
                 <h2 style="font-family:Georgia, 'Times New Roman', serif; color:#fff; font-size:1.9em; margin:6px 0 2px; text-align:center;">CERTIFICADO DE CONCLUSÃO</h2>
                 <p style="color:#bbb; font-size:0.95em; margin-top:14px;">Este certificado é concedido a</p>
                 <div style="font-family:Georgia, 'Times New Roman', serif; font-size:2em; color:#ffd700; margin:14px 0; font-weight:bold; word-break:break-word;" id="certStudentName">Aluno(a)</div>
-                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o laboratório prático</p>
+                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o curso livre de capacitação profissional</p>
                 <div style="font-size:1.15em; color:#00d4ff; font-weight:bold; margin:10px 0;">Segurança Web (SQL Injection | XSS)</div>
                 <p style="color:#bbb; font-size:0.9em; margin-top:6px;">Simulador Interativo de Segurança Web 8 níveis + prova final</p>
                 <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:34px; text-align:center; gap:16px; flex-wrap:wrap;">
@@ -818,16 +818,26 @@
                         <div style="font-size:0.75em; color:#999; margin-top:4px;">PONTUAÇÃO FINAL</div>
                     </div>
                     <div style="flex:1; min-width:140px;">
-                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div id="certScorePct" style="font-size:1.3em; color:#00d4ff; font-weight:bold;"></div>
                         <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
-                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA</div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVEITAMENTO</div>
                     </div>
                     <div style="flex:1; min-width:140px;">
-                        <div style="font-family:Georgia, 'Times New Roman', serif; font-style:italic; color:#fff; font-size:1em;">SF Cyber</div>
+                        <div style="font-size:1.1em; color:#fff;">20 horas</div>
                         <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
-                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVAÇÃO</div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">CARGA HORÁRIA</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA DE CONCLUSÃO</div>
                     </div>
                 </div>
+                <div style="margin-top:26px; text-align:left; border-top:1px solid #444; padding-top:16px;">
+                    <div style="font-size:0.8em; color:#fff; font-weight:bold;">Sandro Ferreira</div>
+                    <div style="font-size:0.72em; color:#bbb; line-height:1.6;">Graduado em Defesa Cibernética<br>Especialista em Gestão de Projetos<br>Criador e Instrutor da SF Cyber Academy</div>
+                </div>
+                <p style="color:#888; font-size:0.68em; line-height:1.55; margin-top:16px; text-align:justify;">Certificado de curso livre e capacitação profissional, emitido pela SF Cyber Academy. Este certificado comprova a participação e aprovação no curso realizado e não corresponde a diploma de graduação, pós-graduação ou curso técnico.</p>
             </div>
         </div>
         <div class="modal-footer" style="justify-content:center;">
@@ -1754,7 +1764,7 @@ function finishQuiz() {
     box.textContent = 'Você acertou ' + (quizScore / 100) + ' de ' + quizQuestions.length + ' perguntas';
     box.style.fontSize = '1.3em';
     container.appendChild(box);
-    if (quizScore >= quizQuestions.length * 50) {
+    if (quizScore >= quizQuestions.length * 70) {
         const p = document.createElement('p');
         p.style.color = '#27c93f'; p.style.fontWeight = 'bold';
         p.textContent = '🎓 Aprovado! Procure seu certificado na tela final.';
@@ -1766,7 +1776,7 @@ function finishQuiz() {
         container.appendChild(p);
     }
     document.getElementById('quizNextBtn').style.display = 'none';
-    const approved = quizScore >= quizQuestions.length * 50;
+    const approved = quizScore >= quizQuestions.length * 70;
     state.quizApproved = approved;
     const gameCert = document.getElementById('btnGameCert');
     if (gameCert) gameCert.style.display = approved ? '' : 'none';
@@ -1825,15 +1835,19 @@ function openGameComplete() {
     openModal('gameCompleteModal');
 }
 
+function aproveitamentoFinal() {
+    return Math.round((quizScore / quizQuestions.length) * 100);
+}
 function showCertificate() {
     if (!state.quizDone || !state.quizApproved) {
-        document.getElementById('quizFeedback').textContent = '🔒 Você precisa ser aprovado na prova final (50%+) para obter o certificado.';
+        document.getElementById('quizFeedback').textContent = '🔒 Você precisa ser aprovado na prova final (70%+) para obter o certificado.';
         openQuiz();
         return;
     }
     const name = state.studentName || 'Aluno(a)';
     document.getElementById('certStudentName').textContent = name;
     document.getElementById('certScore').textContent = state.score + ' pts';
+    document.getElementById('certScorePct').textContent = aproveitamentoFinal() + '%';
     document.getElementById('certDate').textContent = new Date().toLocaleDateString('pt-BR');
     closeModal('gameCompleteModal');
     closeModal('successModal');

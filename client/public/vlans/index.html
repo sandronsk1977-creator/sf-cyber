@@ -1066,7 +1066,7 @@
             ✓ Separar domínios de broadcast
         </div>
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-            <button class="btn btn-success" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px;">
+            <button class="btn btn-success" id="btnGameCert" onclick="showCertificate()" style="font-size:1.05em; padding: 15px 30px; display:none;">
                 🎓 Ver Certificado
             </button>
             <button class="btn btn-warning" onclick="openQuiz()" style="font-size:1.05em; padding: 15px 30px;">
@@ -1101,7 +1101,7 @@
                 <h2 style="font-family:Georgia, 'Times New Roman', serif; color:#fff; font-size:1.9em; margin:6px 0 2px; text-align:center;">CERTIFICADO DE CONCLUSÃO</h2>
                 <p style="color:#bbb; font-size:0.95em; margin-top:14px;">Este certificado é concedido a</p>
                 <div style="font-family:Georgia, 'Times New Roman', serif; font-size:2em; color:#ffd700; margin:14px 0; font-weight:bold; word-break:break-word;" id="certStudentName">Aluno(a)</div>
-                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o curso prático</p>
+                <p style="color:#bbb; font-size:0.95em;">por concluir com êxito o curso livre de capacitação profissional</p>
                 <div style="font-size:1.15em; color:#00d4ff; font-weight:bold; margin:10px 0;">Configuração de VLANs em Switch Cisco</div>
                 <p style="color:#bbb; font-size:0.9em; margin-top:6px;">Simulador Interativo de Redes 8 níveis + prova final</p>
                 <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:34px; text-align:center; gap:16px; flex-wrap:wrap;">
@@ -1111,16 +1111,26 @@
                         <div style="font-size:0.75em; color:#999; margin-top:4px;">PONTUAÇÃO FINAL</div>
                     </div>
                     <div style="flex:1; min-width:140px;">
-                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div id="certScorePct" style="font-size:1.3em; color:#00d4ff; font-weight:bold;"></div>
                         <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
-                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA</div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVEITAMENTO</div>
                     </div>
                     <div style="flex:1; min-width:140px;">
-                        <div style="font-family:Georgia, 'Times New Roman', serif; font-style:italic; color:#fff; font-size:1em;">SF Cyber</div>
+                        <div style="font-size:1.1em; color:#fff;">20 horas</div>
                         <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
-                        <div style="font-size:0.75em; color:#999; margin-top:4px;">APROVAÇÃO</div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">CARGA HORÁRIA</div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div id="certDate" style="font-size:1.1em; color:#fff;"></div>
+                        <div style="width:100%; height:1px; background:#666; margin-top:6px;"></div>
+                        <div style="font-size:0.75em; color:#999; margin-top:4px;">DATA DE CONCLUSÃO</div>
                     </div>
                 </div>
+                <div style="margin-top:26px; text-align:left; border-top:1px solid #444; padding-top:16px;">
+                    <div style="font-size:0.8em; color:#fff; font-weight:bold;">Sandro Ferreira</div>
+                    <div style="font-size:0.72em; color:#bbb; line-height:1.6;">Graduado em Defesa Cibernética<br>Especialista em Gestão de Projetos<br>Criador e Instrutor da SF Cyber Academy</div>
+                </div>
+                <p style="color:#888; font-size:0.68em; line-height:1.55; margin-top:16px; text-align:justify;">Certificado de curso livre e capacitação profissional, emitido pela SF Cyber Academy. Este certificado comprova a participação e aprovação no curso realizado e não corresponde a diploma de graduação, pós-graduação ou curso técnico.</p>
             </div>
         </div>
         <div class="modal-footer" style="justify-content:center;">
@@ -1147,6 +1157,7 @@ const state = {
     historyIndex: -1,
     pingPackets: [],
     quizDone: false,
+    quizApproved: false,
     level6Done: false,
     scorePaid: new Set(),
     studentName: '',
@@ -2510,6 +2521,7 @@ function resetGame() {
     state.pingPackets = [];
     state.scorePaid = new Set();
     state.quizDone = false;
+    state.quizApproved = false;
     state.level6Done = false;
     
     document.getElementById('resumeBtn').style.display = 'none';
@@ -2766,11 +2778,20 @@ function goTestConnectivity() {
 }
 
 function showCertificate() {
+    // O certificado e consequencia da aprovacao na prova final. Sem 70% nao abre.
+    if (!state.quizDone || !state.quizApproved) {
+        document.getElementById('quizFeedback').textContent = 'Você precisa ser aprovado na prova final (70%+) para obter o certificado.';
+        openQuiz();
+        return;
+    }
     const name = state.studentName || 'Aluno(a)';
     document.getElementById('certStudentName').textContent = name;
     document.getElementById('certScore').textContent = state.score + ' pts';
+    document.getElementById('certScorePct').textContent = aproveitamentoFinal() + '%';
     const d = new Date();
     document.getElementById('certDate').textContent = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    closeModal('gameCompleteModal');
+    closeModal('successModal');
     openModal('certificateModal');
 }
 
@@ -2831,30 +2852,43 @@ function answerQuiz(idx) {
     }
 }
 
+// Aprovacao exige 70% da prova final. Certificado so existe depois disso.
+const QUIZ_APROVACAO_MINIMA = 70;
+
+function aproveitamentoFinal() {
+    return Math.round((quizScore / QUIZ.length) * 100);
+}
+
 function quizNext() {
     if (!quizAnswered) { return; }
     quizIdx++;
     if (quizIdx < QUIZ.length) { renderQuizQuestion(); return; }
-    const half = Math.ceil(QUIZ.length / 2);
+    const pct = aproveitamentoFinal();
+    const aprovado = pct >= QUIZ_APROVACAO_MINIMA;
     const excellent = Math.ceil(QUIZ.length * 0.75);
-    const grade = quizScore >= excellent ? '🏆 Excelente!' : (quizScore >= half ? '✅ Muito bom!' : '📚 Bom, mas revise!');
+    const grade = quizScore >= excellent ? '?? Excelente!' : (aprovado ? '? Muito bom!' : '?? Reprovado: precisa de 70%');
     let bonus = 0;
-    if (!state.quizDone && quizScore >= half) {
+    if (!state.quizDone && aprovado) {
         bonus = quizScore * 20;
         state.score += bonus;
         state.quizDone = true;
+        state.quizApproved = true;
         document.getElementById('scoreDisplay').textContent = state.score;
+    } else if (!aprovado) {
+        state.quizApproved = false;
     }
     document.getElementById('quizOptions').innerHTML = '';
     document.getElementById('quizQuestion').innerHTML = `<b>Resultado: ${quizScore}/${QUIZ.length}</b><br><span style="font-size:0.95em; color:#4a4a4a;">${grade}</span>`;
     document.getElementById('quizFeedback').innerHTML = bonus ? `<span style="color:#ffd700;">🎁 +${bonus} pontos bônus adicionados!</span>` : 'Aproveite para revisar os conceitos na aba 📚 Revisão!';
-    saveProgress();
+saveProgress();
+    var gameCert = document.getElementById('btnGameCert');
+    if (gameCert) gameCert.style.display = (state.quizDone && state.quizApproved) ? '' : 'none';
     if (quizFinal) {
-        document.getElementById('quizNextBtn').textContent = '🏆 Ver Resultado Final';
+        document.getElementById('quizNextBtn').textContent = '?? Ver Resultado Final';
         document.getElementById('quizNextBtn').onclick = () => {
             closeModal('quizModal');
             document.getElementById('gameCompleteModal').classList.add('active');
-            document.getElementById('finalScore').textContent = `Pontuação Final: ${state.score}`;
+            document.getElementById('finalScore').textContent = `Pontua��o Final: ${state.score}`;
             document.getElementById('progressFill').style.width = '100%';
             document.getElementById('quizNextBtn').onclick = quizNext;
         };
@@ -3069,6 +3103,7 @@ function saveProgress() {
             currentLevel: state.currentLevel,
             score: state.score,
             quizDone: state.quizDone,
+            quizApproved: state.quizApproved,
             level6Done: !!state.level6Done,
             studentName: state.studentName || '',
             savedAt: Date.now(),
@@ -3096,6 +3131,7 @@ function resumeGame() {
         state.currentLevel = prog.currentLevel;
         state.score = prog.score || 0;
         state.quizDone = !!prog.quizDone;
+        state.quizApproved = !!prog.quizApproved;
         state.level6Done = !!prog.level6Done;
         state.studentName = prog.studentName || savedName;
         state.vlanConfig = JSON.parse(JSON.stringify(levels[state.currentLevel].initialConfig));
