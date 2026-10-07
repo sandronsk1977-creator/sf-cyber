@@ -1167,7 +1167,7 @@ const levels = [
         id: 2,
         title: "Nível 2: Nomeando a VLAN",
         desc: "A VLAN 10 foi criada, mas precisa de um nome. Dê o nome 'TI' para a VLAN 10.",
-        hint: "💡 Dica: Primeiro entre na VLAN com <code>vlan 10</code>, depois use <code>name TI</code> para nomeá-la.",
+        hint: "💡 Dica: Se estiver em <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois entre na VLAN com <code>vlan 10</code>, depois use <code>name TI</code> para nomeá-la.",
         initialConfig: { vlans: { 10: { name: '', ports: [] } }, interfaces: {} },
         check: (cfg) => cfg.vlans[10] && cfg.vlans[10].name === 'TI',
         successMsg: "Perfeito! A VLAN 10 agora se chama 'TI'. Nomear VLANs ajuda na identificação!",
@@ -1176,7 +1176,7 @@ const levels = [
         id: 3,
         title: "Nível 3: Criando múltiplas VLANs",
         desc: "A empresa precisa de mais uma rede. Crie a VLAN 20 com o nome 'RH'.",
-        hint: "💡 Dica: Use <code>vlan 20</code> e <code>name RH</code> no modo de configuração.",
+        hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois use <code>vlan 20</code> e <code>name RH</code>.",
         initialConfig: { vlans: { 10: { name: 'TI', ports: [] } }, interfaces: {} },
         check: (cfg) => cfg.vlans[20] && cfg.vlans[20].name === 'RH',
         successMsg: "Ótimo! Agora temos 2 VLANs separando as redes da empresa!",
@@ -1185,7 +1185,7 @@ const levels = [
         id: 4,
         title: "Nível 4: Atribuindo portas às VLANs",
         desc: "Agora atribua a porta FastEthernet0/1 à VLAN 10 (TI). Isso fará com que qualquer dispositivo conectado nessa porta faça parte da VLAN 10.",
-        hint: "💡 Dica: Use <code>interface fa0/1</code> para selecionar a porta, <code>switchport mode access</code> para definir como access, e <code>switchport access vlan 10</code> para atribuir à VLAN.",
+        hint: "💡 Dica: Entre no modo de configuração com <code>configure terminal</code> (prompt vira <code>Switch(config)#</code>) se ainda estiver em <code>Switch&gt;</code>. Depois use <code>interface fa0/1</code> para selecionar a porta, <code>switchport mode access</code> para definir como access, e <code>switchport access vlan 10</code> para atribuir à VLAN.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: [] }, 20: { name: 'RH', ports: [] } }, 
             interfaces: {} 
@@ -1197,7 +1197,7 @@ const levels = [
         id: 5,
         title: "Nível 5: Portas Trunk",
         desc: "Configure a porta GigabitEthernet0/1 como porta trunk. Portas trunk permitem a passagem de tráfego de múltiplas VLANs entre switches.",
-        hint: "💡 Dica: Selecione a porta com <code>interface g0/1</code> e use <code>switchport mode trunk</code>.",
+        hint: "💡 Dica: Se estiver em <code>Switch&gt;</code>, digite <code>configure terminal</code> primeiro. Depois selecione a porta com <code>interface g0/1</code> e use <code>switchport mode trunk</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: [] } }, 
             interfaces: { 'fa0/1': { mode: 'access', vlan: 10 } } 
@@ -1209,7 +1209,7 @@ const levels = [
         id: 6,
         title: "Nível 6: Configuração Completa",
         desc: "Complete a configuração: atribua a porta fa0/2 à VLAN 20 (RH) como porta access. Depois, salve a configuração!",
-        hint: "💡 Dica: Configure a porta com <code>interface fa0/2</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
+        hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/2</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: [] } }, 
             interfaces: { 
@@ -1224,7 +1224,7 @@ const levels = [
         id: 7,
         title: "Nível 7: Conectando o PC3 ao RH",
         desc: "O PC3 pertence ao setor de Recursos Humanos. Atribua a porta fa0/3 à VLAN 20 (RH) como porta access. Depois, salve a configuração!",
-        hint: "💡 Dica: Configure a porta com <code>interface fa0/3</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
+        hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/3</code>, <code>switchport mode access</code>, <code>switchport access vlan 20</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: ['fa0/2'] } }, 
             interfaces: { 
@@ -1240,7 +1240,7 @@ const levels = [
         id: 8,
         title: "Nível 8: Conectando o PC4 ao TI",
         desc: "O PC4 pertence ao setor de Tecnologia da Informação. Atribua a porta fa0/4 à VLAN 10 (TI) como porta access. Depois, salve a configuração!",
-        hint: "💡 Dica: Configure a porta com <code>interface fa0/4</code>, <code>switchport mode access</code>, <code>switchport access vlan 10</code>. Depois salve com <code>copy running-config startup-config</code>.",
+        hint: "💡 Dica: No prompt <code>Switch&gt;</code>, entre com <code>configure terminal</code>. Depois configure a porta com <code>interface fa0/4</code>, <code>switchport mode access</code>, <code>switchport access vlan 10</code>. Depois salve com <code>copy running-config startup-config</code>.",
         initialConfig: { 
             vlans: { 10: { name: 'TI', ports: ['fa0/1'] }, 20: { name: 'RH', ports: ['fa0/2', 'fa0/3'] } }, 
             interfaces: { 
@@ -1794,6 +1794,42 @@ function setRobotBubble(title, text) {
     robotBubble.style.animation = '';
 }
 
+// Explicacao do modo atual do Cisco, usada pelo bot e pelos erros.
+// Alunos esquecem de voltar para o modo de configuracao depois de um
+// exit/end e ficam mandando comando de configuracao no prompt "Switch>".
+const MODO_EXPLICA = {
+    'user': 'você está no modo EXECUSÃO (prompt <b>Switch&gt;</b>)',
+    'config': 'você está no modo de configuração global (<b>Switch(config)#</b>)',
+    'config-vlan': 'você está dentro da configuração da VLAN',
+    'config-if': 'você está na configuração da interface',
+    'config-if-range': 'você está na configuração do grupo de interfaces',
+};
+
+function modoAtualTexto() {
+    return MODO_EXPLICA[state.mode] || MODO_EXPLICA.user;
+}
+
+// Retorna o lembrete do bot quando o aluno esta no prompt "Switch>" mas a
+// etapa exige modo de configuracao. null quando nao precisa entrar.
+function avisoModoConfig( proximoPasso ) {
+    if (state.mode !== 'user') return null;
+    return [ ROBOT_NAME + ' ⚠️',
+        'Você saiu do modo de configuração (' + modoAtualTexto() + ').<br><br>' +
+        'Digite <b>configure terminal</b> para voltar a poder configurar, e depois: <b>' + proximoPasso + '</b><br>' +
+        '<small>Repare no prompt: <b>Switch(config)#</b> é onde os comandos de configuração funcionam.</small>' ];
+}
+
+// Erro de modo no terminal: mostra o erro real e em seguida diz o que digitar.
+// Sem isso o aluno fica em loop tentando o mesmo comando e nao entende o motivo.
+function erroComDica( msg ) {
+    addOutput(msg, 'error');
+    addOutput('  ↳ Modo atual: ' + modoAtualTexto() + '.', 'warning');
+    if (state.mode === 'user') {
+        addOutput('  ↳ Comando de configuração não funciona aqui. Digite: <b>configure terminal</b>', 'warning');
+        addOutput('  ↳ O prompt precisa mudar de "' + getPrompt().trim() + '" para "' + (state.hostname || 'Switch') + '(config)#".', 'warning');
+    }
+}
+
 function getRobotStep(lvl) {
     const cfg = state.vlanConfig;
     const mode = state.mode;
@@ -1813,40 +1849,50 @@ function getRobotStep(lvl) {
             if (!cfg.vlans[20]) return [ROBOT_NAME + ' ➕', 'Crie a VLAN 20 digitando: <b>vlan 20</b>'];
             if (!cfg.vlans[20].name) return [ROBOT_NAME + ' ✍️', 'Dê o nome: <b>name RH</b>'];
             return [ROBOT_NAME + ' 🎉', 'VLAN 20 = RH! Toque em <b>Próximo Nível</b>.'];
-        case 3:
+case 3:
             const i1 = cfg.interfaces['fa0/1'];
-            if (curIf !== 'fa0/1') return [ROBOT_NAME + ' 🔌', 'Agora as portas. Selecione: <b>interface fa0/1</b>'];
-            if (!i1 || i1.mode !== 'access') return [ROBOT_NAME + ' 🚪', 'Defina o modo da porta: <b>switchport mode access</b>'];
-            if (i1.vlan !== 10) return [ROBOT_NAME + ' 🏷️', 'Atribua a VLAN: <b>switchport access vlan 10</b>'];
+            const aviso3 = avisoModoConfig('interface fa0/1');
+            if (aviso3) return aviso3;
+            if (curIf !== 'fa0/1') return [ROBOT_NAME + ' 💡', 'Agora as portas. Selecione: <b>interface fa0/1</b>'];
+            if (!i1 || i1.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Defina o modo da porta: <b>switchport mode access</b>'];
+            if (i1.vlan !== 10) return [ROBOT_NAME + ' 💡', 'Atribua a VLAN: <b>switchport access vlan 10</b>'];
             return [ROBOT_NAME + ' 🎉', 'fa0/1 na VLAN 10! Toque em <b>Próximo Nível</b>.'];
         case 4:
             const ig = cfg.interfaces['g0/1'];
-            if (curIf !== 'g0/1') return [ROBOT_NAME + ' 🔗', 'Hora do trunk! Selecione: <b>interface g0/1</b>'];
-            if (!ig || ig.mode !== 'trunk') return [ROBOT_NAME + ' 🚉', 'Vire a porta em trunk: <b>switchport mode trunk</b>'];
+            const aviso4 = avisoModoConfig('interface g0/1');
+            if (aviso4) return aviso4;
+            if (curIf !== 'g0/1') return [ROBOT_NAME + ' 💡', 'Hora do trunk! Selecione: <b>interface g0/1</b>'];
+            if (!ig || ig.mode !== 'trunk') return [ROBOT_NAME + ' 💡', 'Vire a porta em trunk: <b>switchport mode trunk</b>'];
             return [ROBOT_NAME + ' 🎉', 'Trunk configurada! Toque em <b>Próximo Nível</b>.'];
         case 5:
             const i2 = cfg.interfaces['fa0/2'];
-            if (curIf !== 'fa0/2') return [ROBOT_NAME + ' 🏁', 'Última porta! Selecione: <b>interface fa0/2</b>'];
-            if (!i2 || i2.mode !== 'access') return [ROBOT_NAME + ' 🚪', 'Modo access: <b>switchport mode access</b>'];
-            if (i2.vlan !== 20) return [ROBOT_NAME + ' 🏷️', 'Atribua à RH: <b>switchport access vlan 20</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💾', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
-            return [ROBOT_NAME + ' 🏆', 'Configuração completa! Toque em <b>Próximo Nível</b>.'];
+            const aviso5 = avisoModoConfig('interface fa0/2');
+            if (aviso5) return aviso5;
+            if (curIf !== 'fa0/2') return [ROBOT_NAME + ' 💡', 'Última porta! Selecione: <b>interface fa0/2</b>'];
+            if (!i2 || i2.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Modo access: <b>switchport mode access</b>'];
+            if (i2.vlan !== 20) return [ROBOT_NAME + ' 💡', 'Atribua à RH: <b>switchport access vlan 20</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Configuração completa! Toque em <b>Próximo Nível</b>.'];
         case 6:
             const i3 = cfg.interfaces['fa0/3'];
-            if (curIf !== 'fa0/3') return [ROBOT_NAME + ' 🖥️', 'PC3 chegou à rede! Selecione a porta que o conecta: <b>interface fa0/3</b>'];
-            if (!i3 || i3.mode !== 'access') return [ROBOT_NAME + ' 🚪', 'Defina o modo da porta: <b>switchport mode access</b>'];
-            if (i3.vlan !== 20) return [ROBOT_NAME + ' 🏷️', 'O PC3 é do RH, atribua: <b>switchport access vlan 20</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💾', 'Para concluir, salve: <b>copy running-config startup-config</b>'];
+            const aviso6 = avisoModoConfig('interface fa0/3');
+            if (aviso6) return aviso6;
+            if (curIf !== 'fa0/3') return [ROBOT_NAME + ' 💡', 'PC3 chegou à rede! Selecione a porta que o conecta: <b>interface fa0/3</b>'];
+            if (!i3 || i3.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Defina o modo da porta: <b>switchport mode access</b>'];
+            if (i3.vlan !== 20) return [ROBOT_NAME + ' 💡', 'O PC3 é do RH, atribua: <b>switchport access vlan 20</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, salve: <b>copy running-config startup-config</b>'];
             return [ROBOT_NAME + ' 🎉', 'PC3 na VLAN 20 (RH)! Toque em <b>Próximo Nível</b>.'];
         case 7:
             const i4 = cfg.interfaces['fa0/4'];
-            if (curIf !== 'fa0/4') return [ROBOT_NAME + ' 🖥️', 'Falta o PC4! Selecione a porta que o conecta: <b>interface fa0/4</b>'];
-            if (!i4 || i4.mode !== 'access') return [ROBOT_NAME + ' 🚪', 'Defina o modo da porta: <b>switchport mode access</b>'];
-            if (i4.vlan !== 10) return [ROBOT_NAME + ' 🏷️', 'O PC4 é do TI, atribua: <b>switchport access vlan 10</b>'];
-            if (!cfg._saved) return [ROBOT_NAME + ' 💾', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
-            return [ROBOT_NAME + ' 🏆', 'Todos os hosts conectados! Toque em <b>Próximo Nível</b>.'];
+            const aviso7 = avisoModoConfig('interface fa0/4');
+            if (aviso7) return aviso7;
+            if (curIf !== 'fa0/4') return [ROBOT_NAME + ' 💡', 'Falta o PC4! Selecione a porta que o conecta: <b>interface fa0/4</b>'];
+            if (!i4 || i4.mode !== 'access') return [ROBOT_NAME + ' 💡', 'Defina o modo da porta: <b>switchport mode access</b>'];
+            if (i4.vlan !== 10) return [ROBOT_NAME + ' 💡', 'O PC4 é do TI, atribua: <b>switchport access vlan 10</b>'];
+            if (!cfg._saved) return [ROBOT_NAME + ' 💡', 'Para concluir, digite <b>exit</b> no terminal, salve: <b>copy running-config startup-config</b>'];
+            return [ROBOT_NAME + ' 🎉', 'Todos os hosts conectados! Toque em <b>Próximo Nível</b>.'];
     }
-    return [ROBOT_NAME + ' 🤖', 'Boa sorte nesta etapa!'];
+return [ROBOT_NAME + ' 💡', 'Boa sorte nesta etapa!'];
 }
 
 function updateRobot() {
@@ -2016,7 +2062,7 @@ function processCommand(cmd) {
             updatePrompt();
             return;
         }
-        addOutput('%% Use o comando hostname no modo de configuração global.', 'error');
+        erroComDica('%% Use o comando hostname no modo de configuração global.');
         return;
     }
 
@@ -2028,7 +2074,7 @@ function processCommand(cmd) {
             addOutput(`Descrição da ${state.currentInterface} definida como "${desc}".`, 'success');
             return;
         }
-        addOutput('%% Selecione uma interface e use o modo config-if.', 'error');
+        erroComDica('%% Selecione uma interface e use o modo config-if.');
         return;
     }
 
@@ -2068,7 +2114,7 @@ function processCommand(cmd) {
             checkLevelComplete();
             return;
         }
-        addOutput('%% Entre no modo de configuração primeiro.', 'error');
+        erroComDica('%% Entre no modo de configuração primeiro.');
         return;
     }
 
@@ -2100,7 +2146,7 @@ function processCommand(cmd) {
             updatePrompt();
             return;
         }
-        addOutput('%% Entre no modo de configuração primeiro.', 'error');
+        erroComDica('%% Entre no modo de configuração primeiro.');
         return;
     }
 
@@ -2113,7 +2159,7 @@ function processCommand(cmd) {
             checkLevelComplete();
             return;
         }
-        addOutput('%% Selecione uma interface primeiro.', 'error');
+        erroComDica('%% Selecione uma interface primeiro.');
         return;
     }
 
@@ -2125,7 +2171,7 @@ function processCommand(cmd) {
             checkLevelComplete();
             return;
         }
-        addOutput('%% Selecione uma interface primeiro.', 'error');
+        erroComDica('%% Selecione uma interface primeiro.');
         return;
     }
 
@@ -2150,7 +2196,7 @@ function processCommand(cmd) {
             checkLevelComplete();
             return;
         }
-        addOutput('%% Selecione uma interface primeiro.', 'error');
+        erroComDica('%% Selecione uma interface primeiro.');
         return;
     }
 
@@ -2177,7 +2223,7 @@ function processCommand(cmd) {
             checkLevelComplete();
             return;
         }
-        addOutput('%% Selecione uma interface primeiro.', 'error');
+        erroComDica('%% Selecione uma interface primeiro.');
         return;
     }
 
@@ -2196,7 +2242,7 @@ function processCommand(cmd) {
             addOutput(`${state.currentInterface} ativado.`, 'success');
             return;
         }
-        addOutput('%% Selecione uma interface primeiro.', 'error');
+        erroComDica('%% Selecione uma interface primeiro.');
         return;
     }
 
