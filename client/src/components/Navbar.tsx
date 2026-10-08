@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { PreLaunchModal } from "./PreLaunchModal";
 import { SFCyberLogo } from "./SFCyberLogo";
 
-export function Navbar() {
-  const [preLaunchOpen, setPreLaunchOpen] = useState(false);
+export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -22,7 +20,7 @@ export function Navbar() {
           {/* Desktop Nav Items */}
           <div className="hidden md:flex items-center gap-6 text-sm">
             <button
-              onClick={() => setPreLaunchOpen(true)}
+              onClick={onOpenPreLaunch}
               className="text-slate-300 hover:text-white font-medium transition-colors"
             >
               Acesso
@@ -31,7 +29,7 @@ export function Navbar() {
             <span className="text-slate-600">|</span>
 
             <Button
-              onClick={() => setPreLaunchOpen(true)}
+              onClick={onOpenPreLaunch}
               className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/20 transition-all hover:shadow-cyan-500/40"
             >
               Registro
@@ -58,7 +56,7 @@ export function Navbar() {
                 className="w-full border-slate-800 text-slate-200 justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setPreLaunchOpen(true);
+                  onOpenPreLaunch();
                 }}
               >
                 Acesso
@@ -67,7 +65,7 @@ export function Navbar() {
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setPreLaunchOpen(true);
+                  onOpenPreLaunch();
                 }}
               >
                 Registro
@@ -76,8 +74,6 @@ export function Navbar() {
           </div>
         )}
       </header>
-
-      <PreLaunchModal isOpen={preLaunchOpen} onClose={() => setPreLaunchOpen(false)} />
     </>
   );
 }

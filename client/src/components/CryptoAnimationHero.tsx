@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const TARGET_TITLE = "LABORATÓRIOS GRATUITOS PARA APRENDER REDES E CIBERSEGURANÇA NA PRÁTICA";
+const TARGET_TITLE = "DOMINE REDES E CIBERSEGURANÇA NA PRÁTICA";
 const CIPHER_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?<>{}[]|/\\+=-~^";
 
 export function CryptoAnimationHero() {
@@ -109,8 +109,8 @@ export function CryptoAnimationHero() {
         </div>
 
         {/* Main Headline with Cryptographic Effect */}
-        <h1 className="sr-only">Laboratórios gratuitos para aprender Redes e Cibersegurança na prática</h1>
-        <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-8 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
+        <h1 className="sr-only">Domine Redes e Cibersegurança na prática, sem teoria seca e sem barreiras</h1>
+        <h1 aria-hidden="true" className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl leading-[1.15] mb-3 font-mono min-h-[140px] sm:min-h-[180px] flex items-center justify-center">
           <span className="text-sky-400 drop-shadow-[0_0_30px_rgba(56,189,248,0.4)]">
             {(displayText || TARGET_TITLE).slice(0, 13)}
             <span className="text-white animate-hero-white-pulse">
@@ -120,9 +120,14 @@ export function CryptoAnimationHero() {
           </span>
         </h1>
 
+        <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-8">
+          Sem teoria seca, sem barreiras.
+        </p>
+
         {/* Subtitle */}
         <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mb-12 leading-relaxed">
-          Pratique. Experimente. Desenvolva habilidades reais.
+          Conheça o portal de pré-lançamento da SF Cyber: laboratórios virtuais imersivos,
+          com o SF Bot acompanhando a sua jornada do primeiro comando até a conclusão.
         </p>
 
         {/* CTA Buttons */}

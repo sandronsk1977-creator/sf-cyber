@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { Link } from "wouter";
 
 export function Footer() {
   return (
@@ -18,6 +19,13 @@ export function Footer() {
         <span className="text-xs text-slate-600">
           © {new Date().getFullYear()} SF Cyber · Laboratórios de Redes e Cibersegurança
         </span>
+        <div className="flex items-center gap-4 text-xs text-slate-500">
+          <Link href="/privacidade" className="hover:text-cyan-400 transition-colors">
+            Política de Privacidade
+          </Link>
+          <span className="text-slate-700">·</span>
+          <span>Seus dados ficam no seu navegador</span>
+        </div>
       </div>
     </footer>
   );
