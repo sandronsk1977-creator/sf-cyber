@@ -2888,7 +2888,7 @@ saveProgress();
         document.getElementById('quizNextBtn').onclick = () => {
             closeModal('quizModal');
             document.getElementById('gameCompleteModal').classList.add('active');
-            document.getElementById('finalScore').textContent = `Pontua��o Final: ${state.score}`;
+            document.getElementById('finalScore').textContent = `Pontuação Final: ${state.score}`;
             document.getElementById('progressFill').style.width = '100%';
             document.getElementById('quizNextBtn').onclick = quizNext;
         };
