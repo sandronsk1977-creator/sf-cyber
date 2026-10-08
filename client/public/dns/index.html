@@ -1827,7 +1827,7 @@ function openGameComplete() {
 }
 
 function aproveitamentoFinal() {
-    return Math.round((quizScore / quizQuestions.length) * 100);
+    return Math.round((quizScore / quizQuestions.length) * 10) / 10;
 }
 function showCertificate() {
     if (!state.quizDone || !state.quizApproved) {

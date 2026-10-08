@@ -2854,7 +2854,7 @@ function answerQuiz(idx) {
 const QUIZ_APROVACAO_MINIMA = 70;
 
 function aproveitamentoFinal() {
-    return Math.round((quizScore / QUIZ.length) * 100);
+    return Math.round(((quizScore / QUIZ.length) * 100) * 10) / 10;
 }
 
 function quizNext() {
