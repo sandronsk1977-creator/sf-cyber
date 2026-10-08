@@ -63,7 +63,7 @@ const secoes: { titulo: string; texto: React.ReactNode; itens?: React.ReactNode[
     ],
   },
   {
-    titulo: "3. Para que usamos os dados",
+    titulo: "3. Por que usamos os dados",
     texto:
       "Usamos seus dados exclusivamente para: emitir e exibir o seu certificado de conclusão; enviar avisos sobre a abertura da plataforma e bônus do pré-lançamento; entender o uso do site para melhorar os laboratórios; e cumprir obrigações legais, quando aplicável.",
     extra:
