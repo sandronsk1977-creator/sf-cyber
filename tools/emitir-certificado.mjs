@@ -9,6 +9,8 @@
  * Uso:
  *   node emitir-certificado.mjs --iniciar
  *   node emitir-certificado.mjs --nome "Maria Souza" --curso vlan --aproveitamento 87.5
+ *   node emitir-certificado.mjs --buscar "Kaic"        (acha certificado pelo nome)
+ *   node emitir-certificado.mjs --conferir              (lista tudo e confere assinatura)
  *   node emitir-certificado.mjs   (sem argumentos, modo interativo)
  */
 
@@ -435,9 +437,27 @@ async function emitir(args) {
     throw new Error(`Codigo ${codigo} ja existe no registro. Codigo nunca pode ser reutilizado.`);
   }
 
+  const nomeAluno = normalizarNome(nome);
+
+  // Um aluno nao pode ter dois certificados no mesmo curso. Dois certificados
+  // validos para a mesma pessoa confundiriam quem for validar. Para corrigir
+  // a nota de um certificado ja emitido, use --forcar.
+  const mesmoAluno = registro.entradas.filter(
+    (e) =>
+      normalizarBusca(e.nome) === normalizarBusca(nomeAluno) &&
+      e.curso === curso.nome,
+  );
+  if (mesmoAluno.length > 0 && !args.forcar) {
+    throw new Error(
+      `Ja existe certificado de ${mesmoAluno[0].nome} no curso "${curso.nome}": ` +
+        `${mesmoAluno[0].codigo} (${mesmoAluno[0].aproveitamento}%).\n` +
+        `Para emitir mesmo assim, use --forcar. Para conferir, use --buscar "${nomeAluno}".`,
+    );
+  }
+
   const entrada = {
     codigo,
-    nome: normalizarNome(nome),
+    nome: nomeAluno,
     curso: curso.nome,
     cargaHoraria: Number(carga),
     dataConclusao,
@@ -486,12 +506,59 @@ function conferir(args) {
   }
 }
 
+/** Tira acento e caixa para comparar nomes sem surpresa. */
+function normalizarBusca(texto) {
+  return String(texto)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+/**
+ * Busca certificados por nome do aluno. Serve para achar o codigo de um
+ * certificado ja emitido, e tambem para conferir se um nome ja foi
+ * cadastrado antes de emitir de novo.
+ */
+function buscar(args) {
+  const termo = args.buscar;
+  if (!termo || termo === true) {
+    throw new Error('Uso: node tools/emitir-certificado.mjs --buscar "Nome do Aluno"');
+  }
+  const privada = carregarChavePrivada(caminhoDaChave(args.chave));
+  const publica = crypto.createPublicKey(privada);
+  const registro = lerRegistro(publica);
+  if (!registro) throw new Error("Registro ainda nao existe");
+
+  const alvo = normalizarBusca(termo);
+  const achados = registro.entradas.filter((e) =>
+    normalizarBusca(e.nome).includes(alvo),
+  );
+
+  console.log(`\nBusca por "${termo}": ${achados.length} de ${registro.entradas.length} certificado(s)\n`);
+  if (achados.length === 0) {
+    console.log("Nenhum certificado emitido com esse nome.");
+    console.log("Se o aluno ainda nao tem certificado, emita com --nome.");
+    return;
+  }
+  for (const e of achados) {
+    console.log(`  ${e.codigo}`);
+    console.log(`    Aluno          ${e.nome}`);
+    console.log(`    Curso          ${e.curso}`);
+    console.log(`    Carga          ${cargaTexto(e.cargaHoraria)}`);
+    console.log(`    Aproveitamento ${e.aproveitamento}%`);
+    console.log(`    Conclusao      ${e.dataConclusao}`);
+    console.log(`    Validacao      ${BASE_SITE}/validar/${e.codigo}\n`);
+  }
+}
+
 async function main() {
   const args = lerArgs(process.argv.slice(2));
   try {
     if (args["gerar-chaveiro"]) await gerarChaveiro();
     else if (args.iniciar) await iniciar(args);
     else if (args.conferir) conferir(args);
+    else if (args.buscar) buscar(args);
     else await emitir(args);
   } catch (erro) {
     console.error(`\nErro: ${erro.message}`);

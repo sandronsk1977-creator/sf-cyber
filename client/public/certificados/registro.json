@@ -2,7 +2,7 @@
   "versao": 1,
   "chaveId": "sfc-ed25519-2026",
   "emissor": "SF Cyber Academy",
-  "atualizadoEm": "2026-10-08T08:46:03Z",
+  "atualizadoEm": "2026-10-08T09:37:18Z",
   "entradas": [
     {
       "codigo": "SFC-2026-000001",
@@ -15,9 +15,9 @@
       "responsavelFormacao": "Graduado em Defesa Cibernética",
       "responsavelEspecialidade": "MBA em Gestão Projetos",
       "responsavelPapel": "Criador e Instrutor da SF Cyber Academy",
-      "emitidoEm": "2026-10-08T08:46:03Z",
-      "assinatura": "+96TYeUX4T4G+xdJ++Amq1eLsqe7SQhs/rMN821qv30wUlM531Zp2iq080UDIy6Po60L6g1kN3j7qv6MJr/6BA=="
+      "emitidoEm": "2026-10-08T09:37:18Z",
+      "assinatura": "cPmSjdkCqw6pHt3j5mFp5gMhyZvxI3Qeitnm5WzRL45xydWSTcwmvYq0bgukut/G78TEjJLGwFids0MkkodaAg=="
     }
   ],
-  "assinatura": "+uERFQSJrpCZZ0Fxm6UpEZmzmfjG38ZMc08I+OY1c9v4IhPsajYU9IhuXEQQ4fxwkG6u8JOVnUqS1kn0eZKCDg=="
+  "assinatura": "Xm+ys+3EsZBcmgDeuOe2Ai4Zmn7HDVsikuPCkTqK46Tvq7g7/3FS6bg1cZlfKk7EJAwaoALCn4CScfXJFrPgBg=="
 }
