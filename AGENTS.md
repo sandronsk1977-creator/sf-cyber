@@ -15,7 +15,7 @@ Portal SF Cyber é uma landing dark com 4 laboratórios (Redes: VLANs e Servidor
 - Push exibe "erro" no stderr (NativeCommandError) mas funciona — confirmar `main -> main` na saída.
 - Manter "08 níveis" / "8 níveis" nos textos (padrão do produto).
 - Todo push em `main` dispara GitHub Actions → deploy em https://sfcyber.projetosdisruptivos.com.br/.
-- **Fluxo de trabalho com o usuário**: ao concluir uma tarefa, avisar para o usuário validar no site; push para `main` é automático (sem pedir permissão); somente depois da validação/ok do usuário o working copy local pode ser considerado salvo (confirmar com `git status` que `main` está sincronizado com `origin/main`).
+- **Fluxo de trabalho com o usuário (regra vigente)**: **local first**. Toda alteração é feita e commitada **apenas na máquina local**; **nunca** executar `git push` sem aprovação explícita do usuário no chat. Depois de commitado localmente, avisar o usuário para validar rodando `pnpm dev` (ou `pnpm preview`) e só publicar (`git push origin main`) após o "ok". Quando o push for aprovado, confirmar com `git status -sb` que `main` está sincronizado com `origin/main` e acompanhar o deploy.
 
 ### Estrutura relevante
 
