@@ -2,11 +2,23 @@ import React from "react";
 import { Link } from "wouter";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 
-const secoes = [
+const SFCyber = () => (
+  <span className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse whitespace-nowrap">
+    <ShieldCheck className="w-4 h-4" />
+    SF Cyber
+  </span>
+);
+
+const secoes: { titulo: string; texto: React.ReactNode; itens?: string[]; extra?: string }[] = [
   {
     titulo: "1. Quem é o controlador dos seus dados",
-    texto:
-      "Este site é mantido pela SF Cyber (SF Cyber Academia Digital), projeto de Sandbox Ferreira / SF, com sede em Goiânia, Goiás, Brasil. Para qualquer questão sobre privacidade e dados pessoais, fale com a gente pelos canais indicados no fim desta política.",
+    texto: (
+      <>
+        Este site é mantido pela <SFCyber /> (Academia Digital), projeto de Sandbox Ferreira / SF,
+        com sede em Goiânia, Goiás, Brasil. Para qualquer questão sobre privacidade e dados
+        pessoais, fale com a gente pelos canais indicados no fim desta política.
+      </>
+    ),
   },
   {
     titulo: "2. Dados que coletamos",
