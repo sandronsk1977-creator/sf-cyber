@@ -31,7 +31,7 @@ const secoes: { titulo: string; texto: React.ReactNode; itens?: React.ReactNode[
     texto: (
       <>
         Este site é mantido pela <SFCyber />{" "}
-        <span className="text-white font-semibold animate-hero-white-pulse">(Academia Digital)</span>,
+        <span className="text-white font-semibold animate-hero-white-pulse">Academia Digital</span>,
         projeto de{" "}
         <a
           href="https://github.com/sandronsk1977-creator"
