@@ -78,9 +78,15 @@ const DECLARACAO =
 
 const TEXTO_CERTIFICAMOS =
   "Certificamos que <b>NOME</b> concluiu com aproveitamento o curso livre de capacitação " +
-  "professional <b>CURSO</b>, com carga horária de <b>CARGA</b> horas, tendo realizado os " +
+  "professional <b>CURSO</b>, com carga horária de <b>CARGA</b>, tendo realizado os " +
   "conteúdos, as atividades práticas em laboratório virtual e a avaliação final previstos no " +
   "programa, obtendo aproveitamento de <b>APROV</b>.";
+
+/** Concordancia de "hora": 1 hora, 2 horas. */
+function cargaTexto(horas) {
+  const n = Number(horas);
+  return n === 1 ? "1 hora" : `${n} horas`;
+}
 
 function escaparHtml(valor) {
   return String(valor)
@@ -193,7 +199,7 @@ async function montarCertificado(entrada, urlValidacao) {
 
   const texto = TEXTO_CERTIFICAMOS.replace("NOME", escaparHtml(entrada.nome))
     .replace("CURSO", escaparHtml(entrada.curso))
-    .replace("CARGA", escaparHtml(entrada.cargaHoraria))
+    .replace("CARGA", escaparHtml(cargaTexto(entrada.cargaHoraria)))
     .replace("APROV", `${escaparHtml(entrada.aproveitamento.toFixed(1))}%`);
 
   const linha = (rotulo, valor, extra = "") =>
@@ -201,7 +207,7 @@ async function montarCertificado(entrada, urlValidacao) {
 
   const dados = [
     linha("Curso", escaparHtml(entrada.curso)),
-    linha("Carga horária", `${entrada.cargaHoraria} horas`),
+    linha("Carga horária", cargaTexto(entrada.cargaHoraria)),
     linha("Data de conclusão", escaparHtml(entrada.dataConclusao.split("-").reverse().join("/"))),
     linha("Aproveitamento", `${entrada.aproveitamento.toFixed(1)}%`, "destaque"),
   ].join("\n      ");
@@ -458,7 +464,7 @@ async function emitir(args) {
   console.log(`  Codigo        ${codigo}`);
   console.log(`  Aluno         ${entrada.nome}`);
   console.log(`  Curso         ${entrada.curso}`);
-  console.log(`  Carga         ${entrada.cargaHoraria} horas`);
+  console.log(`  Carga         ${cargaTexto(entrada.cargaHoraria)}`);
   console.log(`  Conclusao     ${entrada.dataConclusao}`);
   console.log(`  Aproveitamento ${entrada.aproveitamento}%`);
   console.log(`\n  Registro      ${path.relative(RAIZ, ARQ_REGISTRO)}`);

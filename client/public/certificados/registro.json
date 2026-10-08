@@ -2,7 +2,22 @@
   "versao": 1,
   "chaveId": "sfc-ed25519-2026",
   "emissor": "SF Cyber Academy",
-  "atualizadoEm": "2026-10-08T08:43:39Z",
-  "entradas": [],
-  "assinatura": "8uYqBu1Vx+ubmZ4rEh6tOOmzD6uYI0cNEXvRxV09iXQfU5uEvU0mkINZLkbKqdCoevGAwbtin+q2yzbjnADmDw=="
+  "atualizadoEm": "2026-10-08T08:46:03Z",
+  "entradas": [
+    {
+      "codigo": "SFC-2026-000001",
+      "nome": "Kaic Queiroz",
+      "curso": "Configuração de VLANs em Switch Cisco",
+      "cargaHoraria": 1,
+      "dataConclusao": "2026-10-08",
+      "aproveitamento": 100,
+      "responsavelNome": "Sandro Ferreira",
+      "responsavelFormacao": "Graduado em Defesa Cibernética",
+      "responsavelEspecialidade": "MBA em Gestão Projetos",
+      "responsavelPapel": "Criador e Instrutor da SF Cyber Academy",
+      "emitidoEm": "2026-10-08T08:46:03Z",
+      "assinatura": "+96TYeUX4T4G+xdJ++Amq1eLsqe7SQhs/rMN821qv30wUlM531Zp2iq080UDIy6Po60L6g1kN3j7qv6MJr/6BA=="
+    }
+  ],
+  "assinatura": "+uERFQSJrpCZZ0Fxm6UpEZmzmfjG38ZMc08I+OY1c9v4IhPsajYU9IhuXEQQ4fxwkG6u8JOVnUqS1kn0eZKCDg=="
 }
