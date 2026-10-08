@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
-import { ShieldCheck, ArrowLeft } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Github } from "lucide-react";
 
 const SFCyber = () => (
   <span className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse whitespace-nowrap">
@@ -14,8 +14,18 @@ const secoes: { titulo: string; texto: React.ReactNode; itens?: string[]; extra?
     titulo: "1. Quem é o controlador dos seus dados",
     texto: (
       <>
-        Este site é mantido pela <SFCyber /> (Academia Digital), projeto de Sandbox Ferreira / SF,
-        com sede em Goiânia, Goiás, Brasil. Para qualquer questão sobre privacidade e dados
+        Este site é mantido pela <SFCyber /> (Academia Digital), projeto de{" "}
+        <a
+          href="https://github.com/sandronsk1977-creator"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="GitHub: sandronsk1977-creator"
+          className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse hover:text-cyan-300 transition-colors whitespace-nowrap"
+        >
+          <Github className="w-4 h-4" />
+          SandroNSK1977
+        </a>
+        , com sede em Goiânia, Goiás, Brasil. Para qualquer questão sobre privacidade e dados
         pessoais, fale com a gente pelos canais indicados no fim desta política.
       </>
     ),
