@@ -20,6 +20,10 @@ export function Footer() {
           © {new Date().getFullYear()} SF Cyber · Laboratórios de Redes e Cibersegurança
         </span>
         <div className="flex items-center gap-4 text-xs text-slate-500">
+          <Link href="/parcerias" className="hover:text-cyan-400 transition-colors">
+            Parcerias
+          </Link>
+          <span className="text-slate-700">·</span>
           <Link href="/privacidade" className="hover:text-cyan-400 transition-colors">
             Política de Privacidade
           </Link>

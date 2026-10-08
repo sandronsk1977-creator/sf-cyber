@@ -13,6 +13,7 @@ import { SimulatorWebPage } from "./pages/SimulatorWebPage";
 import { SimulatorDnsPage } from "./pages/SimulatorDnsPage";
 import ValidarCertificado from "./pages/ValidarCertificado";
 import Privacidade from "@/pages/Privacidade";
+import Parcerias from "@/pages/Parcerias";
 
 const FALLBACK_ROUTE_KEY = "sfcyberRoute";
 
@@ -50,6 +51,7 @@ function AppRoutes() {
       <Route path="/validar/:codigo" component={ValidarCertificado} />
       <Route path="/404" component={NotFound} />
       <Route path="/privacidade" component={Privacidade} />
+      <Route path="/parcerias" component={Parcerias} />
 
       {/* Final fallback route */}
       <Route component={NotFound} />
