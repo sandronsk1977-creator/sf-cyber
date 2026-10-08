@@ -140,7 +140,17 @@ const plans = [
             ))}
           </div>
 
-          <div className="mt-12 text-center text-sm text-slate-400">
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+            <p className="text-sm text-slate-400 max-w-md">
+              Entre na lista de espera do pré-lançamento e receba as condições exclusivas na abertura
+              da plataforma.
+            </p>
+            <Button
+              onClick={() => setPreLaunchOpen(true)}
+              className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/25 transition-all hover:scale-[1.02] whitespace-nowrap"
+            >
+              Quero Acesso Antecipado
+            </Button>
           </div>
 
         </div>
