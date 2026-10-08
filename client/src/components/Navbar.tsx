@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { PreLaunchModal } from "./PreLaunchModal";
 import { SFCyberLogo } from "./SFCyberLogo";
 
-export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
+export function Navbar() {
+  const [preLaunchOpen, setPreLaunchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -20,7 +22,7 @@ export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
           {/* Desktop Nav Items */}
           <div className="hidden md:flex items-center gap-6 text-sm">
             <button
-              onClick={onOpenPreLaunch}
+              onClick={() => setPreLaunchOpen(true)}
               className="text-slate-300 hover:text-white font-medium transition-colors"
             >
               Acesso
@@ -29,7 +31,7 @@ export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
             <span className="text-slate-600">|</span>
 
             <Button
-              onClick={onOpenPreLaunch}
+              onClick={() => setPreLaunchOpen(true)}
               className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/20 transition-all hover:shadow-cyan-500/40"
             >
               Registro
@@ -56,7 +58,7 @@ export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
                 className="w-full border-slate-800 text-slate-200 justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenPreLaunch();
+                  setPreLaunchOpen(true);
                 }}
               >
                 Acesso
@@ -65,7 +67,7 @@ export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
                 className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-semibold justify-center"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  onOpenPreLaunch();
+                  setPreLaunchOpen(true);
                 }}
               >
                 Registro
@@ -74,6 +76,8 @@ export function Navbar({ onOpenPreLaunch }: { onOpenPreLaunch: () => void }) {
           </div>
         )}
       </header>
+
+      <PreLaunchModal isOpen={preLaunchOpen} onClose={() => setPreLaunchOpen(false)} />
     </>
   );
 }
