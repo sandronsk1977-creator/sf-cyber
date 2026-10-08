@@ -47,22 +47,22 @@ const CHAVE_PRIVADA_PADRAO = path.join(RAIZ, "..", "chaveiro-sfc", "chave-privad
 export const CATALOGO = Object.freeze({
   vlan: {
     nome: "Configuração de VLANs em Switch Cisco",
-    horas: 20,
+    horas: 1,
     rotulo: "Laboratório de Redes · Simulador de VLANs",
   },
   soc: {
     nome: "Análise de Segurança e Hacker Ético (SOC)",
-    horas: 20,
+    horas: 1,
     rotulo: "Laboratório de Cibersegurança · Simulador SOC",
   },
   web: {
     nome: "Segurança Web (SQL Injection | XSS)",
-    horas: 20,
+    horas: 1,
     rotulo: "Laboratório de Cibersegurança · Simulador Web",
   },
   dns: {
     nome: "Redes · Servidor DNS (resolução, AXFR e DNSSEC)",
-    horas: 20,
+    horas: 1,
     rotulo: "Laboratório de Redes · Simulador DNS",
   },
 });

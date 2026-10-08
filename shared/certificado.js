@@ -46,7 +46,7 @@ export const CAMPOS_TEXTO_ENTRADA = [
 export const RESPONSAVEL = Object.freeze({
   nome: "Sandro Ferreira",
   formacao: "Graduado em Defesa Cibernética",
-  especialidade: "Especialista em Gestão de Projetos",
+  especialidade: "MBA em Gestão Projetos",
   papel: "Criador e Instrutor da SF Cyber Academy",
 });
 
