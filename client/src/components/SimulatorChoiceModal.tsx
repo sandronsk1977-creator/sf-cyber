@@ -38,7 +38,7 @@ export function SimulatorChoiceModal({ isOpen, onClose }: SimulatorChoiceModalPr
 
         <div className="grid sm:grid-cols-2 gap-4">
           <a
-            href="/vlans/index.html"
+            href="https://desafiovlan.projetosdisruptivos.com.br/"
             onClick={onClose}
             className="group p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-0.5 flex flex-col"
             target="_blank"
