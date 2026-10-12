@@ -4,7 +4,7 @@
 </div>
 
 
-Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança por meio de laboratórios virtuais, curadoria inteligente "SF Bot" que acompanha e orienta a jornada do aluno.
+   Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança por meio de laboratórios virtuais, curadoria inteligente "SF Bot" que acompanha e orienta a jornada do aluno.
 
  👨🏻‍💻 [sfcyber.projetosdisruptivos.com.br](https://sfcyber.projetosdisruptivos.com.br)
 
