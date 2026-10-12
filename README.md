@@ -1,8 +1,6 @@
-<div align="center">
-<img src="/assets/banner_sf_cyber.svg" alt="Sandro Ferreira • Profissional de TI" width="100%">
-</div>
 
-# 🛡️ SF Cyber Academia Digital
+<img src="/assets/banner_sf_cyber.svg" alt="Sandro Ferreira • Profissional de TI" width="100%">
+
 
 Portal de pré-lançamento da **SF Cyber** Laboratórios de Redes e Cibersegurança por meio de laboratórios virtuais, curadoria inteligente "SF Bot" que acompanha e orienta a jornada do aluno.
 
