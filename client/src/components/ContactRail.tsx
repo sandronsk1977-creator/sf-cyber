@@ -12,7 +12,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 const CONTACTS = [
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/sandro-ferreira-5816b4284/",
+    href: "https://www.linkedin.com/in/sandro-ferreira-8725b9443/",
     icon: Linkedin,
   },
   {
