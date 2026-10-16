@@ -11,7 +11,7 @@ const MENSAGEM_PARCERIA =
 const faixas = [
   {
     nome: "PARCEIRO",
-    preco: "a partir de R$ 490/mês",
+    preco: "a partir de... EM BREVE",
     icone: Handshake,
     cor: "#22d3ee",
     itens: [
@@ -23,7 +23,7 @@ const faixas = [
   },
   {
     nome: "PATROCINADOR",
-    preco: "a partir de R$ 1.490/mês",
+    preco: "a partir de... EM BREVE",
     icone: Award,
     cor: "#3b82f6",
     destaque: true,
@@ -31,12 +31,11 @@ const faixas = [
       "Tudo da faixa Parceiro",
       "Selo “Laboratório patrocinado” no laboratório escolhido",
       "Menção no certificado de conclusão dos alunos que concluem o laboratório",
-      "Um workshop ao vivo por ano para alunos ou equipes",
-    ],
+      ],
   },
   {
     nome: "PARCEIRO MASTER",
-    preco: "a partir de R$ 3.900/mês",
+    preco: "a partir de... EM BREVE",
     icone: ShieldCheck,
     cor: "#8b5cf6",
     itens: [
