@@ -80,11 +80,7 @@ export function SFCyberLogo() {
           </span>
         </div>
 
-        <span className="text-[7px] font-bold
-          tracking-[0.32em] text-white
-          mt-[3px] uppercase">
-          ACADEMY
-        </span>
+       </span>
 
       </div>
     </div>
