@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, ShieldCheck, Scale } from "lucide-react";
+import { Menu, X, ShieldCheck, Scale, User } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PreLaunchModal } from "./PreLaunchModal";
@@ -21,6 +21,15 @@ export function Navbar() {
 
           {/* Desktop Nav Items */}
           <div className="hidden md:flex items-center gap-3 lg:gap-6 text-sm">
+            <Link
+              href="/sobre"
+              title="Sobre a SF Cyber Academy"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-full hover:bg-cyan-500/20 hover:border-cyan-400/50 transition-colors animate-neon-badge"
+            >
+              <User className="w-3.5 h-3.5" />
+              Sobre
+            </Link>
+
             <Link
               href="/privacidade"
               title="Política de Privacidade"
@@ -92,6 +101,15 @@ export function Navbar() {
               >
                 Registro
               </Button>
+              <Link
+                href="/sobre"
+                title="Sobre a SF Cyber Academy"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-slate-800 text-cyan-400 text-sm py-2.5 hover:text-cyan-300 transition-colors animate-neon-badge"
+              >
+                <User className="w-4 h-4" />
+                Sobre
+              </Link>
               <Link
                 href="/privacidade"
                 title="Política de Privacidade"
