@@ -1,5 +1,12 @@
 import React from "react";
-import { Building2, Handshake, GraduationCap } from "lucide-react";
+import { Building2, Handshake, GraduationCap, ShieldCheck } from "lucide-react";
+
+const SFCyber = () => (
+  <span className="inline-flex items-center gap-2 align-middle text-cyan-400 font-bold animate-logo-text-pulse whitespace-nowrap">
+    <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8" />
+    SF Cyber
+  </span>
+);
 
 const PARTNERS = [
   {
@@ -34,7 +41,7 @@ export function SponsorSection() {
             Patrocínio · Parcerias
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-white font-mono mb-4">
-            LEVE A SF CYBER PARA QUEM PRECISA APRENDER NA PRÁTICA
+            LEVE A <SFCyber /> PARA QUEM PRECISA APRENDER NA PRÁTICA
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto">
             Laboratórios de Redes e Cibersegurança para transformar conhecimento em experiência.
