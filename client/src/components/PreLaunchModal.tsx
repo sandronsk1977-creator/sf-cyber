@@ -143,7 +143,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
           <>
             <h2 id="prelaunch-title" className="text-2xl font-extrabold font-mono text-white mb-3">Em breve!</h2>
             <p className="text-sm text-slate-300 leading-relaxed mb-5">
-              A área de membros (cursos, laboratórios e avaliações) estará disponível em
+              A área de membros (Laboratórios com suporte e avaliações) estará disponível em
               breve. Enquanto isso, aproveite os Laboratórios grátis, com 8 níveis e
               certificado de conclusão.
             </p>
