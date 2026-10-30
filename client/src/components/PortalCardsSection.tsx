@@ -1,5 +1,5 @@
 import React from "react";
-import { Network, ShieldHalf, Bug, Globe, ArrowRight, Layers, Award } from "lucide-react";
+import { Network, ShieldHalf, Bug, Globe, ArrowRight, Layers, Award, Trophy, Target } from "lucide-react";
 
 const metaChips = (
   <>
@@ -36,16 +36,16 @@ export function PortalCardsSection() {
             Escolha sua área e comece agora
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            Laboratórios para aprendizagem em Cibersegurança e Redes, feitos para colocar você em ação.
+            Laboratórios e desafios para aprendizagem em Cibersegurança e Redes, feitos para colocar você em ação.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
           {/* Card 01 - Redes | Simulador VLAN */}
           <a
             href="/vlans/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative w-full md:w-[calc(50%-0.75rem)] xl:w-[calc(33.333%-1rem)] p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -75,7 +75,7 @@ export function PortalCardsSection() {
           <a
             href="/seguranca/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative w-full md:w-[calc(50%-0.75rem)] xl:w-[calc(33.333%-1rem)] p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -105,7 +105,7 @@ export function PortalCardsSection() {
           <a
             href="/web/index.html"
             style={{ "--neon": "#f43f5e" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative w-full md:w-[calc(50%-0.75rem)] xl:w-[calc(33.333%-1rem)] p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -135,7 +135,7 @@ export function PortalCardsSection() {
           <a
             href="/dns/index.html"
             style={{ "--neon": "#22d3ee" } as React.CSSProperties}
-            className="sf-neon-card group relative p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
+            className="sf-neon-card group relative w-full md:w-[calc(50%-0.75rem)] xl:w-[calc(33.333%-1rem)] p-6 pt-7 rounded-3xl bg-slate-900/60 border border-cyan-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-cyan-400"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -159,6 +159,49 @@ export function PortalCardsSection() {
             </p>
 
             {cardFooter}
+          </a>
+
+          {/* Card 05 - Desafio VLAN */}
+          <a
+            href="https://desafiovlan.projetosdisruptivos.com.br/"
+            style={{ "--neon": "#f59e0b" } as React.CSSProperties}
+            className="sf-neon-card group relative w-full md:w-[calc(50%-0.75rem)] xl:w-[calc(33.333%-1rem)] p-6 pt-7 rounded-3xl bg-slate-900/60 border border-amber-500/40 flex flex-col justify-between transition-all hover:-translate-y-1 hover:border-amber-400"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-amber-950 text-amber-200 text-xs font-bold uppercase tracking-wider border border-amber-400/50 animate-neon-badge z-10">
+              Novo
+            </span>
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-11 h-11 rounded-2xl bg-amber-500/15 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                <Trophy className="w-6 h-6" />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                Desafio
+              </span>
+            </div>
+
+            <h3 className="font-extrabold text-xl mb-2 text-white font-mono leading-tight min-h-[56px]">
+              Desafio VLAN
+            </h3>
+            <p className="text-slate-400 text-sm leading-relaxed mb-5">
+              A SF Cyber Academy cresceu. Agora é uma empresa com três departamentos, todos ligados
+              no mesmo cabo de rede. TI com 12 pessoas, RH com 8 e Marketing com 10 precisam de
+              internet, e-mail e servidores de arquivo. Organize a rede e resolva o desafio.
+            </p>
+
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-full">
+                  <Target className="w-3.5 h-3.5 text-amber-400" />
+                  Cenário real
+                </span>
+              </div>
+              <span className="inline-flex items-center justify-center gap-2 font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 text-sm px-5 py-2.5 rounded-xl shadow-xl shadow-amber-500/25 transition-colors w-full">
+                Abrir desafio
+                <ArrowRight className="w-4 h-4 animate-arrow-pulse" />
+              </span>
+            </div>
           </a>
         </div>
       </div>

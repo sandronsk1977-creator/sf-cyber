@@ -24,7 +24,7 @@ export function AudienceSection() {
     },
     {
       title: "Espera resultados sem esforço",
-      desc: "Fornecemos estrutura, laboratórios e mentoria, mas o trabalho pesado é seu. Não existem atalhos mágicos em cibersegurança.",
+      desc: "Fornecemos estrutura, laboratórios, mas o trabalho pesado é seu. Não existem atalhos mágicos em Cibersegurança e Redes.",
     },
   ];
 
