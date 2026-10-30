@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "wouter";
-import { ShieldCheck, ArrowLeft, Scale, FileText, ListChecks, Building2 } from "lucide-react";
+import {
+  ShieldCheck,
+  ArrowLeft,
+  Scale,
+  FileText,
+  ListChecks,
+  Building2,
+  Info,
+} from "lucide-react";
 
 const SFCyber = () => (
   <span className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse whitespace-nowrap">
@@ -9,13 +17,14 @@ const SFCyber = () => (
   </span>
 );
 
-const fatos = [
-  "O projeto é particular e independente.",
-  "Não possui finalidade comercial atualmente.",
-  "Os laboratórios são gratuitos.",
-  "O desenvolvimento ocorre fora do expediente.",
-  "São utilizados recursos próprios.",
-  "Não representa a universidade.",
+const caracteristicas = [
+  "O projeto possui caráter particular e independente.",
+  "Não possui finalidade comercial no modelo atualmente adotado.",
+  "Os laboratórios disponibilizados são gratuitos.",
+  "O desenvolvimento e a administração ocorrem fora da jornada profissional.",
+  "São utilizados equipamentos, serviços e recursos próprios.",
+  "A plataforma possui identidade e gestão independentes.",
+  "Não representa a universidade nem utiliza sua identidade institucional.",
 ];
 
 export default function Independencia() {
@@ -43,18 +52,19 @@ export default function Independencia() {
             <SFCyber /> Academy | Projeto independente de educação tecnológica
           </p>
           <p className="text-slate-400 text-base mb-10 leading-relaxed">
-            Esta declaração torna públicos os fatos que caracterizam a{" "}
-            <SFCyber /> Academy como uma iniciativa particular, independente e de natureza
-            educacional, para que visitantes, parceiros e instituições compreendam a natureza do
+            Esta declaração apresenta os princípios, a finalidade e as características que definem
+            a <SFCyber /> Academy como uma iniciativa particular e independente, permitindo que
+            visitantes, parceiros e instituições compreendam a natureza e o funcionamento do
             projeto.
           </p>
 
           <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 px-5 py-4 mb-10">
             <p className="text-sm text-cyan-100 leading-relaxed">
               <strong className="text-cyan-300">Em resumo:</strong> a{" "}
-              <SFCyber /> Academy é uma iniciativa particular e independente, sem vínculo
+              <SFCyber /> Academy é uma iniciativa particular de educação tecnológica, sem vínculo
               institucional, comercial ou acadêmico com a universidade em que seu idealizador
-              exerce atividade profissional, e não representa essa instituição.
+              exerce atividade profissional, não representando nem atuando em nome dessa
+              instituição.
             </p>
           </div>
 
@@ -66,24 +76,25 @@ export default function Independencia() {
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
                 A <SFCyber /> Academy é uma iniciativa independente de educação tecnológica,
-                criada com o propósito de democratizar o acesso ao conhecimento em Redes de
-                Computadores e Cibersegurança por meio de laboratórios práticos e gratuitos.
+                criada com o propósito de democratizar o acesso ao conhecimento nas áreas de Redes
+                de Computadores e Cibersegurança, por meio de laboratórios virtuais, simuladores e
+                atividades práticas de aprendizagem.
               </p>
             </section>
 
             <section>
               <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
                 <ListChecks className="w-5 h-5 text-cyan-400" />
-                Fatos verificáveis
+                Características e fatos do projeto
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed mb-3">
-                A independência do projeto se apoia em fatos objetivos e verificáveis:
+                A independência da iniciativa está fundamentada nas seguintes características:
               </p>
               <ul className="space-y-2">
-                {fatos.map((fato) => (
-                  <li key={fato} className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                {caracteristicas.map((item) => (
+                  <li key={item} className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                     <span className="text-cyan-400 mt-0.5">•</span>
-                    <span>{fato}</span>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -92,21 +103,35 @@ export default function Independencia() {
             <section>
               <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-cyan-400" />
-                Ausência de vínculo institucional
+                Independência institucional
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                A plataforma não possui vínculo institucional, comercial ou acadêmico com a
-                universidade em que seu idealizador exerce atividade profissional.
+                A <SFCyber /> Academy não possui vínculo institucional, comercial ou acadêmico com
+                a universidade em que seu idealizador exerce atividade profissional.
+              </p>
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                A iniciativa não se apresenta como projeto institucional da universidade, não
+                utiliza sua marca para divulgação e não pretende representar seus interesses ou
+                atividades acadêmicas.
               </p>
             </section>
-          </div>
 
-          <div className="mt-12 pt-8 border-t border-slate-800">
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Esta declaração tem caráter informativo e busca esclarecer a independência do
-              projeto. Ela não substitui a análise das circunstâncias reais de cada situação
-              concreta.
-            </p>
+            <section>
+              <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
+                <Info className="w-5 h-5 text-cyan-400" />
+                Considerações finais
+              </h2>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Esta declaração possui caráter informativo e tem como objetivo apresentar a
+                natureza independente e educacional da <SFCyber /> Academy.
+              </p>
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                As informações aqui apresentadas correspondem às características do projeto no
+                momento de sua publicação. Eventuais questões jurídicas devem ser analisadas
+                considerando as circunstâncias concretas, os contratos aplicáveis e a legislação
+                vigente.
+              </p>
+            </section>
           </div>
         </div>
       </main>
