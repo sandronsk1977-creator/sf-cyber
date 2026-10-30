@@ -124,9 +124,9 @@ export default function Sobre() {
                 em experiência antes de encarar o dia a dia profissional.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                Também atuo com ensino e mentoria em TI e Redes. É dessa vivência, entre a operação
-                e a sala de aula, que a <SFCyber /> Academy se consolidou: um lugar para estudar
-                sem medo de errar, porque o erro faz parte do aprendizado.
+                É dessa vivência, entre a operação e a visão de ensino prático, que nasce a{" "}
+                <SFCyber /> Academy: um lugar para estudar sem medo de errar, porque o erro faz
+                parte do aprendizado.
               </p>
 
               <div className="mt-5 grid grid-cols-3 gap-3">
