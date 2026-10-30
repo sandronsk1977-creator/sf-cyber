@@ -96,7 +96,7 @@ export function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps) {
             <p className="text-sm text-slate-300 leading-relaxed mb-4">
               Vamos te avisar em{" "}
               <strong className="text-cyan-400 break-all">{subscribedEmail}</strong> quando a
-              área de membros (cursos, laboratórios e avaliações) abrir.
+              área de membros (Laboratórios com suporte e avaliações) abrir.
             </p>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Enquanto isso, já pode praticar nos laboratórios grátis com 8 níveis e certificado
