@@ -47,7 +47,7 @@ export function PortalCardsSection() {
           <button
             type="button"
             onClick={() => setDesafioOpen(true)}
-            className="group inline-flex items-center gap-2.5 rounded-xl border border-amber-300/70 bg-amber-500 px-6 py-3 text-sm font-extrabold uppercase tracking-wider text-slate-950 shadow-[0_0_22px_rgba(245,158,11,0.45)] transition-all hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-[0_0_36px_rgba(245,158,11,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:text-base"
+            className="animate-neon-amber group inline-flex items-center gap-2.5 rounded-xl border border-amber-300/70 bg-amber-500 px-6 py-3 text-sm font-extrabold uppercase tracking-wider text-slate-950 shadow-[0_0_22px_rgba(245,158,11,0.45)] transition-all hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-[0_0_36px_rgba(245,158,11,0.75)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 sm:text-base"
           >
             <Trophy className="h-5 w-5" />
             Desafio do Guerreiro
