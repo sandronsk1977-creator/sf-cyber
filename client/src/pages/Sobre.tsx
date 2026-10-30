@@ -96,7 +96,7 @@ export default function Sobre() {
 
           <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 px-5 py-4 mb-10">
             <p className="text-sm text-cyan-100 leading-relaxed">
-              <strong className="text-cyan-300">Em resumo:</strong> um projeto particular e
+              <strong className="text-cyan-300">Em resumo</strong>, um projeto particular e
               independente, criado por um profissional de TI com mais de 20 anos de estrada, que
               oferece laboratórios gratuitos para quem quer aprender redes e cibersegurança na
               prática e continuar evoluindo.
@@ -117,7 +117,7 @@ export default function Sobre() {
                 projetos que geram resultados reais.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                A <SFCyber /> Academy nasceu de uma inquietação antiga: nem sempre o formando sai
+                A <SFCyber /> Academy nasceu de uma inquietação antiga. Nem sempre o formando sai
                 da faculdade pronto para o mercado de trabalho. Por isso idealizei um projeto que
                 pudesse potencializar o conhecimento de forma prática, principalmente para alunos
                 de cursos e recém-formados na área de tecnologia, que precisam transformar teoria
@@ -125,7 +125,7 @@ export default function Sobre() {
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 É dessa vivência, entre a operação e a visão de ensino prático, que nasce a{" "}
-                <SFCyber /> Academy: um lugar para estudar sem medo de errar, porque o erro faz
+                <SFCyber /> Academy, um lugar para estudar sem medo de errar, porque o erro faz
                 parte do aprendizado.
               </p>
 
@@ -205,7 +205,7 @@ export default function Sobre() {
                 ler teoria, você opera ambientes que reproduzem o dia a dia da profissão.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                São quatro laboratórios: switch Cisco para criação de VLANs, análise SOC,
+                São quatro laboratórios, com switch Cisco para criação de VLANs, análise SOC,
                 segurança web com SQL Injection e XSS, e servidor DNS. Cada simulador tem 8 níveis,
                 avaliação final e certificado de conclusão.
               </p>
@@ -238,7 +238,7 @@ export default function Sobre() {
                   <li key={p.titulo} className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                     <span className="text-cyan-400 mt-0.5">•</span>
                     <span>
-                      <span className="text-white font-semibold">{p.titulo}:</span> {p.desc}
+                      <span className="text-white font-semibold">{p.titulo}.</span> {p.desc}
                     </span>
                   </li>
                 ))}
@@ -250,7 +250,7 @@ export default function Sobre() {
                 </h3>
                 <p className="text-xs text-slate-500 mb-3">
                   Educação contínua também é sobre manter o estudo em movimento. Hoje meu foco está
-                  em:
+                  nestas frentes.
                 </p>
                 <ul className="grid sm:grid-cols-2 gap-2 text-sm text-slate-400 leading-relaxed">
                   {estudando.map((e) => (
@@ -272,7 +272,7 @@ export default function Sobre() {
                 Para quem está começando e quer entender como as coisas funcionam na prática, para
                 quem já trabalha em TI e precisa reforçar redes e segurança, e para estudantes e
                 profissionais que buscam aprendizado contínuo fora da sala de aula. Não é preciso
-                conhecimento avançado para começar: cada nível apresenta o conceito e propõe a
+                conhecimento avançado para começar, pois cada nível apresenta o conceito e propõe a
                 prática.
               </p>
             </section>
