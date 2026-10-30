@@ -4,45 +4,47 @@ import { ArrowLeft, Handshake, ShieldCheck, Check, Award, Users, FileText, Messa
 
 const WHATSAPP_NUMBER = "5562999693469";
 const MENSAGEM_PARCERIA =
-  "Olá! Vim pelo site da SF Cyber Academy. Gostaria de conversar sobre PARCERIA e PATROCÍNIO. " +
-  "Meu interesse é: ( ) patrocinar um laboratório; ( ) parceria em conteúdo técnico; " +
-  "( ) apoio para escolas, técnicos e alunos. Podemos falar?";
+  "Olá! Vim pelo site da SF Cyber Academy e gostaria de apresentar uma proposta de colaboração. " +
+  "Tenho interesse em uma das seguintes modalidades: apoio técnico, conteúdo educacional, " +
+  "infraestrutura, equipamentos, parceria com escolas ou patrocínio de laboratório. Podemos conversar?";
 
 const faixas = [
   {
     nome: "PARCEIRO",
-    preco: "a partir de... EM BREVE",
+    preco: "Condições a definir",
     icone: Handshake,
     cor: "#22d3ee",
     itens: [
-      "Selo de parceiro no rodapé do portal, com link para o seu site",
-      "Menção na página de parcerias e nos materiais de divulgação",
-      "Relatório mensal agregado: alunos ativos, conclusões e aproveitamento médio",
-      "Convite para a lista de espera do pré-lançamento",
+      "Reconhecimento como apoiador no portal, mediante autorização",
+      "Link para o site ou canal institucional do apoiador",
+      "Menção na página de parcerias e nos materiais de divulgação acordados",
+      "Relatório estatístico agregado de utilização dos laboratórios, quando disponível",
+      "Possibilidade de participação em iniciativas educacionais",
     ],
   },
   {
     nome: "PATROCINADOR",
-    preco: "a partir de... EM BREVE",
+    preco: "Condições a definir",
     icone: Award,
     cor: "#3b82f6",
     destaque: true,
     itens: [
-      "Tudo da faixa Parceiro",
-      "Selo “Laboratório patrocinado” no laboratório escolhido",
-      "Menção no certificado de conclusão dos alunos que concluem o laboratório",
-      ],
+      "Benefícios da modalidade Parceiro",
+      "Identificação de laboratório apoiado, conforme acordo",
+      "Menção institucional nos materiais de conclusão, quando aplicável e previamente acordada",
+      "Divulgação da contribuição realizada",
+    ],
   },
   {
-    nome: "PARCEIRO MASTER",
-    preco: "a partir de... EM BREVE",
+    nome: "APOIADOR MASTER",
+    preco: "Condições a definir",
     icone: ShieldCheck,
     cor: "#8b5cf6",
     itens: [
-      "Tudo da faixa Patrocinador",
-      "Aula inaugural ao vivo no laboratório patrocinado",
-      "Destaque na página inicial do portal",
-      "Acesso antecipado aos novos laboratórios",
+      "Benefícios da modalidade Patrocinador",
+      "Possibilidade de participação em atividade educacional de abertura",
+      "Destaque institucional na página inicial, conforme acordo",
+      "Possibilidade de conhecer antecipadamente novos laboratórios",
     ],
   },
 ];
@@ -50,48 +52,48 @@ const faixas = [
 const outrasFormas = [
   {
     titulo: "Conteúdo técnico",
-    desc: "Sua ferramenta vira cenário de um nível do laboratório, com menção para o seu produto dentro da prática.",
+    desc: "Colaboração na criação de conteúdos, materiais didáticos, demonstrações e experiências práticas relacionadas a produtos e tecnologias, contribuindo para a aprendizagem dos usuários.",
   },
   {
-    titulo: "Convênio com escolas",
-    desc: "Acesso facilitado para alunos de cursos técnicos, escolas de referência e instituições parceiras.",
+    titulo: "Colaboração com escolas",
+    desc: "Propostas de colaboração educacional com escolas, instituições de ensino, estudantes e profissionais interessados em ampliar o acesso à aprendizagem prática em tecnologia.",
   },
   {
-    titulo: "Infraestrutura e créditos",
-    desc: "Servidores, créditos de nuvem ou equipamentos cedidos em troca de selo de parceiro.",
+    titulo: "Infraestrutura e recursos tecnológicos",
+    desc: "Apoio por meio de disponibilização ou doação de equipamentos, servidores, créditos de nuvem, ferramentas e outros recursos que possam contribuir para o desenvolvimento dos laboratórios.",
   },
   {
-    titulo: "Indicação e co-marketing",
-    desc: "Divulgação conjunta nas redes e nos eventos do setor que você já participa.",
+    titulo: "Divulgação e colaboração institucional",
+    desc: "Possibilidades de divulgação conjunta, indicação de iniciativas educacionais e colaboração em eventos e atividades relacionadas à tecnologia, conforme as condições acordadas entre as partes.",
   },
 ];
 
 const passos = [
   {
     numero: "1",
-    titulo: "Você escolhe a faixa",
-    desc: "Define o valor e o que a sua marca recebe: selo no site, selo no laboratório, menção no certificado e relatório de uso.",
+    titulo: "Apresente sua proposta",
+    desc: "Você apresenta sua proposta de apoio, indicando os recursos, conteúdos, equipamentos ou modalidade de colaboração de seu interesse.",
   },
   {
     numero: "2",
-    titulo: "A parceria entra no ar",
-    desc: "O selo e a menção aparecem no portal, no laboratório patrocinado e no certificado de conclusão dos alunos, sempre com link para o seu site.",
+    titulo: "Avaliação e alinhamento",
+    desc: "A proposta é avaliada individualmente, considerando a finalidade educacional, a viabilidade técnica e as condições de colaboração.",
   },
   {
     numero: "3",
-    titulo: "Você acompanha o resultado",
-    desc: "Recebe um relatório mensal agregado, com alunos ativos, conclusões e aproveitamento médio por laboratório. Sem nenhum dado pessoal de aluno.",
+    titulo: "Acompanhamento dos resultados",
+    desc: "Quando aplicável, o apoiador poderá receber informações estatísticas agregadas sobre a utilização dos laboratórios, sem exposição de dados pessoais dos alunos.",
   },
 ];
 
 const faq = [
   {
     p: "A menção aparece no certificado?",
-    r: "Sim. Na faixa Patrocinador e Master, a sua empresa aparece no certificado de conclusão dos alunos que concluem o laboratório patrocinado.",
+    r: "A menção institucional nos materiais de conclusão é prevista na modalidade Patrocinador, quando aplicável e previamente acordada entre as partes.",
   },
   {
-    p: "Posso cancelar quando quiser?",
-    r: "Sim, sem fidelidade. Com 30 dias de antecedência, o selo sai no ciclo seguinte.",
+    p: "Como são definidas as condições da colaboração?",
+    r: "As condições são definidas individualmente, conforme a modalidade de apoio, o escopo e as possibilidades de cada proposta, e formalizadas no instrumento aplicável.",
   },
   {
     p: "Os dados dos alunos são compartilhados?",
@@ -99,7 +101,7 @@ const faq = [
   },
   {
     p: "Existe exclusividade?",
-    r: "Só na faixa Master, e apenas um patrocinador por laboratório.",
+    r: "A exclusividade pode ser avaliada caso a caso, conforme a modalidade e o escopo acordados entre as partes.",
   },
 ];
 
@@ -114,7 +116,7 @@ export default function Parcerias() {
           </Link>
           <span className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full animate-neon-badge">
             <Handshake className="w-3.5 h-3.5" />
-            Parcerias e Patrocínio
+            Parcerias e Apoio
           </span>
         </div>
       </header>
@@ -123,16 +125,16 @@ export default function Parcerias() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-cyan-400 font-mono font-semibold">
-              Parcerias e Patrocínio
+              Parcerias e Apoio
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mt-3 mb-5">
-              Sua marca nos laboratórios e nos certificados
+              Parcerias e Apoio à Educação Tecnológica
             </h1>
             <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-              A SF Cyber Academy forma quem cuida de redes e cibersegurança na prática. Empresas,
-              escolas técnicas, provedores e fabricantes apoiam esse trabalho e aparecem para
-              quem está aprendendo: selo no portal, selo no laboratório e menção no certificado
-              de conclusão.
+              A SF Cyber Academy é um projeto independente que democratiza o acesso ao
+              conhecimento em Redes de Computadores e Cibersegurança. Estamos abertos ao diálogo
+              com empresas, profissionais, escolas e instituições interessadas em apoiar
+              iniciativas de educação tecnológica.
             </p>
           </div>
 
@@ -161,10 +163,11 @@ export default function Parcerias() {
           {/* Faixas */}
           <section className="mb-20">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center mb-4">
-              Faixas de parceria
+              Modalidades de apoio
             </h2>
             <p className="text-center text-slate-400 text-sm mb-10">
-              Valores de referência, ajustados conforme o escopo e o período contratado.
+              Condições de colaboração definidas individualmente, conforme a modalidade de apoio,
+              o escopo e as possibilidades de cada proposta.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -201,12 +204,18 @@ export default function Parcerias() {
                 );
               })}
             </div>
+
+            <p className="mt-8 text-center text-xs text-slate-500 leading-relaxed max-w-2xl mx-auto">
+              As modalidades acima são propostas de colaboração, sujeitas a avaliação, negociação e
+              formalização das condições aplicáveis. Nenhum benefício é garantido antes da
+              formalização da respectiva colaboração.
+            </p>
           </section>
 
-          {/* Outras formas */}
+          {/* Formas de apoio */}
           <section className="mb-20">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white text-center mb-4">
-              Outras formas de apoiar
+              Formas de apoio
             </h2>
             <p className="text-center text-slate-400 text-sm mb-10">
               Sem custo financeiro, para quem prefere apoiar com estrutura, conteúdo ou
@@ -251,8 +260,9 @@ export default function Parcerias() {
                 Quer apoiar a SF Cyber Academy?
               </h2>
               <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-                Chame no WhatsApp contando o que você busca: patrocinar um laboratório, apoiar
-                com conteúdo ou convênio com escolas. Você recebe a proposta completa em 1 dia útil.
+                Entre em contato para apresentar sua proposta de colaboração. Estamos abertos a
+                iniciativas de apoio técnico, conteúdo educacional, infraestrutura, equipamentos e
+                patrocínio de laboratórios.
               </p>
               <a
                 href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MENSAGEM_PARCERIA)}`}
@@ -263,9 +273,9 @@ export default function Parcerias() {
                 className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-8 py-4 rounded-xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-[1.02] text-base"
               >
                 <MessageCircle className="w-5 h-5" />
-                Quero ser parceiro
+                Quero apresentar uma proposta
               </a>
-              <p className="text-xs text-slate-500 mt-4">Resposta em até 1 dia útil. Sem compromisso.</p>
+              <p className="text-xs text-slate-500 mt-4">Sem compromisso.</p>
 
               <div className="mt-10 pt-8 border-t border-slate-800 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
                 <a
@@ -295,6 +305,38 @@ export default function Parcerias() {
                   Proposta em 1 página
                 </span>
               </div>
+            </div>
+          </section>
+
+          {/* Informações institucionais */}
+          <section className="mt-16 pt-10 border-t border-slate-800">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
+              Informações institucionais
+            </h2>
+            <div className="space-y-3 text-xs text-slate-500 leading-relaxed">
+              <p>
+                A SF Cyber Academy é uma iniciativa particular e independente de educação
+                tecnológica, idealizada e administrada por pessoa física, atualmente sem CNPJ.
+              </p>
+              <p>
+                Os laboratórios são disponibilizados gratuitamente aos usuários no modelo
+                atualmente adotado.
+              </p>
+              <p>
+                As modalidades de apoio e patrocínio apresentadas nesta página representam
+                possibilidades de colaboração, sujeitas à avaliação, disponibilidade e formalização
+                das condições aplicáveis.
+              </p>
+              <p>
+                A eventual realização de atividades remuneradas, recebimento de patrocínios ou
+                estabelecimento de parcerias será avaliada individualmente, observando as
+                obrigações legais, fiscais e contratuais pertinentes.
+              </p>
+              <p>
+                A SF Cyber Academy não possui vínculo institucional, comercial ou acadêmico com a
+                universidade em que seu idealizador exerce atividade profissional, não
+                representando essa instituição.
+              </p>
             </div>
           </section>
         </div>
