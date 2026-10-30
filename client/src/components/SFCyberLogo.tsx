@@ -1,60 +1,87 @@
+
 import React from "react";
 
 export function SFCyberLogo() {
   return (
-    <div className="flex items-center gap-3 group">
-      {/* Escudo SF Cyber - vidro neon */}
-      <div className="relative w-14 h-14 shrink-0">
-        {/* Brilho externo do escudo */}
-        <div className="absolute inset-0 drop-shadow-[0_0_10px_rgba(34,211,238,0.45)] group-hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.7)] transition-[filter]" />
+    <div className="group flex flex-col items-center justify-center gap-1 w-fit">
 
-        {/* Pulso neon azul */}
-        <div
-          className="absolute -inset-1.5 pointer-events-none animate-logo-shield-pulse"
-          style={{ clipPath: "polygon(50% 0%, 100% 17%, 97% 55%, 78% 86%, 50% 100%, 22% 86%, 3% 55%, 0% 17%)" }}
-        />
+      {/* Escudo SF Cyber */}
+      <div className="relative w-20 h-20 shrink-0
+        drop-shadow-[0_0_8px_rgba(0,200,255,0.8)]
+        group-hover:drop-shadow-[0_0_18px_rgba(0,200,255,1)]
+        transition-all duration-300">
 
-        {/* Escudo com borda neon + vidro */}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-cyan-400/25 via-slate-900/50 to-slate-950/60 backdrop-blur-[6px] border border-blue-500/70 shadow-[inset_0_2px_10px_rgba(59,130,246,0.3),inset_0_-6px_14px_rgba(2,6,23,0.6)]"
-          style={{
-            clipPath:
-              "polygon(50% 0%, 100% 17%, 97% 55%, 78% 86%, 50% 100%, 22% 86%, 3% 55%, 0% 17%)",
-          }}
+        <svg
+          viewBox="0 0 100 110"
+          className="w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Reflexo de vidro diagonal */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-60"
-            style={{
-              background:
-                "linear-gradient(115deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 22%, transparent 40%, transparent 60%, rgba(59,130,246,0.15) 80%, transparent 100%)",
-            }}
+          <defs>
+            <linearGradient id="shieldGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="45%" stopColor="#dbeafe" />
+              <stop offset="100%" stopColor="#00d9ff" />
+            </linearGradient>
+
+            <linearGradient id="cyanGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#00eaff" />
+              <stop offset="100%" stopColor="#0077ff" />
+            </linearGradient>
+
+            <filter id="neonGlow">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Corpo do escudo */}
+          <path
+            d="M50 4 L94 19 L89 65 L75 85 L50 103 L25 85 L11 65 L6 19 Z"
+            fill="#020817"
+            stroke="url(#cyanGradient)"
+            strokeWidth="4"
+            filter="url(#neonGlow)"
           />
-        </div>
 
-        {/* Trail na borda superior (linha neon animada) */}
-        <div
-          className="absolute inset-0 pointer-events-none border border-blue-500/30"
-          style={{ clipPath: "polygon(50% 0%, 100% 17%, 97% 55%, 78% 86%, 50% 100%, 22% 86%, 3% 55%, 0% 17%)" }}
-        />
+          {/* Símbolo geométrico SF */}
+          <path
+            d="M25 34 L50 23 L75 34 L75 44 L50 34 L35 40 L35 48 L65 48 L65 68 L50 80 L35 68 L35 59 L50 69 L56 65 L56 58 L25 58 Z"
+            fill="none"
+            stroke="url(#shieldGradient)"
+            strokeWidth="7"
+            strokeLinejoin="round"
+          />
 
-        {/* SF */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="relative font-mono font-black text-lg tracking-tighter text-white drop-shadow-[0_0_10px_rgba(59,130,246,1)]">
-            SF
-          </span>
-        </div>
+          <path
+            d="M50 23 L75 34 L75 44 L56 39 L56 65 L50 80"
+            fill="none"
+            stroke="#00eaff"
+            strokeWidth="5"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
 
-      <div className="flex flex-col justify-center">
-        <span className="text-[24px] leading-none font-mono tracking-[0.04em] animate-logo-text-pulse">
-          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400">
-            Cyber
-          </span>
+      {/* Nome da marca */}
+      <div className="flex flex-col items-center leading-none">
+
+        <div className="text-[22px] font-black tracking-[-0.06em]
+          uppercase whitespace-nowrap
+          drop-shadow-[0_0_8px_rgba(0,200,255,0.45)]">
+
+          <span className="text-white">SF</span>
+          <span className="text-cyan-400"> CYBER</span>
+        </div>
+
+        <span className="mt-1 text-[10px] font-bold
+          tracking-[0.38em] uppercase text-white
+          drop-shadow-[0_0_5px_rgba(0,200,255,0.6)]">
+          ACADEMY
         </span>
-        <span className="text-[10px] text-slate-400 tracking-[0.28em] uppercase font-mono mt-1.5">
-          Academia Digital
-        </span>
+
       </div>
     </div>
   );
