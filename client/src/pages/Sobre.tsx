@@ -97,8 +97,9 @@ export default function Sobre() {
           <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 px-5 py-4 mb-10">
             <p className="text-sm text-cyan-100 leading-relaxed">
               <strong className="text-cyan-300">Em resumo:</strong> um projeto particular e
-              independente, criado por um profissional de TI, que oferece laboratórios gratuitos
-              para quem quer aprender redes e cibersegurança na prática e continuar evoluindo.
+              independente, criado por um profissional de TI com mais de 20 anos de estrada, que
+              oferece laboratórios gratuitos para quem quer aprender redes e cibersegurança na
+              prática e continuar evoluindo.
             </p>
           </div>
 
@@ -110,15 +111,38 @@ export default function Sobre() {
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
                 Sou <span className="text-white font-semibold">Sandro Ferreira</span>, profissional
-                de Tecnologia da Informação com atuação em ITSM, infraestrutura, redes, servidores,
-                monitoramento, cibersegurança e automação. Transformo as necessidades do dia a dia
-                da TI em soluções práticas, ferramentas e projetos que geram resultados reais.
+                de Tecnologia da Informação há mais de 20 anos, com atuação em ITSM,
+                infraestrutura, redes, servidores, monitoramento, cibersegurança e automação.
+                Transformo as necessidades do dia a dia da TI em soluções práticas, ferramentas e
+                projetos que geram resultados reais.
+              </p>
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                A <SFCyber /> Academy nasceu de uma inquietação antiga: nem sempre o formando sai
+                da faculdade pronto para o mercado de trabalho. Por isso idealizei um projeto que
+                pudesse potencializar o conhecimento de forma prática, principalmente para alunos
+                de cursos e recém-formados na área de tecnologia, que precisam transformar teoria
+                em experiência antes de encarar o dia a dia profissional.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 Também atuo com ensino e mentoria em TI e Redes. É dessa vivência, entre a operação
-                e a sala de aula, que nasce a <SFCyber /> Academy: um lugar para estudar sem medo
-                de errar, porque o erro faz parte do aprendizado.
+                e a sala de aula, que a <SFCyber /> Academy se consolidou: um lugar para estudar
+                sem medo de errar, porque o erro faz parte do aprendizado.
               </p>
+
+              <div className="mt-5 grid grid-cols-3 gap-3">
+                <div className="rounded-2xl bg-slate-900/60 border border-slate-800 px-4 py-3 text-center">
+                  <p className="text-xl font-extrabold text-cyan-400">20+</p>
+                  <p className="text-xs text-slate-500 leading-snug">anos em TI</p>
+                </div>
+                <div className="rounded-2xl bg-slate-900/60 border border-slate-800 px-4 py-3 text-center">
+                  <p className="text-xl font-extrabold text-cyan-400">4</p>
+                  <p className="text-xs text-slate-500 leading-snug">laboratórios</p>
+                </div>
+                <div className="rounded-2xl bg-slate-900/60 border border-slate-800 px-4 py-3 text-center">
+                  <p className="text-xl font-extrabold text-cyan-400">8</p>
+                  <p className="text-xs text-slate-500 leading-snug">níveis por laboratório</p>
+                </div>
+              </div>
 
               <div className="mt-5 rounded-2xl bg-slate-900/60 border border-slate-800 p-5">
                 <h3 className="text-sm font-extrabold text-white mb-3 flex items-center gap-2">
@@ -176,15 +200,14 @@ export default function Sobre() {
                 O projeto
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                A <SFCyber /> Academy é um portal com laboratórios virtuais de Redes de
-                Computadores e Cibersegurança. Cada laboratório segue o mesmo fluxo: aprendizado,
-                prática, avaliação, aprovação e certificado de conclusão, com 8 níveis e uma prova
-                final.
+                A <SFCyber /> Academy é uma academia digital de Redes e Cibersegurança voltada
+                para Cybersecurity e Redes, com uma plataforma de simulação prática. Em vez de só
+                ler teoria, você opera ambientes que reproduzem o dia a dia da profissão.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                São quatro laboratórios: VLANs em switch Cisco, Segurança SOC com atuação de
-                analista e hacker ético, Segurança Web com SQL Injection e XSS, e Servidor DNS com
-                resolução, transferência de zona e DNSSEC.
+                São quatro laboratórios: switch Cisco para criação de VLANs, análise SOC,
+                segurança web com SQL Injection e XSS, e servidor DNS. Cada simulador tem 8 níveis,
+                avaliação final e certificado de conclusão.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 O projeto é particular e independente, idealizado e administrado por pessoa física,
