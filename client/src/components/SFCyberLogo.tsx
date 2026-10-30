@@ -80,8 +80,6 @@ export function SFCyberLogo() {
           </span>
         </div>
 
-       </span>
-
       </div>
     </div>
   );
