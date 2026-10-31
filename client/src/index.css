@@ -84,6 +84,20 @@
   animation: neon-amber 2s ease-in-out infinite;
 }
 
+@keyframes neon-white {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.35), 0 0 18px rgba(255, 255, 255, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.8), 0 0 32px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.animate-neon-white {
+  animation: neon-white 2s ease-in-out infinite;
+}
+
 /* Neon pulsante no texto SF Cyber do logo */
 @keyframes logo-text-pulse {
   0%,
@@ -414,6 +428,7 @@
   .animate-badge-green-pulse,
   .animate-youtube-neon,
   .animate-neon-amber,
+  .animate-neon-white,
   .animate-caret-blink {
     animation: none;
   }
