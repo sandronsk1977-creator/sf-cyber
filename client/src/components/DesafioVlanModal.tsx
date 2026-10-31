@@ -1,5 +1,12 @@
 import { useEffect } from "react";
-import { Trophy, Target, ArrowRight, X } from "lucide-react";
+import { Trophy, Target, ArrowRight, X, ShieldCheck } from "lucide-react";
+
+const SFCyber = () => (
+  <span className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse whitespace-nowrap">
+    <ShieldCheck className="h-4 w-4" />
+    SF Cyber
+  </span>
+);
 
 interface DesafioVlanModalProps {
   open: boolean;
@@ -60,9 +67,9 @@ export function DesafioVlanModal({ open, onOpenChange }: DesafioVlanModalProps) 
           Desafio VLAN
         </h2>
         <p className="mb-5 text-sm leading-relaxed text-slate-300">
-          A SF Cyber Academy cresceu. Agora é uma empresa com três departamentos, todos ligados no
-          mesmo cabo de rede. TI com 12 pessoas, RH com 8 e Marketing com 10 precisam de internet,
-          e-mail e servidores de arquivo. Organize a rede e resolva o desafio.
+          A <SFCyber /> Academy cresceu. Agora é uma empresa com três departamentos, todos ligados
+          no mesmo cabo de rede. TI com 12 pessoas, RH com 8 e Marketing com 10 precisam de
+          internet, e-mail e servidores de arquivo. Organize a rede e resolva o desafio.
         </p>
 
         <div className="mb-6 flex items-center gap-2">
