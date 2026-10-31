@@ -41,7 +41,7 @@ export function AudienceSection() {
             Isso é para você?
           </h2>
           <p className="text-slate-400 text-base sm:text-lg">
-            SF Cyber recomenda... Se você se identifica com os perfis abaixo, este é o seu lugar.
+            Se você se identifica com os perfis abaixo, este é o lugar para praticar.
           </p>
         </div>
 
