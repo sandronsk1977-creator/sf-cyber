@@ -107,10 +107,10 @@ export default function Sobre() {
             <section>
               <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
                 <User className="w-5 h-5 text-cyan-400" />
-                Quem está por trás
+                Backstage?
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Sou <span className="text-white font-semibold">Sandro Ferreira</span>, profissional
+                Eu <span className="text-white font-semibold">Sandro Ferreira</span>, profissional
                 de Tecnologia da Informação há mais de 20 anos, com atuação em ITSM,
                 infraestrutura, redes, servidores, monitoramento, cibersegurança e automação.
                 Transformo as necessidades do dia a dia da TI em soluções práticas, ferramentas e
