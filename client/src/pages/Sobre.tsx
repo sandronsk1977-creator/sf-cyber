@@ -86,7 +86,7 @@ export default function Sobre() {
             Sobre a SF Cyber Academy
           </h1>
           <p className="text-sm text-slate-500 mb-2">
-            Projeto independente de educação tecnológica | Goiânia, Goiás
+            Projeto Independente de Educação Tecnológica • Goiânia - GO
           </p>
           <p className="text-slate-400 text-base mb-10 leading-relaxed">
             A <SFCyber /> Academy nasceu da prática de quem trabalha todos os dias com
@@ -98,7 +98,7 @@ export default function Sobre() {
             <p className="text-sm text-cyan-100 leading-relaxed">
               <strong className="text-cyan-300">Em resumo</strong>, um projeto particular e
               independente, criado por um profissional de TI com mais de 20 anos de estrada, que
-              oferece laboratórios gratuitos para quem quer aprender redes e cibersegurança na
+              oferece laboratórios gratuitos para quem quer aprender Redes e Cibersegurança na
               prática e continuar evoluindo.
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function Sobre() {
                   href="/independencia"
                   className="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold"
                 >
-                  Veja a declaração de independência institucional
+                  Veja a declaração de Independência Institucional
                 </Link>
                 .
               </p>
