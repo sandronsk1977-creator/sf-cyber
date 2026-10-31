@@ -174,7 +174,7 @@ export default function Sobre() {
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <a
-                  href="https://www.linkedin.com/in/sandro-ferreira-8725b9443/"
+                  href="https://www.linkedin.com/in/sf-cyber-academia-digital-8725b9443/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-full hover:bg-cyan-500/20 transition-colors"

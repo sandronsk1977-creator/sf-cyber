@@ -279,7 +279,7 @@ export default function Parcerias() {
 
               <div className="mt-10 pt-8 border-t border-slate-800 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
                 <a
-                  href="https://www.linkedin.com/in/sandro-ferreira-8725b9443/"
+                  href="https://www.linkedin.com/in/sf-cyber-academia-digital-8725b9443/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 hover:text-cyan-400 transition-colors"
