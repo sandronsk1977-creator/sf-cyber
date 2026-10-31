@@ -60,7 +60,7 @@ const plans = [
               Planos e Assinaturas
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2 mb-4">
-              Plano FREE... comece agora
+              GRÁTIS... Comece agora
             </h2>
             <p className="text-slate-400 text-base sm:text-lg">
               Acesso imediato aos quatro laboratórios: VLANs, SOC, Segurança Web e Servidor DNS
