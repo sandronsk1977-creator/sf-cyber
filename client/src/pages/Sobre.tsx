@@ -117,12 +117,13 @@ export default function Sobre() {
                 projetos que geram resultados reais.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                A <SFCyber /> Academy nasceu de uma inquietação antiga. Nem sempre{" "}
-                <strong className="text-slate-200">nós, formandos</strong>, saímos da faculdade
-                prontos para o mercado de trabalho. Por isso idealizei um projeto que pudesse
-                potencializar o conhecimento de forma prática, principalmente para alunos de cursos
-                e recém-formados na área de tecnologia, que precisam transformar teoria em
-                experiência antes de encarar o dia a dia profissional.
+                A <SFCyber /> Academy nasceu de uma inquietação antiga. Concluir uma graduação é uma
+                conquista importante, mas nem sempre saímos da faculdade com o preparo prático e as
+                competências necessárias para enfrentar os desafios e as exigências do mercado de
+                trabalho. Por isso idealizei um projeto que pudesse potencializar o conhecimento de
+                forma prática, principalmente para alunos de cursos e recém-formados na área de
+                tecnologia, que precisam transformar teoria em experiência antes de encarar o dia a
+                dia profissional.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 É dessa vivência, entre a operação e a visão de ensino prático, que nasce a{" "}
