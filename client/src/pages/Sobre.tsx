@@ -223,6 +223,96 @@ export default function Sobre() {
               </p>
             </section>
 
+            <section id="transparencia">
+              <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-cyan-400" />
+                Como este site foi feito
+              </h2>
+              <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-5">
+                <h3 className="text-sm font-extrabold text-white mb-3">
+                  Este site foi construído com inteligência híbrida
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">
+                  Usei Inteligência Artificial como ferramenta para acelerar a parte mecânica:
+                  geração de código base, layouts e otimização de tarefas repetitivas.
+                </p>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">
+                  Toda a arquitetura, lógica de programação, segurança, performance e a decisão final
+                  sobre o que entra no ar são de minha responsabilidade, com base na minha experiência
+                  em programação.
+                </p>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  A IA foi a ferramenta. A inteligência e a direção foram humanas.
+                </p>
+              </div>
+              <p className="mt-5 text-slate-400 text-sm leading-relaxed">
+                O projeto foi desenvolvido com apoio de ferramentas de IA, com revisão e validação
+                técnica por profissional da equipe SF Cyber e seguiu as regras fixas de desenvolvimento
+                e testes de QA.
+              </p>
+              <div className="mt-4 rounded-2xl bg-slate-900/60 border border-slate-800 p-5 space-y-4">
+                <div>
+                  <h3 className="text-sm font-extrabold text-white mb-2">
+                    Regras fixas de desenvolvimento e testes de QA
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Sempre revisar o código em busca de bugs e vulnerabilidades, usando como referência
+                    o OWASP Top 10 (injeção, quebra de autenticação, XSS, CSRF, falhas de configuração,
+                    etc.). Antes de dar algo como pronto, verificar se o fluxo não deixa o usuário
+                    travado.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-extrabold text-white mb-2">
+                    Se integrar LLM/IA (ex.: "SF Cyber AI" prometida nos planos)
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Revisar também contra o OWASP GenAI LLM Top 10 2026 (publicado 03/ago/2026 por
+                    genai.owasp.org): LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure,
+                    LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning,
+                    LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure
+                    (novo nome de System Prompt Leakage), LLM09 Vector and Embedding Weaknesses, LLM10
+                    Improper Output Handling. Filosofia-chave: não construir um modelo que não possa ser
+                    enganado; construir o sistema assumindo que ele será ("blast-radius control"). Se o
+                    modelo virar ator com tools/memória/consequências, usar o OWASP Top 10 for Agentic
+                    Applications 2026.
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-5">
+                  <h3 className="text-sm font-extrabold text-white mb-2">
+                    Normas aplicáveis ao desenvolvimento com IA
+                  </h3>
+                  <ul className="space-y-2 mb-3">
+                    <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                      <span className="text-cyan-400 mt-0.5">•</span>
+                      <span>
+                        <span className="text-white font-semibold">ISO/IEC 42001:</span> Gestão de
+                        IA.
+                      </span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                      <span className="text-cyan-400 mt-0.5">•</span>
+                      <span>
+                        <span className="text-white font-semibold">ISO/IEC 23894:</span> Gestão de
+                        riscos de IA.
+                      </span>
+                    </li>
+                    <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                      <span className="text-cyan-400 mt-0.5">•</span>
+                      <span>
+                        <span className="text-white font-semibold">ISO/IEC 27090:</span> Segurança de
+                        sistemas de IA.
+                      </span>
+                    </li>
+                  </ul>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Estamos em conformidade com as normas aplicáveis, e elas se aplicam a ambientes
+                    que utilizam IA como recurso.
+                  </p>
+                </div>
+              </div>
+            </section>
+
             <section>
               <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-cyan-400" />
