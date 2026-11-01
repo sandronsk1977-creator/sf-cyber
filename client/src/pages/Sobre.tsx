@@ -271,9 +271,7 @@ export default function Sobre() {
                 </p>
               </div>
               <p className="mt-5 text-slate-400 text-sm leading-relaxed">
-                O projeto foi desenvolvido com apoio de ferramentas de IA, com revisão e validação
-                técnica por profissional da equipe <SFCyber /> e seguiu as regras fixas de
-                desenvolvimento e testes de QA.
+                <SFCyber /> e seguiu as regras fixas de desenvolvimento e testes de QA.
               </p>
               <div className="mt-4 rounded-2xl bg-slate-900/60 border border-slate-800 p-5 space-y-4">
                 <div>
