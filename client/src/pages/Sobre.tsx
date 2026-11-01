@@ -246,9 +246,6 @@ export default function Sobre() {
                   sobre o que entra no ar são de minha responsabilidade, com base na minha experiência
                   em programação.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  A IA foi a ferramenta. A inteligência e a direção foram humanas.
-                </p>
               </div>
               <p className="mt-5 text-slate-400 text-sm leading-relaxed">
                 O projeto foi desenvolvido com apoio de ferramentas de IA, com revisão e validação
