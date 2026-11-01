@@ -313,6 +313,46 @@ export default function Sobre() {
               </div>
             </section>
 
+            <section id="conformidade">
+              <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-cyan-400" />
+                Declaração de Conformidade e Aplicação de Normas
+              </h2>
+              <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                Garantimos que nossos ambientes operam em estrita conformidade com os mais rigorosos
+                padrões internacionais de governança, segurança e mitigação de riscos, sendo totalmente
+                aplicáveis a ecossistemas que utilizam a Inteligência Artificial como recurso:
+              </p>
+              <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-5 space-y-3">
+                <ul className="space-y-3">
+                  <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>
+                      <span className="text-white font-semibold">ISO/IEC 42001 (Gestão de IA):</span>{" "}
+                      Estabelece o sistema de gestão global para garantir o desenvolvimento e o uso ético,
+                      transparente e responsável da IA.
+                    </span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>
+                      <span className="text-white font-semibold">ISO/IEC 23894 (Gestão de Riscos de IA):</span>{" "}
+                      Orienta a identificação, avaliação e mitigação sistemática de riscos específicos
+                      associados a tecnologias de IA.
+                    </span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>
+                      <span className="text-white font-semibold">ISO/IEC 27090 (Segurança de Sistemas de IA):</span>{" "}
+                      Define os controles e requisitos de segurança cibernética específicos para proteger
+                      a integridade dos sistemas e dos dados contra ameaças direcionadas à IA.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </section>
+
             <section>
               <h2 className="text-xl font-extrabold text-white mb-3 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-cyan-400" />
