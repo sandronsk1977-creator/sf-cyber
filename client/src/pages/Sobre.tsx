@@ -115,10 +115,11 @@ export default function Sobre() {
                   href="https://github.com/sandronsk1977-creator"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-white font-semibold"
+                  title="GitHub: sandronsk1977-creator"
+                  className="inline-flex items-center gap-1 align-middle text-cyan-400 font-bold animate-logo-text-pulse hover:text-cyan-300 transition-colors whitespace-nowrap"
                 >
                   <Github className="w-4 h-4" />
-                  <span className="animate-neon-white-text">Sandro Ferreira</span>
+                  Sandro Ferreira
                 </a>
                 , profissional de Tecnologia da Informação há mais de 20 anos, com experiência em ITSM,
                 infraestrutura, redes, servidores, monitoramento, cibersegurança e automação. Ao
