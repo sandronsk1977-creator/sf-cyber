@@ -238,7 +238,7 @@ export default function Sobre() {
                   Este site foi construído com inteligência híbrida
                 </h3>
                 <p className="text-slate-400 text-sm leading-relaxed mb-3">
-                  Usei Inteligência Artificial como ferramenta para acelerar a parte mecânica:
+                  Usei IA como ferramenta para acelerar a parte mecânica,
                   geração de código base, layouts e otimização de tarefas repetitivas.
                 </p>
                 <p className="text-slate-400 text-sm leading-relaxed mb-3">
@@ -320,9 +320,9 @@ export default function Sobre() {
                 Diretrizes de Segurança, Governança e Conformidade
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed mb-4">
-                Nossos ambientes e práticas de desenvolvimento são orientados por princípios
-                reconhecidos internacionalmente de governança, segurança da informação, gestão de
-                riscos e uso responsável da Inteligência Artificial.
+                O ambiente e práticas de desenvolvimento são orientados por princípios
+                reconhecidos de governança, segurança da informação, gestão de
+                riscos e uso responsável da IA.
               </p>
               <p className="text-slate-400 text-sm leading-relaxed mb-4">
                 Como referência para a estruturação e evolução de nossos processos, consideramos as
@@ -333,19 +333,19 @@ export default function Sobre() {
                   <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                     <span className="text-cyan-400 mt-0.5">•</span>
                     <span>
-                      <span className="text-white font-semibold">ISO/IEC 42001 - Sistema de Gestão de Inteligência Artificial:</span> Estabelece requisitos para a implementação e melhoria contínua de práticas de governança e uso responsável da IA.
+                      <span className="text-white font-semibold">ISO/IEC 42001 - Sistema de Gestão de IA:</span> Estabelece requisitos para a implementação e melhoria contínua de práticas de governança e uso responsável da IA.
                     </span>
                   </li>
                   <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                     <span className="text-cyan-400 mt-0.5">•</span>
                     <span>
-                      <span className="text-white font-semibold">ISO/IEC 23894 - Gestão de Riscos em Inteligência Artificial:</span> Fornece diretrizes para identificar, avaliar e tratar riscos relacionados ao desenvolvimento e à utilização de sistemas de IA.
+                      <span className="text-white font-semibold">ISO/IEC 23894 - Gestão de Riscos em IA:</span> Fornece diretrizes para identificar, avaliar e tratar riscos relacionados ao desenvolvimento e à utilização de sistemas de IA.
                     </span>
                   </li>
                   <li className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                     <span className="text-cyan-400 mt-0.5">•</span>
                     <span>
-                      <span className="text-white font-semibold">ISO/IEC 27090 - Segurança Cibernética de Sistemas de IA:</span> Apresenta orientações para compreender, identificar e mitigar ameaças e vulnerabilidades específicas de sistemas de Inteligência Artificial.
+                      <span className="text-white font-semibold">ISO/IEC 27090 - Segurança Cibernética de Sistemas de IA:</span> Apresenta orientações para compreender, identificar e mitigar ameaças e vulnerabilidades específicas de sistemas de IA.
                     </span>
                   </li>
                 </ul>
