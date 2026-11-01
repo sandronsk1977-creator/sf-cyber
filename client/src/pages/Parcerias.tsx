@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Handshake, ShieldCheck, Check, Award, Users, FileText, MessageCircle, Github, Linkedin } from "lucide-react";
 
-const WHATSAPP_NUMBER = "5562999693469";
+const WHATSAPP_NUMBER = "5562984498565";
 const MENSAGEM_PARCERIA =
   "Olá! Vim pelo site da SF Cyber Academy e gostaria de apresentar uma proposta de colaboração. " +
   "Tenho interesse em uma das seguintes modalidades: apoio técnico, conteúdo educacional, " +
