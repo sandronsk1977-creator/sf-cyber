@@ -261,11 +261,11 @@ export default function Sobre() {
                 <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                   Essas decisões são fundamentadas na minha experiência prática com desenvolvimento de
                   software, iniciada em 2019, envolvendo programação em linguagem{" "}
-                  <span className="text-white font-semibold animate-neon-white-text">"PHP"</span>{" "}
+                  <span className="text-white font-semibold animate-neon-white-text">PHP</span>{" "}
                   integrada a bancos de dados{" "}
                   <span className="text-white font-semibold animate-neon-white-text">MySQL</span>,
                   desenvolvimento com{" "}
-                  <span className="text-white font-semibold animate-neon-white-text">"HTML e CSS"</span>
+                  <span className="text-white font-semibold animate-neon-white-text">HTML e CSS</span>
                   , além de conhecimentos em algoritmos, lógica de programação e criação de soluções
                   tecnológicas.
                 </p>
