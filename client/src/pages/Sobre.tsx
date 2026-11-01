@@ -247,7 +247,7 @@ export default function Sobre() {
               </h2>
               <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-5">
                 <h3 className="text-sm font-extrabold text-white mb-3">
-                  Este site foi construído com inteligência híbrida
+                  Este site foi construído com IH e IA
                 </h3>
                 <p className="text-slate-400 text-sm leading-relaxed mb-3">
                   Usei IA como ferramenta para acelerar a parte mecânica,
