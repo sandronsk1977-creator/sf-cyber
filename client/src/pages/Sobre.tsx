@@ -110,11 +110,21 @@ export default function Sobre() {
                 Backstage?
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Eu <span className="text-white font-semibold">Sandro Ferreira</span>, profissional
-                de Tecnologia da Informação há mais de 20 anos, atualmente com atuação em ITSM,
-                infraestrutura, redes, servidores, monitoramento, cibersegurança e automação.
-                Transformo as necessidades do dia a dia da TI em soluções práticas, ferramentas e
-                projetos que geram resultados reais.
+                <a
+                  href="https://github.com/sandronsk1977-creator"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 align-middle text-white font-semibold animate-neon-white"
+                >
+                  <Github className="w-4 h-4" />
+                  Sandro Ferreira
+                </a>
+                , profissional de Tecnologia da Informação há mais de 20 anos, com experiência em ITSM,
+                infraestrutura, redes, servidores, monitoramento, cibersegurança e automação. Ao
+                longo dessa trajetória, venho aprendendo, enfrentando desafios e buscando transformar
+                as experiências do dia a dia em soluções práticas. Acredito que o conhecimento está
+                sempre em construção e que compartilhar o que aprendemos também é uma forma de
+                continuar evoluindo.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 A <SFCyber /> Academy nasceu de uma inquietação antiga. Concluir uma graduação é uma
