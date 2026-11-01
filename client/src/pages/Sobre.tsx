@@ -83,7 +83,7 @@ export default function Sobre() {
       <main className="flex-1 container py-14">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
-            Sobre a SF Cyber Academy
+            Sobre a <SFCyber /> Academy
           </h1>
           <p className="text-sm text-slate-500 mb-2">
             Projeto Independente de Educação Tecnológica • Goiânia - GO
@@ -248,8 +248,8 @@ export default function Sobre() {
               </div>
               <p className="mt-5 text-slate-400 text-sm leading-relaxed">
                 O projeto foi desenvolvido com apoio de ferramentas de IA, com revisão e validação
-                técnica por profissional da equipe SF Cyber e seguiu as regras fixas de desenvolvimento
-                e testes de QA.
+                técnica por profissional da equipe <SFCyber /> e seguiu as regras fixas de
+                desenvolvimento e testes de QA.
               </p>
               <div className="mt-4 rounded-2xl bg-slate-900/60 border border-slate-800 p-5 space-y-4">
                 <div>
