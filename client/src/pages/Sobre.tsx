@@ -110,14 +110,15 @@ export default function Sobre() {
                 Backstage?
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
+                Sou{" "}
                 <a
                   href="https://github.com/sandronsk1977-creator"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 align-middle text-white font-semibold animate-neon-white"
+                  className="inline-flex items-center gap-1.5 text-white font-semibold"
                 >
                   <Github className="w-4 h-4" />
-                  Sandro Ferreira
+                  <span className="animate-neon-white-text">Sandro Ferreira</span>
                 </a>
                 , profissional de Tecnologia da Informação há mais de 20 anos, com experiência em ITSM,
                 infraestrutura, redes, servidores, monitoramento, cibersegurança e automação. Ao
