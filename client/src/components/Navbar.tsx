@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, ShieldCheck, Scale, User, Eye } from "lucide-react";
+import { Menu, X, ShieldCheck, Scale, User } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { PreLaunchModal } from "./PreLaunchModal";
@@ -28,15 +28,6 @@ export function Navbar() {
             >
               <User className="w-3.5 h-3.5" />
               Sobre
-            </Link>
-
-            <Link
-              href="/sobre#transparencia"
-              title="Transparência na construção do projeto"
-              className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-white bg-white/10 border border-white/40 px-3 py-1.5 rounded-full hover:bg-white/20 hover:border-white/70 transition-colors animate-neon-white"
-            >
-              <Eye className="w-3.5 h-3.5" />
-              Transparência
             </Link>
 
             <Link
@@ -118,15 +109,6 @@ export function Navbar() {
               >
                 <User className="w-4 h-4" />
                 Sobre
-              </Link>
-              <Link
-                href="/sobre#transparencia"
-                title="Transparência na construção do projeto"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 text-white text-sm py-2.5 hover:bg-white/10 hover:border-white/70 transition-colors animate-neon-white"
-              >
-                <Eye className="w-4 h-4" />
-                Transparência
               </Link>
               <Link
                 href="/privacidade"
