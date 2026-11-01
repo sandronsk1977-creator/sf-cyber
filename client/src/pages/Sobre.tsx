@@ -253,10 +253,16 @@ export default function Sobre() {
                   Usei IA como ferramenta para acelerar a parte mecânica,
                   geração de código base, layouts e otimização de tarefas repetitivas.
                 </p>
-                <p className="text-slate-400 text-sm leading-relaxed mb-3">
-                  Toda a arquitetura, lógica de programação, segurança, performance e a decisão final
-                  sobre o que entra no ar são de minha responsabilidade, com base na minha experiência
-                  em programação.
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Toda a arquitetura das soluções, a lógica de programação, a implementação de
+                  mecanismos de segurança, a otimização de desempenho e a decisão final sobre o que
+                  será disponibilizado em produção estão sob minha responsabilidade.
+                </p>
+                <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                  Essas decisões são fundamentadas na minha experiência prática com desenvolvimento de
+                  software, iniciada em 2014, envolvendo programação em linguagem "PHP" integrada a
+                  bancos de dados MySQL, desenvolvimento com "HTML e CSS", além de conhecimentos em
+                  algoritmos, lógica de programação e criação de soluções tecnológicas.
                 </p>
               </div>
               <p className="mt-5 text-slate-400 text-sm leading-relaxed">
