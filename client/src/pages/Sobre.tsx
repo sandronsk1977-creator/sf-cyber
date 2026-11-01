@@ -118,12 +118,16 @@ export default function Sobre() {
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 A <SFCyber /> Academy nasceu de uma inquietação antiga. Concluir uma graduação é uma
-                conquista importante, mas nem sempre saímos da faculdade com o preparo prático e as
-                competências necessárias para enfrentar os desafios e as exigências do mercado de
-                trabalho. Por isso idealizei um projeto que pudesse potencializar o conhecimento de
-                forma prática, principalmente para alunos de cursos e recém-formados na área de
-                tecnologia, que precisam transformar teoria em experiência antes de encarar o dia a
-                dia profissional.
+                conquista importante, e devemos reconhecer o esforço dos professores e das instituições
+                de ensino na formação dos profissionais. Mas acredito que aprender não termina com o
+                diploma. Cada um de nós também precisa buscar novos conhecimentos, explorar outras
+                fontes, praticar e acompanhar as mudanças da profissão. Afinal, a formação nos dá a
+                base, mas nossa evolução depende também da vontade de continuar aprendendo e colocando
+                o conhecimento em prática.
+              </p>
+              <p className="mt-3 text-slate-400 text-sm leading-relaxed">
+                Um verdadeiro sábio nunca deixa de aprender, pois reconhece que sempre há algo a
+                ensinar e algo a aprender com cada pessoa.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
                 É dessa vivência, entre a operação e a visão de ensino prático, que nasce a{" "}
