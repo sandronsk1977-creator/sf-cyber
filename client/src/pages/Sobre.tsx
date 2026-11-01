@@ -264,7 +264,7 @@ export default function Sobre() {
                 </div>
                 <div>
                   <h3 className="text-sm font-extrabold text-white mb-2">
-                    Se integrar LLM/IA (ex.: "SF Cyber AI" prometida nos planos)
+                    Se integrar LLM/IA (ex.: <SFCyber /> AI)
                   </h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
                     Revisar também contra o OWASP GenAI LLM Top 10 2026 (publicado 03/ago/2026 por
