@@ -67,9 +67,9 @@ export function DesafioVlanModal({ open, onOpenChange }: DesafioVlanModalProps) 
           Desafio VLAN
         </h2>
         <p className="mb-5 text-sm leading-relaxed text-slate-300">
-          A <SFCyber /> Academy cresceu. Agora é uma empresa com três departamentos, todos ligados
-          no mesmo cabo de rede. TI com 12 pessoas, RH com 8 e Marketing com 10 precisam de
-          internet, e-mail e servidores de arquivo. Organize a rede e resolva o desafio.
+          A <SFCyber /> Academy cresceu. Agora é uma empresa com 03 Departamentos, todos conectados
+          na mesma rede.  T.I com o time de 08 colaboradores, RH com 06 colaboradores e o time de Marketing com 10 colaboradores. E agora? Precisamos fornecer
+          internet e recursos tecnológicos.. Organize a rede e resolva os desafios.
         </p>
 
         <div className="mb-6 flex items-center gap-2">
