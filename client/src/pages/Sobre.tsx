@@ -89,11 +89,11 @@ export default function Sobre() {
             Projeto Independente de Educação Tecnológica • Goiânia - GO
           </p>
           <p className="text-slate-400 text-base mb-10 leading-relaxed">
-            A <SFCyber /> Academy nasceu da prática de quem trabalha todos os dias com
-            infraestrutura, redes e cibersegurança e acredita que o conhecimento técnico se
+            A <SFCyber /> Academy foi criada por quem vive a realidade de infraestrutura,
+            redes e cibersegurança e acredita que o conhecimento se
             consolida quando é colocado em prática.
           </p>
-
+          
           <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 px-5 py-4 mb-10">
             <p className="text-sm text-cyan-100 leading-relaxed">
               <strong className="text-cyan-300">Em resumo</strong>, um projeto particular e
@@ -129,7 +129,7 @@ export default function Sobre() {
                 continuar evoluindo.
               </p>
               <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-                A <SFCyber /> Academy nasceu de uma inquietação antiga. Concluir uma graduação é uma
+                A <SFCyber /> Academy também possui uma inquietação antiga. Concluir uma graduação é uma
                 conquista importante, e devemos reconhecer o esforço dos professores e das instituições
                 de ensino na formação dos profissionais. Mas acredito que aprender não termina com o
                 diploma. Cada um de nós também precisa buscar novos conhecimentos, explorar outras
