@@ -64,7 +64,7 @@ export function DesafioVlanModal({ open, onOpenChange }: DesafioVlanModalProps) 
           id="desafio-vlan-title"
           className="mb-2 font-mono text-2xl font-extrabold text-white"
         >
-          🎮 Desafio VLAN • 👨🏻‍💻 Vamos segmentar a rede virtual 🧩
+          🎮 Desafio VLAN <p>👨🏻‍💻 Vamos segmentar a rede virtual 🧩</p>
         </h2>
         <p className="mb-5 text-sm leading-relaxed text-slate-300">
           A <SFCyber /> Academy cresceu. Agora é uma empresa com 03 Departamentos, todos conectados
