@@ -96,10 +96,10 @@ export default function Sobre() {
           
           <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 px-5 py-4 mb-10">
             <p className="text-sm text-cyan-100 leading-relaxed">
-              <strong className="text-cyan-300">Em resumo</strong>, um projeto particular e
-              independente, criado por um profissional de TI com mais de 20 anos de estrada, que
-              oferece laboratórios gratuitos para quem quer aprender Redes e Cibersegurança na
-              prática e continuar evoluindo.
+              <strong className="text-cyan-300">Em resumo</strong>, Este é um projeto independente,
+              criado por um profissional de TI com mais de 20 anos de estrada, claro, com o objetivo de
+              oferecer <strong>Laboratórios Gratuitos</strong> para quem quer aprender e dominar conceitos em Redes e Cibersegurança na
+              prática e continuar evoluindo tecnicamente.
             </p>
           </div>
 
