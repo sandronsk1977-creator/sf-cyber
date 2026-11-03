@@ -121,8 +121,8 @@ export default function Sobre() {
                   <Github className="w-4 h-4" />
                   Sandro Ferreira
                 </a>
-                , profissional de Tecnologia da Informação há mais de 20 anos, com experiência em ITSM,
-                infraestrutura, redes, servidores, monitoramento, cibersegurança e automação. Ao
+                , profissional de Tecnologia da Informação com experiência em ITSM,
+                infraestrutura, Redes, Servidores, Monitoramento, Cibersegurança e Automação. Ao
                 longo dessa trajetória, venho aprendendo, enfrentando desafios e buscando transformar
                 as experiências do dia a dia em soluções práticas. Acredito que o conhecimento está
                 sempre em construção e que compartilhar o que aprendemos também é uma forma de
