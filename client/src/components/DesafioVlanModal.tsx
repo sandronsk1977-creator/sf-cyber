@@ -64,11 +64,11 @@ export function DesafioVlanModal({ open, onOpenChange }: DesafioVlanModalProps) 
           id="desafio-vlan-title"
           className="mb-2 font-mono text-2xl font-extrabold text-white"
         >
-          Desafio VLAN
+          🎮 Desafio VLAN • 👨🏻‍💻 Vamos segmentar a rede virtual 🧩
         </h2>
         <p className="mb-5 text-sm leading-relaxed text-slate-300">
           A <SFCyber /> Academy cresceu. Agora é uma empresa com 03 Departamentos, todos conectados
-          na mesma rede.  O time de T.I com 08 colaboradores, RH com 06 colaboradores e o MARKETING com 10 colaboradores. E agora? Precisamos disponiblizar
+          na mesma rede.  O time de T.I com 08 colaboradores, RH com 06 colaboradores e o MARKETING com 10 colaboradores. E agora? Precisamos disponibilizar
           recursos tecnológicos (Dispositivos e Sistemas), mas antes, organize a rede e resolva os desafios.
         </p>
 
