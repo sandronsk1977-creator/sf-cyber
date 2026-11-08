@@ -41,7 +41,7 @@ const pilares = [
     desc: "Simulações de ambientes reais de redes, servidores e segurança, em que cada decisão tem consequência e cada erro ensina.",
   },
   {
-    titulo: "Progressão em 8 níveis",
+    titulo: "Progressão em 08 níveis",
     desc: "Cada laboratório avança do básico ao avançado, com prática guiada pelo SF Bot, avaliação e prova final.",
   },
   {
