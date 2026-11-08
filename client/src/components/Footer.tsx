@@ -28,7 +28,7 @@ export function Footer() {
             Política de Privacidade
           </Link>
           <span className="text-slate-700">·</span>
-          <span>...</span>
+          <span>..</span>
         </div>
       </div>
     </footer>
